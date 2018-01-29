@@ -11,5 +11,24 @@ public class Building {
 
     public Building(ArrayList<Sensor> sensorList){
         this.sensorList = sensorList;
+        this.id = 0;
+    }
+
+    public Building(int id){
+        this.sensorList = new ArrayList<>();
+        this.id = id;
+    }
+
+    public ArrayList<Sensor> getSensorList() {
+        return sensorList;
+    }
+
+    public int getId(){
+        return id;
+
+    }
+
+    public void addSensor(Sensor s){
+        sensorList.add(s);
     }
 }

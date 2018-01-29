@@ -1,35 +1,79 @@
 package dsl;
 
 import groovy.lang.Binding;
+import launcher.App;
+import laws.DataLaw;
+import laws.MarkovLaw;
+import laws.RandomLaw;
+import structural.Building;
+import structural.Sensor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SensorModel {
-	/*private List<Brick> bricks;
-	private List<State> states;
-	private List<Error> errors;
-	private State initialState;
+	private ArrayList<Building> buildings;
+	private ArrayList<Sensor> sensors;
 	
 	private Binding binding;
 	
 	public SensorModel(Binding binding) {
-		this.bricks = new ArrayList<Brick>();
-		this.states = new ArrayList<State>();
-		this.errors = new ArrayList<>();
-		this.binding = binding;
-	}
-	
-	public void createSensor(String name, Integer pinNumber) {
-		Sensor sensor = new Sensor();
-		sensor.setName(name);
-		sensor.setPin(pinNumber);
-		this.bricks.add(sensor);
-		this.binding.setVariable(name, sensor);
-//		System.out.println("> sensor " + name + " on pin " + pinNumber);
+		this.buildings = new ArrayList<Building>();
+		this.sensors = new ArrayList<Sensor>();
 	}
 
-	public void setLedError(){
+	public boolean containsBuilding(Integer id){
+		for(Building b : buildings){
+			if(b.getId() == id){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public Building getBuilding(int b){
+		for(Building building : buildings){
+			if(building.getId() == b){
+				return building;
+			}
+		}
+		return null;
+	}
+	
+	public void createSensor(String law, Building b) {
+		DataLaw dataLaw;
+		if(law.equalsIgnoreCase("random")){
+			dataLaw = new RandomLaw();
+		}
+		else if(law.equalsIgnoreCase("markov")){
+			dataLaw = new MarkovLaw();
+		}
+		else{
+			dataLaw = new RandomLaw();
+		}
+		Sensor sensor = new Sensor(b, dataLaw);
+		sensor.setId(this.sensors.size());
+		this.sensors.add(sensor);
+		for(Building building : buildings){
+			if (b.equals(building)){
+				b.addSensor(sensor);
+				break;
+			}
+		}
+	}
+
+	public void createBuilding(Integer id){
+		Building b = new Building(id);
+		buildings.add(b);
+	}
+
+	public void runApp(){
+		App app = new App();
+		app.setBuildings(buildings);
+		app.run();
+	}
+
+	/*public void setLedError(){
 		Actuator errorLed = new Actuator();
 		errorLed.setName("errorLed");
 		errorLed.setPin(12);
@@ -92,7 +136,7 @@ public class SensorModel {
 	}
 	@SuppressWarnings("rawtypes")
 	public Object generateCode(String appName) {
-		App app = new App();
+		launcher.App app = new launcher.App();
 		app.setName(appName);
 		app.setBricks(this.bricks);
 		app.setStates(this.states);

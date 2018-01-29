@@ -7,11 +7,12 @@
     <groupId>DSL-SensorSimultion</groupId>
     <artifactId>DSL-SensorSimultion</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
 
     <modules>
-        <module>groovy</module>
         <module>kernel</module>
+        <module>groovy</module>
     </modules>
 
 </project>

@@ -56,4 +56,17 @@ public class Sensor {
         this.value = sensorDataLaw.generateNextValue();
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String toString(){
+        return "Sensor : " + id + "Building associated : " + building.getId() + " Law : " + sensorDataLaw.getClass().getName();
+
+    }
+
 }

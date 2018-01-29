@@ -29,14 +29,14 @@ public class SensorBinding extends Binding {
 		this.script = script;
 	}
 	
-	public void setGroovuinoMLModel(SensorModel model) {
+	public void setSensorModel(SensorModel model) {
 		this.model = model;
 	}
 	
 	public Object getVariable(String name) {
 		// Easter egg (to show you this trick: seb is now a keyword!)
 		if ("seb".equals(name)) {
-			// could do something else like: ((App) this.getVariable("app")).action();
+			// could do something else like: ((launcher.App) this.getVariable("app")).action();
 			System.out.println("Seb, c'est bien");
 			return script;
 		}
@@ -47,7 +47,7 @@ public class SensorBinding extends Binding {
 		super.setVariable(name, value);
 	}
 	
-	public SensorModel getGroovuinoMLModel() {
+	public SensorModel getSensorModel() {
 		return this.model;
 	}
 }

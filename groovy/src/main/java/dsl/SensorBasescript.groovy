@@ -1,27 +1,30 @@
 package dsl
 
-import io.github.mosser.arduinoml.kernel.behavioral.Action
-import io.github.mosser.arduinoml.kernel.behavioral.State
-import io.github.mosser.arduinoml.kernel.structural.Actuator
-import io.github.mosser.arduinoml.kernel.structural.SIGNAL
-import io.github.mosser.arduinoml.kernel.structural.Sensor
+import structural.Building
 
 abstract class SensorBasescript extends Script {
 	// sensor "name" pin n
-	def sensor(String name) {
-		[pin: { n -> ((SensorBinding)this.getBinding()).getGroovuinoMLModel().createSensor(name, n) },
-		onPin: { n -> ((SensorBinding)this.getBinding()).getGroovuinoMLModel().createSensor(name, n)}]
+	def sensor(Integer b) {
+		[law: { l ->
+			if(b instanceof  Integer){
+				if(!((SensorBinding)this.getBinding()).getSensorModel().containsBuilding(b)){
+					((SensorBinding)this.getBinding()).getSensorModel().createBuilding(b)
+				}
+				Building building = ((SensorBinding)this.getBinding()).getSensorModel().getBuilding(b)
+				((SensorBinding)this.getBinding()).getSensorModel().createSensor(l, building)
+			}
+		}]
 	}
 	
 	// actuator "name" pin n
-	def actuator(String name) {
-		[pin: { n -> ((SensorBinding)this.getBinding()).getGroovuinoMLModel().createActuator(name, n) }]
+	/*def actuator(String name) {
+		[pin: { n -> ((SensorBinding)this.getBinding()).getSensorModel().createActuator(name, n) }]
 	}
 
 	// state "name" means actuator becomes signal [and actuator becomes signal]*n
 	def state(String name) {
 		List<Action> actions = new ArrayList<Action>()
-		((SensorBinding) this.getBinding()).getGroovuinoMLModel().createState(name, actions)
+		((SensorBinding) this.getBinding()).getSensorModel().createState(name, actions)
 		// recursive closure to allow multiple and statements
 		def closure
 		closure = { actuator -> 
@@ -39,11 +42,11 @@ abstract class SensorBasescript extends Script {
 	
 	// initial state
 	def initial(state) {
-		((SensorBinding) this.getBinding()).getGroovuinoMLModel().setInitialState(state instanceof String ? (State)((SensorBinding)this.getBinding()).getVariable(state) : (State)state)
+		((SensorBinding) this.getBinding()).getSensorModel().setInitialState(state instanceof String ? (State)((SensorBinding)this.getBinding()).getVariable(state) : (State)state)
 	}
 
 	def error(Integer code){
-		((SensorBinding) this.getBinding()).getGroovuinoMLModel().setLedError()
+		((SensorBinding) this.getBinding()).getSensorModel().setLedError()
 		List<Action> actions = new ArrayList<Action>()
 		List<Sensor> sensors = new ArrayList<Sensor>()
 		List<SIGNAL> signals = new ArrayList<SIGNAL>()
@@ -52,13 +55,13 @@ abstract class SensorBasescript extends Script {
 		action.setValue(SIGNAL.HIGH)
 		actions.add(action);
 
-		((SensorBinding) this.getBinding()).getGroovuinoMLModel().createError(code, actions, sensors, signals)
-		//((SensorBinding) this.getBinding()).getGroovuinoMLModel().createError(code, actions)
+		((SensorBinding) this.getBinding()).getSensorModel().createError(code, actions, sensors, signals)
+		//((SensorBinding) this.getBinding()).getSensorModel().createError(code, actions)
 		def closure
 		closure = { sensor ->
 			[becomes: { signal ->
-						Error err = (Error) ((SensorBinding) this.getBinding()).getGroovuinoMLModel().getError(code);
-						((SensorBinding) this.getBinding()).getGroovuinoMLModel().removeError(err)
+						Error err = (Error) ((SensorBinding) this.getBinding()).getSensorModel().getError(code);
+						((SensorBinding) this.getBinding()).getSensorModel().removeError(err)
 						if(sensor instanceof  String){
 							err.addSensor(((SensorBinding) this.getBinding()).getVariable(sensor))
 						}
@@ -71,7 +74,7 @@ abstract class SensorBasescript extends Script {
 						else{
 							err.addValue((SIGNAL) signal)
 						}
-						((SensorBinding) this.getBinding()).getGroovuinoMLModel().addError(err)
+						((SensorBinding) this.getBinding()).getSensorModel().addError(err)
 						//sensor instanceof String ? sensors.add((Sensor) ((SensorBinding) this.getBinding()).getVariable(sensor)) : sensors.add((Sensor) sensor)
 						//signal instanceof String ? signals.add((SIGNAL) ((SensorBinding) this.getBinding()).getVariable(signal)) : signals.add((SIGNAL) signal)
 				[and: closure]
@@ -79,7 +82,7 @@ abstract class SensorBasescript extends Script {
 		}
 		[when: closure]
 		//System.out.println(sensors.size() + " " + signals.size());
-		//((SensorBinding) this.getBinding()).getGroovuinoMLModel().createError(code, actions, sensors, signals)
+		//((SensorBinding) this.getBinding()).getSensorModel().createError(code, actions, sensors, signals)
 
 	}
 	
@@ -88,7 +91,7 @@ abstract class SensorBasescript extends Script {
 		[to: { state2 -> 
 			[when: { sensor ->
 				[becomes: { signal -> 
-					((SensorBinding) this.getBinding()).getGroovuinoMLModel().createTransition(
+					((SensorBinding) this.getBinding()).getSensorModel().createTransition(
 						state1 instanceof String ? (State)((SensorBinding)this.getBinding()).getVariable(state1) : (State)state1,
 						state2 instanceof String ? (State)((SensorBinding)this.getBinding()).getVariable(state2) : (State)state2,
 						sensor instanceof String ? (Sensor)((SensorBinding)this.getBinding()).getVariable(sensor) : (Sensor)sensor,
@@ -96,12 +99,15 @@ abstract class SensorBasescript extends Script {
 				}]
 			}]
 		}]
-	}
+	}*/
 	
 	// export name
-	def export(String name) {
-		println(((SensorBinding) this.getBinding()).getGroovuinoMLModel().generateCode(name).toString())
+	def runApp(String name){
+		((SensorBinding) this.getBinding()).getSensorModel().runApp()
 	}
+	/*def export(String name) {
+		println(((SensorBinding) this.getBinding()).getSensorModel().runApp())
+	}*/
 	
 	// disable run method while running
 	int count = 0

@@ -1,4 +1,7 @@
+package launcher;
+
 import structural.Building;
+import structural.Sensor;
 
 import java.util.ArrayList;
 
@@ -14,5 +17,15 @@ public class App {
 
     public void setBuildings(ArrayList<Building> buildings) {
         this.buildings = buildings;
+    }
+
+    public void run(){
+        while(true){
+            for(Building b : buildings){
+                for(Sensor s : b.getSensorList()){
+                    System.out.println(s);
+                }
+            }
+        }
     }
 }

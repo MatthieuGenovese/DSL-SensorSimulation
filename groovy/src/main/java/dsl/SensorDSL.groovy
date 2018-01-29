@@ -14,13 +14,13 @@ class SensorDSL {
 
     SensorDSL() {
         binding = new SensorBinding()
-        binding.setGroovuinoMLModel(new SensorModel(binding));
+        binding.setSensorModel(new SensorModel(binding));
         configuration = getDSLConfiguration()
-        configuration.setScriptBaseClass("main.java.dsl.SensorBasescript")
+        configuration.setScriptBaseClass("dsl.SensorBasescript")
         shell = new GroovyShell(configuration)
 
-        binding.setVariable("high", SIGNAL.HIGH)
-        binding.setVariable("low", SIGNAL.LOW)
+        //binding.setVariable("high", SIGNAL.HIGH)
+        //binding.setVariable("low", SIGNAL.LOW)
     }
 
     private static CompilerConfiguration getDSLConfiguration() {
