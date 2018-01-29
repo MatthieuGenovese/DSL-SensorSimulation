@@ -15,7 +15,7 @@ public class App {
     private InfluxDBManager influxDBManager;
 
     public App(){
-        influxDBManager = new InfluxDBManager();
+        //influxDBManager = new InfluxDBManager();
     }
 
     public int getStep() {
@@ -41,6 +41,7 @@ public class App {
                 System.out.println("\tBuilding : " +b.getId());
                 for (Sensor s : b.getSensorList()) {
                     s.tick();
+                    //influxDBManager.writeSensor(s);
                     System.out.println("\t\t" + s);
                 }
             }

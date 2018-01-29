@@ -15,11 +15,12 @@ public class InfluxDBManager {
     private InfluxDB db;
 
     public InfluxDBManager(){
-        db = InfluxDBFactory.connect("localhost:8086", "root", "root");
+        db = InfluxDBFactory.connect("http://localhost:8086", "root", "root");
         if(!db.databaseExists("DSL-SimulationSensor")){
             db.createDatabase("DSL-SimulationSensor");
         }
         db.setLogLevel(InfluxDB.LogLevel.BASIC);
+        db.setDatabase("DSL-SimulationSensor");
     }
 
     public void writeSensor(Sensor s){
