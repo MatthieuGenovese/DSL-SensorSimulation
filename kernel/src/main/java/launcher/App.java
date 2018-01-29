@@ -20,12 +20,8 @@ public class App {
     }
 
     public void run(){
-        while(true){
-            for(Building b : buildings){
-                for(Sensor s : b.getSensorList()){
-                    System.out.println(s);
-                }
-            }
+        for(Building b : buildings){
+            System.out.println(b);
         }
     }
 }

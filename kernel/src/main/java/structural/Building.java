@@ -31,4 +31,14 @@ public class Building {
     public void addSensor(Sensor s){
         sensorList.add(s);
     }
+
+    @Override
+    public String toString(){
+        String res = "";
+        res += "Batiment : " + getId() + "\n Sensors : \n";
+        for(Sensor s : sensorList){
+            res+= " \t- " + s.toString() + "\n";
+        }
+        return res;
+    }
 }

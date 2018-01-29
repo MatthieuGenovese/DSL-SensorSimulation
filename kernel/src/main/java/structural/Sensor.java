@@ -65,8 +65,7 @@ public class Sensor {
     }
 
     public String toString(){
-        return "Sensor : " + id + "Building associated : " + building.getId() + " Law : " + sensorDataLaw.getClass().getName();
-
+        return "Sensor : " + id + " Law : " + sensorDataLaw.getClass().getName() + " Value : " + getValue();
     }
 
 }

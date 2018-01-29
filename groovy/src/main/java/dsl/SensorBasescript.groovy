@@ -102,12 +102,14 @@ abstract class SensorBasescript extends Script {
 	}*/
 	
 	// export name
+
 	def runApp(String name){
 		((SensorBinding) this.getBinding()).getSensorModel().runApp()
 	}
-	/*def export(String name) {
-		println(((SensorBinding) this.getBinding()).getSensorModel().runApp())
-	}*/
+
+	def export(String name) {
+		println(((SensorBinding) this.getBinding()).getSensorModel().generateCode(name).toString())
+	}
 	
 	// disable run method while running
 	int count = 0
