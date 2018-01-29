@@ -1,5 +1,6 @@
 package launcher;
 
+import database.InfluxDBManager;
 import structural.Building;
 import structural.Sensor;
 
@@ -11,6 +12,11 @@ import java.util.ArrayList;
 public class App {
     private ArrayList<Building> buildings;
     private int step = 0;
+    private InfluxDBManager influxDBManager;
+
+    public App(){
+        influxDBManager = new InfluxDBManager();
+    }
 
     public int getStep() {
         return step;
