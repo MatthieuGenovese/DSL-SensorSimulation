@@ -1,21 +1,23 @@
 package laws;
 
+import values.Nombre;
+
 /**
  * Created by Matthieu on 29/01/2018.
  */
 public class RandomLaw implements DataLaw {
-    private int value;
+    private Nombre value;
 
     public RandomLaw(){
-        this.value = 0;
+        this.value = new Nombre();
     }
 
     public DataLaw getLaw(){
         return this;
     }
 
-    public int generateNextValue(){
-        this.value = 1 + (int)(Math.random() * ((1000 - 1) + 1));
+    public Nombre generateNextValue(){
+        value.setValue(1 + (int)(Math.random() * ((1000 - 1) + 1)));
         return value;
     }
 }

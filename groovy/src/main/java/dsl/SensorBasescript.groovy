@@ -4,15 +4,21 @@ import structural.Building
 
 abstract class SensorBasescript extends Script {
 	// sensor "name" pin n
-	def sensor(Integer b) {
-		[law: { l ->
-			if(b instanceof  Integer){
-				if(!((SensorBinding)this.getBinding()).getSensorModel().containsBuilding(b)){
-					((SensorBinding)this.getBinding()).getSensorModel().createBuilding(b)
-				}
-				Building building = ((SensorBinding)this.getBinding()).getSensorModel().getBuilding(b)
-				((SensorBinding)this.getBinding()).getSensorModel().createSensor(l, building)
-			}
+	def sensor(String type) {
+		[create: { nombre ->
+			[building: { b ->
+					if(b instanceof  Integer){
+						if(!((SensorBinding)this.getBinding()).getSensorModel().containsBuilding(b)){
+							((SensorBinding)this.getBinding()).getSensorModel().createBuilding(b)
+						}
+						Building building = ((SensorBinding)this.getBinding()).getSensorModel().getBuilding(b)
+						if(nombre instanceof Integer){
+							for(int i = 0; i < nombre; i++){
+								((SensorBinding)this.getBinding()).getSensorModel().createSensor(type, building)
+							}
+						}
+					}
+			}]
 		}]
 	}
 	
@@ -103,8 +109,10 @@ abstract class SensorBasescript extends Script {
 	
 	// export name
 
-	def runApp(String name){
-		((SensorBinding) this.getBinding()).getSensorModel().runApp()
+	def runApp(Integer steps){
+		if(steps instanceof Integer) {
+			((SensorBinding) this.getBinding()).getSensorModel().runApp(steps)
+		}
 	}
 
 	def export(String name) {

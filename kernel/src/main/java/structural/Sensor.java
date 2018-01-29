@@ -1,11 +1,12 @@
 package structural;
 
 import laws.DataLaw;
+import values.Value;
 
 /**
  * Created by Matthieu on 29/01/2018.
  */
-public class Sensor {
+public abstract class Sensor {
     public Building getBuilding() {
         return building;
     }
@@ -30,11 +31,11 @@ public class Sensor {
         this.time = time;
     }
 
-    public int getValue() {
+    public Value getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(Value value) {
         this.value = value;
     }
 
@@ -42,14 +43,7 @@ public class Sensor {
     private Building building;
     private DataLaw sensorDataLaw;
     private int time;
-    private int value;
-
-    public Sensor(Building building, DataLaw law){
-        this.building = building;
-        this.sensorDataLaw = law;
-        this.value = 0;
-        this.time = 0;
-    }
+    private Value value;
 
     public void tick(){
         this.time++;

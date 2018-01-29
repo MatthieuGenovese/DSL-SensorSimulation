@@ -6,7 +6,9 @@ import laws.DataLaw;
 import laws.MarkovLaw;
 import laws.RandomLaw;
 import structural.Building;
+import structural.NombreSensor;
 import structural.Sensor;
+import structural.TempsSensor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,19 +42,25 @@ public class SensorModel {
 		return null;
 	}
 	
-	public void createSensor(String law, Building b) {
+	public void createSensor(String type, Building b) {
 		DataLaw dataLaw;
-		if(law.equalsIgnoreCase("random")){
-			dataLaw = new RandomLaw();
+		Sensor sensor;
+		switch (type){
+			case "temps":
+				dataLaw = new MarkovLaw();
+				sensor = new TempsSensor();
+				break;
+			case "nombre":
+				dataLaw = new RandomLaw();
+				sensor = new NombreSensor();
+				break;
+			default:
+				sensor = new NombreSensor();
+				dataLaw = new RandomLaw();
 		}
-		else if(law.equalsIgnoreCase("markov")){
-			dataLaw = new MarkovLaw();
-		}
-		else{
-			dataLaw = new RandomLaw();
-		}
-		Sensor sensor = new Sensor(b, dataLaw);
 		sensor.setId(this.sensors.size());
+		sensor.setSensorDataLaw(dataLaw);
+		sensor.setBuilding(b);
 		this.sensors.add(sensor);
 		for(Building building : buildings){
 			if (b.equals(building)){
@@ -67,9 +75,10 @@ public class SensorModel {
 		buildings.add(b);
 	}
 
-	public void runApp(){
+	public void runApp(Integer step){
 		App app = new App();
 		app.setBuildings(buildings);
+		app.setStep(step);
 		app.run();
 	}
 

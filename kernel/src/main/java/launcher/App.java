@@ -9,7 +9,16 @@ import java.util.ArrayList;
  * Created by Matthieu on 29/01/2018.
  */
 public class App {
-    public ArrayList<Building> buildings;
+    private ArrayList<Building> buildings;
+    private int step = 0;
+
+    public int getStep() {
+        return step;
+    }
+
+    public void setStep(int step) {
+        this.step = step;
+    }
 
     public ArrayList<Building> getBuildings() {
         return buildings;
@@ -20,8 +29,15 @@ public class App {
     }
 
     public void run(){
-        for(Building b : buildings){
-            System.out.println(b);
+        for(int i = 0; i < step; i++)  {
+            System.out.println("Step : " + String.valueOf(i+1));
+            for (Building b : buildings) {
+                System.out.println("\tBuilding : " +b.getId());
+                for (Sensor s : b.getSensorList()) {
+                    s.tick();
+                    System.out.println("\t\t" + s);
+                }
+            }
         }
     }
 }

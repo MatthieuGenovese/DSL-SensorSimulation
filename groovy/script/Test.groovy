@@ -1,14 +1,6 @@
-sensor 1 law "random"
-sensor 1 law "markov"
-sensor 5 law "random"
-sensor 5 law "markov"
-sensor 6 law "random"
-sensor 6 law "markov"
-sensor 2 law "random"
-sensor 2 law "markov"
-sensor 3 law "random"
-sensor 3 law "markov"
-sensor 4 law "random"
-sensor 4 law "markov"
+sensor "temps" create 10 building 1
+sensor "nombre" create 10 building 1
+sensor "temps" create 5 building 2
+sensor "nombre" create 5 building 2
 
-runApp "toto"
+runApp 30
