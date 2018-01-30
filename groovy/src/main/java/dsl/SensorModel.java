@@ -1,5 +1,7 @@
 package dsl;
 
+import dataextraction.CSVExtractor;
+import dataextraction.JSONExtractor;
 import groovy.lang.Binding;
 import launcher.App;
 import laws.DataLaw;
@@ -41,6 +43,20 @@ public class SensorModel {
 		}
 		return null;
 	}
+
+	public void generateSensors(String mode, String path){
+		ArrayList<Sensor> list = new ArrayList<>();
+		switch(mode){
+			case "csv":
+				CSVExtractor extractorCsv = new CSVExtractor();
+				list = extractorCsv.extractSensors(path);
+				break;
+			case "json":
+				JSONExtractor extractorJson = new JSONExtractor();
+				list = extractorJson.extractSensors(path);
+		}
+		this.sensors.addAll(list);
+	}
 	
 	public void createSensor(String type, Building b) {
 		DataLaw dataLaw;
@@ -81,79 +97,4 @@ public class SensorModel {
 		app.setStep(step);
 		app.run();
 	}
-
-	/*public void setLedError(){
-		Actuator errorLed = new Actuator();
-		errorLed.setName("errorLed");
-		errorLed.setPin(12);
-		this.bricks.add(errorLed);
-		this.binding.setVariable("errorLed", errorLed);
-	}
-
-	public void createError(Integer code, List<Action> actions, List<Sensor> sensor, List<SIGNAL> signal){
-		Error err = new Error();
-		err.setCode(code);
-		err.setActions(actions);
-		err.setSensors(sensor);
-		err.setValues(signal);
-		this.errors.add(err);
-
-	}
-	
-	public void createActuator(String name, Integer pinNumber) {
-		Actuator actuator = new Actuator();
-		actuator.setName(name);
-		actuator.setPin(pinNumber);
-		this.bricks.add(actuator);
-		this.binding.setVariable(name, actuator);
-	}
-	
-	public void createState(String name, List<Action> actions) {
-		State state = new State();
-		state.setName(name);
-		state.setActions(actions);
-		this.states.add(state);
-		this.binding.setVariable(name, state);
-	}
-	
-	public void createTransition(State from, State to, Sensor sensor, SIGNAL value) {
-		Transition transition = new Transition();
-		transition.setNext(to);
-		transition.setSensor(sensor);
-		transition.setValue(value);
-		from.setTransition(transition);
-	}
-	
-	public void setInitialState(State state) {
-		this.initialState = state;
-	}
-
-	public Error getError(Integer code){
-		for(Error e : this.errors){
-			if(e.getCode() == code){
-				return e;
-			}
-		}
-		return null;
-	}
-	public void addError(Error e){
-		this.errors.add(e);
-	}
-
-	public void removeError(Error e){
-		this.errors.remove(e);
-	}
-	@SuppressWarnings("rawtypes")
-	public Object generateCode(String appName) {
-		launcher.App app = new launcher.App();
-		app.setName(appName);
-		app.setBricks(this.bricks);
-		app.setStates(this.states);
-		app.setInitial(this.initialState);
-		app.setErrors(this.errors);
-		Visitor codeGenerator = new ToWiring();
-		app.accept(codeGenerator);
-		
-		return codeGenerator.getResult();
-	}*/
 }

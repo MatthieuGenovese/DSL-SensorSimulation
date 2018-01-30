@@ -7,6 +7,7 @@ import values.Value;
  * Created by Matthieu on 29/01/2018.
  */
 public class MarkovLaw implements DataLaw {
+
     Value<String> value = new Temps();
 
     public MarkovLaw(){
