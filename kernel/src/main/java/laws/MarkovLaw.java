@@ -1,5 +1,7 @@
 package laws;
 
+import structural.Matrix;
+import structural.States;
 import values.Temps;
 import values.Value;
 
@@ -8,12 +10,30 @@ import values.Value;
  */
 public class MarkovLaw implements DataLaw {
     Value<String> value = new Temps();
+    Matrix matrix;
+    States states;
 
     public MarkovLaw(){
     }
 
     public DataLaw getLaw(){
         return this;
+    }
+
+    public States getStates() {
+        return states;
+    }
+
+    public void setStates(States states) {
+        this.states = states;
+    }
+
+    public Matrix getMatrix() {
+        return matrix;
+    }
+
+    public void setMatrix(Matrix matrix) {
+        this.matrix = matrix;
     }
 
     public Value<String> generateNextValue(){

@@ -7,7 +7,7 @@ abstract class SensorBasescript extends Script {
 	def sensor(String type) {
 		[create: { nombre ->
 			[building: { b ->
-					if(b instanceof  Integer){
+					if(b instanceof Integer){
 						if(!((SensorBinding)this.getBinding()).getSensorModel().containsBuilding(b)){
 							((SensorBinding)this.getBinding()).getSensorModel().createBuilding(b)
 						}
@@ -19,6 +19,15 @@ abstract class SensorBasescript extends Script {
 						}
 					}
 			}]
+		}]
+	}
+
+	def law(String type){
+		[states: { listStates ->
+			[matrix : { matrix ->
+					((SensorBinding)this.getBinding()).getSensorModel().createLaw(type, listStates, matrix);
+			}]
+
 		}]
 	}
 	

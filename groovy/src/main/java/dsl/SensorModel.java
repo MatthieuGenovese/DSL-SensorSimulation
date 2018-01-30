@@ -11,11 +11,11 @@ import structural.Sensor;
 import structural.TempsSensor;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SensorModel {
 	private ArrayList<Building> buildings;
 	private ArrayList<Sensor> sensors;
+	private ArrayList<DataLaw> laws;
 	
 	private Binding binding;
 	
@@ -73,6 +73,14 @@ public class SensorModel {
 	public void createBuilding(Integer id){
 		Building b = new Building(id);
 		buildings.add(b);
+	}
+
+	public void createLaw(String type, ArrayList<String> states, ArrayList<Double> matrix){
+		if(type == "markov"){
+			MarkovLaw law = new MarkovLaw();
+
+			laws.add(law);
+		}
 	}
 
 	public void runApp(Integer step){
