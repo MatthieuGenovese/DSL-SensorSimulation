@@ -3,6 +3,9 @@ package structural;
 import laws.DataLaw;
 import values.Value;
 
+import java.sql.Time;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by Matthieu on 29/01/2018.
  */
@@ -23,11 +26,11 @@ public abstract class Sensor {
         this.sensorDataLaw = sensorDataLaw;
     }
 
-    public int getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(int time) {
+    public void setTime(long time) {
         this.time = time;
     }
 
@@ -42,11 +45,11 @@ public abstract class Sensor {
     private int id;
     private Building building;
     private DataLaw sensorDataLaw;
-    private int time;
+    private long time;
     private Value value;
 
     public void tick(){
-        this.time++;
+        this.time = System.currentTimeMillis();
         this.value = sensorDataLaw.generateNextValue();
     }
 
