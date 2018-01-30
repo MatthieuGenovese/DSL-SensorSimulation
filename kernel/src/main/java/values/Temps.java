@@ -8,7 +8,7 @@ public class Temps implements Value<String> {
     private String value;
 
     public Temps(){
-        this.value = "beau";
+        this.value = "";
     }
 
     public String getValue(){

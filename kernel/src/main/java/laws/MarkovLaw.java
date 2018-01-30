@@ -14,8 +14,10 @@ public class MarkovLaw implements DataLaw {
     Matrix matrix;
     States states;
 
-    public MarkovLaw(String name){
+    public MarkovLaw(String name, States states){
         this.name = name;
+        this.states = states;
+        this.value = new Temps();
     }
 
     @Override
@@ -44,33 +46,86 @@ public class MarkovLaw implements DataLaw {
     }
 
     public Value<String> generateNextValue(){
+
+
         double proba = Math.random();
-        switch(value.getValue()){
-            case "beau":
+
+        //CALCUL 1
+
+        if(value.getValue() == ""){
+            value.setValue(states.getValue(0));
+        }
+        int size = states.getValue().length;
+        for(int i = 0; i < states.getValue().length; i++){
+            if(value.getValue() == states.getValue(i)){
                 if(proba > 0.1 && proba <= 0.3){
-                    value.setValue("nuageux");
+                    value.setValue(states.getValue((i+1)%size));
                 }
                 else if (proba <= 0.1){
-                    value.setValue("orageux");
+                    value.setValue(states.getValue((i+2)%size));
                 }
                 break;
-            case "nuageux":
-                if(proba > 0.7){
-                    value.setValue("beau");
-                }
-                else if (proba <= 0.7 && proba > 0.3){
-                    value.setValue("orageux");
-                }
-                break;
-            case "orageux":
-                if(proba < 0.7 && proba > 0.2){
-                    value.setValue("beau");
-                }
-                else if (proba >= 0.7){
-                    value.setValue("nuageux");
-                }
-                break;
+            }
         }
+
+        //CALCUL 2
+
+//        String s0 = states.getValue(0);
+//        String s1 = states.getValue(1);
+//        String s2 = states.getValue(2);
+//        if(value.getValue() == s0){
+//            if(proba > 0.1 && proba <= 0.3){
+//                value.setValue(s1);
+//            }
+//            else if (proba <= 0.1){
+//                value.setValue(s2);
+//            }
+//        }
+//        else if(value.getValue() == s1){
+//            if(proba > 0.7){
+//                value.setValue(s0);
+//            }
+//            else if (proba <= 0.7 && proba > 0.3){
+//                value.setValue(s2);
+//            }
+//        }
+//        else{
+//            if(proba < 0.7 && proba > 0.2){
+//                value.setValue(s0);
+//            }
+//            else if (proba >= 0.7){
+//                value.setValue(s1);
+//            }
+//        }
+
+        //CALCUL 3
+
+//        switch(value.getValue()){
+//            case s0:
+//                if(proba > 0.1 && proba <= 0.3){
+//                    value.setValue("nuageux");
+//                }
+//                else if (proba <= 0.1){
+//                    value.setValue("orageux");
+//                }
+//                break;
+//            case "nuageux":
+//                if(proba > 0.7){
+//                    value.setValue("beau");
+//                }
+//                else if (proba <= 0.7 && proba > 0.3){
+//                    value.setValue("orageux");
+//                }
+//                break;
+//            case "orageux":
+//                if(proba < 0.7 && proba > 0.2){
+//                    value.setValue("beau");
+//                }
+//                else if (proba >= 0.7){
+//                    value.setValue("nuageux");
+//                }
+//                break;
+//        }
         return value;
     }
 }

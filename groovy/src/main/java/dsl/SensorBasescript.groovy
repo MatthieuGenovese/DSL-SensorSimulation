@@ -42,7 +42,9 @@ abstract class SensorBasescript extends Script {
 
 	def law(String type) {
 		[type: { DataLaw ->
-			((SensorBinding) this.getBinding()).getSensorModel().createLaw(type, DataLaw)
+			[states: { states ->
+				((SensorBinding) this.getBinding()).getSensorModel().createLaw(type, DataLaw, states)
+			}]
 		}]
 	}
 

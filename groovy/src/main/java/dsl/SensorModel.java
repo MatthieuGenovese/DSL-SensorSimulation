@@ -9,6 +9,7 @@ import laws.MarkovLaw;
 import laws.RandomLaw;
 import structural.Building;
 import structural.Sensor;
+import structural.States;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -100,9 +101,14 @@ public class SensorModel {
 		buildings.add(b);
 	}
 
-	public void createLaw(String name, String type){
+	public void createLaw(String name, String type, String states){
 		if(type == "markov"){
-			MarkovLaw law = new MarkovLaw(name);
+//			if(states.isEmpty()){
+//				states = "beau, nuageux, orageux";
+//			}
+			String[] statesArray = states.split(",");
+			States state = new States(statesArray);
+			MarkovLaw law = new MarkovLaw(name, state);
 			laws.add(law);
 		}
 		else if(type == "random"){
