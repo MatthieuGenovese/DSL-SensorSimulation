@@ -25,7 +25,7 @@ public class InfluxDBManager {
 
     public void writeSensor(Sensor s){
         Point point = Point.measurement("sensor" + s.getId())
-                .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                .time(s.getTime(), TimeUnit.MILLISECONDS)
                 .addField("type", s.getClass().getName())
                 .addField("value", s.getValue().toString())
                 .build();

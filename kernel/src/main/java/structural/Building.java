@@ -32,6 +32,17 @@ public class Building {
         sensorList.add(s);
     }
 
+    public boolean containsSensor(String idSensor){
+        boolean result = false;
+        for(Sensor s : sensorList){
+            result =  s.getId()== Integer.valueOf(idSensor);
+            if(result){
+                return result;
+            }
+        }
+        return result;
+    }
+
     @Override
     public String toString(){
         String res = "";

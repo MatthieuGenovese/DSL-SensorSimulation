@@ -9,11 +9,18 @@ import values.Value;
  * Created by Matthieu on 29/01/2018.
  */
 public class MarkovLaw implements DataLaw {
+    private String name;
     Value<String> value = new Temps();
     Matrix matrix;
     States states;
 
-    public MarkovLaw(){
+    public MarkovLaw(String name){
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     public DataLaw getLaw(){
