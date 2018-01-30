@@ -12,6 +12,7 @@ import structural.NombreSensor;
 import structural.Sensor;
 import structural.TempsSensor;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,18 +45,19 @@ public class SensorModel {
 		return null;
 	}
 
-	public void generateSensors(String mode, String path){
+	public void generateSensors(String mode, String path) throws FileNotFoundException {
 		ArrayList<Sensor> list = new ArrayList<>();
 		switch(mode){
 			case "csv":
-				CSVExtractor extractorCsv = new CSVExtractor();
-				list = extractorCsv.extractSensors(path);
+				CSVExtractor extractorCsv = new CSVExtractor(path);
+				list = extractorCsv.extractSensors();
 				break;
 			case "json":
 				JSONExtractor extractorJson = new JSONExtractor();
 				list = extractorJson.extractSensors(path);
 		}
 		this.sensors.addAll(list);
+		this.buildings.add(sensors.get(0).getBuilding());
 	}
 	
 	public void createSensor(String type, Building b) {
