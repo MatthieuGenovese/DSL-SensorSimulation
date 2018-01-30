@@ -40,9 +40,10 @@ public class App {
             for (Building b : buildings) {
                 System.out.println("\tBuilding : " +b.getId());
                 for (Sensor s : b.getSensorList()) {
+                    System.out.println("\t\t" + s);
                     s.tick();
                     //influxDBManager.writeSensor(s);
-                    System.out.println("\t\t" + s);
+
                 }
             }
         }

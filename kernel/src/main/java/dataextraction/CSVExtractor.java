@@ -43,6 +43,7 @@ public class CSVExtractor {
                         s.setValue(new ExtractionValue(data[2]));
                         s.setTime(Long.valueOf(data[1]));
                         newLine = indexLine;
+                        break;
                     }
                 }
                 indexLine++;
