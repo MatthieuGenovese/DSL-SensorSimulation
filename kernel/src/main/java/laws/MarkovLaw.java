@@ -73,18 +73,25 @@ public class MarkovLaw implements DataLaw {
             if(value.getValue() == states.getValue(i)){
                 ArrayList<BigDecimal> row = matrix.getRow(i);
                 for(int j = 0; j < row.size(); j++){
-                    if(j==0){
-                        if(proba < row.get(j).doubleValue()){
-                            value.setValue(states.getValue(j));
-                            return value;
-                        }
+                    if(proba < matrix.getElement(i, j).doubleValue()){
+                        value.setValue(states.getValue(j));
+                        return value;
                     }
                     else{
-                        if(proba >= row.get(j-1).doubleValue() && proba < row.get(j).doubleValue()){
-                            value.setValue(states.getValue(j));
-                            return value;
-                        }
+                        proba = proba - matrix.getElement(i, j).doubleValue();
                     }
+//                    if(j==0){
+//                        if(proba < row.get(j).doubleValue()){
+//                            value.setValue(states.getValue(j));
+//                            return value;
+//                        }
+//                    }
+//                    else{
+//                        if(proba >= row.get(j-1).doubleValue() && proba < row.get(j).doubleValue()){
+//                            value.setValue(states.getValue(j));
+//                            return value;
+//                        }
+//                    }
                 }
                 break;
             }
