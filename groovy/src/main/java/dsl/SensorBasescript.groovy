@@ -60,6 +60,7 @@ abstract class SensorBasescript extends Script {
 												throw new Exception("markov pas content!")
 											}
 										}
+										println map[0][0].getClass().getName()
 										((SensorBinding) this.getBinding()).getSensorModel().createLaw(name, type, states, map)
 									}
 									else{

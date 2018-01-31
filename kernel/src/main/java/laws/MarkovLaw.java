@@ -5,6 +5,9 @@ import structural.States;
 import values.Temps;
 import values.Value;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
 /**
  * Created by Matthieu on 29/01/2018.
  */
@@ -14,10 +17,11 @@ public class MarkovLaw implements DataLaw {
     Matrix matrix;
     States states;
 
-    public MarkovLaw(String name, States states){
+    public MarkovLaw(String name, States states, Matrix matrix){
         this.name = name;
         this.states = states;
         this.value = new Temps();
+        this.matrix = matrix;
     }
 
     @Override
@@ -50,19 +54,29 @@ public class MarkovLaw implements DataLaw {
 
         double proba = Math.random();
 
-        //CALCUL 1
-
+        //CALCUL 1   [0.4, 0.5, 0.1]  -> 0.0 - 0.4    0.4 - 0.9    0.9 - 1
+//        ["soleil","nuage","pluie"]
+//        [[0.1, 0.2, 0.7], [0.3, 0.5, 0.2], [0.4, 0.5, 0.1]]
         if(value.getValue() == ""){
             value.setValue(states.getValue(0));
         }
         int size = states.getValue().size();
         for(int i = 0; i < states.getValue().size(); i++){
             if(value.getValue() == states.getValue(i)){
-                if(proba > 0.1 && proba <= 0.3){
-                    value.setValue(states.getValue((i+1)%size));
-                }
-                else if (proba <= 0.1){
-                    value.setValue(states.getValue((i+2)%size));
+                ArrayList<BigDecimal> row = matrix.getRow(i);
+                for(int j = 0; j < row.size(); j++){
+                    if(j==0){
+                        if(proba < row.get(j).doubleValue()){
+                            value.setValue(states.getValue(j));
+                            return value;
+                        }
+                    }
+                    else{
+                        if(proba >= row.get(j-1).doubleValue() && proba < row.get(j).doubleValue()){
+                            value.setValue(states.getValue(j));
+                            return value;
+                        }
+                    }
                 }
                 break;
             }

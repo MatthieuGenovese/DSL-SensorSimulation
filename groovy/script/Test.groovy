@@ -1,9 +1,7 @@
-law "name" type "markov" states (["soleil","nuage","pluie"]) transi ([["t",0,0],[0,0,0],[0,0,0]])
+law "name" type "markov" states (["soleil","nuage","pluie"]) transi ([[0.1,0.2,0.7],[0.3,0.5,0.2],[0.4,0.5,0.1]])
 law "name2" type "random"
 
 sensor "bubu" law "name" create 10 building 1
-sensor "bobo" law "name2" create 10 building 1
 sensor "bibi" law "name" create 5 building 2
-sensor "baba" law "name2" create 5 building 2
 
-runApp 0
+runApp 10

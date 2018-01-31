@@ -8,10 +8,12 @@ import laws.DataLaw;
 import laws.MarkovLaw;
 import laws.RandomLaw;
 import structural.Building;
+import structural.Matrix;
 import structural.Sensor;
 import structural.States;
 
 import java.io.FileNotFoundException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class SensorModel {
@@ -101,14 +103,15 @@ public class SensorModel {
 		buildings.add(b);
 	}
 
-	public void createLaw(String name, String type, ArrayList<String> states, ArrayList<ArrayList<Double>> map){
+	public void createLaw(String name, String type, ArrayList<String> states, ArrayList<ArrayList<BigDecimal>> map){
 //			if(states.isEmpty()){
 //				states = "beau, nuageux, orageux";
 //			}
-			States state = new States(states);
-			System.out.println(map);
-			MarkovLaw law = new MarkovLaw(name, state);
-			laws.add(law);
+		Matrix matrix = new Matrix(map);
+		States state = new States(states);
+		System.out.println(map);
+		MarkovLaw law = new MarkovLaw(name, state, matrix);
+		laws.add(law);
 	}
 
 	public void createLaw(String name, String type){
