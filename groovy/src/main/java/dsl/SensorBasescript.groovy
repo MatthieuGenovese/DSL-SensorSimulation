@@ -47,30 +47,8 @@ abstract class SensorBasescript extends Script {
 					[states: { states ->
 						if (states instanceof ArrayList) {
 							[transi: { map ->
-<<<<<<< HEAD
-								if (map instanceof ArrayList) {
-									if(map.size() == nbStates) {
-										for(int i = 0; i < map.size(); i++) {
-											if (map[i] instanceof ArrayList) {
-												if (!map[i].size() == map.size()) {
-													throw new Exception("markov content!")
-												}
-											}
-											else{
-												throw new Exception("markov pas content!")
-											}
-										}
-										println map[0][0].getClass().getName()
-										((SensorBinding) this.getBinding()).getSensorModel().createLaw(name, type, states, map)
-									}
-									else{
-										throw  new Exception("Pas assez de transitions markov ne serait pas fier de vous!")
-									}
-								}
-=======
 								ErrorDetection.checkMarkovImplementation(states, map)
 								((SensorBinding) this.getBinding()).getSensorModel().createLaw(name, type, states, map)
->>>>>>> 6311dd3b5f4685bf7c6e2a8b626b5b5c3616e0f7
 							}]
 						}
 					}]
