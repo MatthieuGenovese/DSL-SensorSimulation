@@ -8,9 +8,9 @@ import laws.DataLaw;
 import laws.MarkovLaw;
 import laws.RandomLaw;
 import structural.Building;
-import structural.Matrix;
+import laws.Matrix;
 import structural.Sensor;
-import structural.States;
+import laws.States;
 
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
@@ -71,7 +71,7 @@ public class SensorModel {
 		this.buildings.add(sensors.get(0).getBuilding());
 	}
 
-	public void createSensor(String name, Building b, DataLaw law) {
+	public void createSensor(String name, Building b, DataLaw law, Integer f, Integer e) {
 		Sensor sensor = new Sensor();
 //		switch (type){
 //			case "temps":
@@ -89,6 +89,8 @@ public class SensorModel {
 		sensor.setId(this.sensors.size());
 		sensor.setSensorDataLaw(law);
 		sensor.setBuilding(b);
+		sensor.setEchantillonage(e);
+		sensor.getSensorDataLaw().setFrequency(f);
 		this.sensors.add(sensor);
 		for(Building building : buildings){
 			if (b.equals(building)){
@@ -123,6 +125,7 @@ public class SensorModel {
 		App app = new App();
 		app.setBuildings(buildings);
 		app.setStep(step);
+		app.setup();
 		app.run();
 	}
 }

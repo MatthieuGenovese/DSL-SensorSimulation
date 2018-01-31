@@ -3,10 +3,12 @@ package structural;
 import laws.DataLaw;
 import values.Value;
 
+import java.util.Observable;
+
 /**
  * Created by Matthieu on 29/01/2018.
  */
-public class Sensor {
+public class Sensor extends Observable{
     public Building getBuilding() {
         return building;
     }
@@ -40,14 +42,27 @@ public class Sensor {
     }
 
     private int id;
+
+    public Sensor(){
+        this.echantillonage = 1;
+        this.time = 0;
+    }
+
+    public int echantillonage;
     private Building building;
     private DataLaw sensorDataLaw;
     private long time;
     private Value value;
 
     public void tick(){
-        this.time = System.currentTimeMillis();
-        this.value = sensorDataLaw.generateNextValue();
+        if(time % sensorDataLaw.getFrequency() == 0){
+            this.value = sensorDataLaw.generateNextValue();
+        }
+        if(time % echantillonage == 0){
+            setChanged();
+            notifyObservers();
+        }
+        this.time++;
     }
 
     public int getId() {
@@ -58,8 +73,16 @@ public class Sensor {
         this.id = id;
     }
 
+    public int getEchantillonage() {
+        return echantillonage;
+    }
+
+    public void setEchantillonage(int echantillonage) {
+        this.echantillonage = echantillonage;
+    }
+
     public String toString(){
-        return "Sensor : " + id + " Law : " + sensorDataLaw.getClass().getName() + " Value : " + getValue();
+        return "Sensor : " + id + " Law : " + sensorDataLaw.getClass().getName() + " Value : " + getValue() + " Time : " +  getTime();
     }
 
 }

@@ -1,7 +1,5 @@
 package laws;
 
-import structural.Matrix;
-import structural.States;
 import values.Temps;
 import values.Value;
 
@@ -13,9 +11,10 @@ import java.util.ArrayList;
  */
 public class MarkovLaw implements DataLaw {
     private String name;
-    Value<String> value = new Temps();
-    Matrix matrix;
-    States states;
+    private Value<String> value = new Temps();
+    private Matrix matrix;
+    private States states;
+    private int frequency;
 
     public MarkovLaw(String name, States states, Matrix matrix){
         this.name = name;
@@ -48,6 +47,15 @@ public class MarkovLaw implements DataLaw {
     public void setMatrix(Matrix matrix) {
         this.matrix = matrix;
     }
+
+    public int getFrequency(){
+        return frequency;
+    }
+
+    public void setFrequency(int frequency){
+        this.frequency = frequency;
+    }
+
 
     public Value<String> generateNextValue(){
 

@@ -8,10 +8,19 @@ import values.Nombre;
 public class RandomLaw implements DataLaw {
     private String name;
     private Nombre value;
+    private int frequency;
 
     public RandomLaw(String name){
         this.name = name;
         this.value = new Nombre();
+    }
+
+    public int getFrequency(){
+        return frequency;
+    }
+
+    public void setFrequency(int frequency){
+        this.frequency = frequency;
     }
 
     @Override

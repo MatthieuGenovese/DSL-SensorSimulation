@@ -42,19 +42,11 @@ class SensorDSL {
             tokensWhitelist= []
             //types allowed to be used  (including primitive types)
             constantTypesClassesWhiteList= [
-<<<<<<< HEAD
                     int, Integer, Number, Integer.TYPE, String, Object, Array, Double, BigDecimal
 			]
             //classes who are allowed to be receivers of method calls
             receiversClassesWhiteList= [
 				int, Number, Integer, String, Object, Integer[], Double, BigDecimal
-=======
-                    int, Integer, Number, Integer.TYPE, String, Object, Double.TYPE, Double
-			]
-            //classes who are allowed to be receivers of method calls
-            receiversClassesWhiteList= [
-				int, Number, Integer, String, Object, Double
->>>>>>> 6311dd3b5f4685bf7c6e2a8b626b5b5c3616e0f7
 			]
         }
 
