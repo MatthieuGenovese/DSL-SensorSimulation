@@ -8,7 +8,7 @@ public class Temperature implements Value<String> {
     private String value;
 
     public Temperature(){
-        this.value = "°C";
+        this.value = "C°";
     }
 
     public String getValue(){

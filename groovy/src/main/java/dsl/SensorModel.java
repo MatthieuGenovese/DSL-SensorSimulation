@@ -102,7 +102,6 @@ public class SensorModel {
 	}
 
 	public void createLaw(String name, String type, String states){
-		if(type == "markov"){
 //			if(states.isEmpty()){
 //				states = "beau, nuageux, orageux";
 //			}
@@ -110,11 +109,11 @@ public class SensorModel {
 			States state = new States(statesArray);
 			MarkovLaw law = new MarkovLaw(name, state);
 			laws.add(law);
-		}
-		else if(type == "random"){
-			RandomLaw law = new RandomLaw(name);
-			laws.add(law);
-		}
+	}
+
+	public void createLaw(String name, String type){
+		RandomLaw law = new RandomLaw(name);
+		laws.add(law);
 	}
 
 	public void runApp(Integer step){

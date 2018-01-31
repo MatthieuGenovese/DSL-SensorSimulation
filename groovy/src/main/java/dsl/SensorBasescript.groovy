@@ -40,13 +40,38 @@ abstract class SensorBasescript extends Script {
 	}
 	// export name
 
-	def law(String type) {
-		[type: { DataLaw ->
-			[states: { states ->
-				((SensorBinding) this.getBinding()).getSensorModel().createLaw(type, DataLaw, states)
-			}]
+	def law(String name) {
+		[type: { type ->
+			if(type instanceof String){
+				if( type.equalsIgnoreCase("markov")){
+					[states: { states ->
+						((SensorBinding) this.getBinding()).getSensorModel().createLaw(name,  type, states)
+					}]
+				}
+				else{
+					((SensorBinding) this.getBinding()).getSensorModel().createLaw(name, type)
+				}
+			}
 		}]
 	}
+
+	/*def state(String name) {
+		List<Action> actions = new ArrayList<Action>()
+		((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().createState(name, actions)
+		// recursive closure to allow multiple and statements
+		def closure
+		closure = { actuator ->
+			[becomes: { signal ->
+				Action action = new Action()
+				action.setActuator(actuator instanceof String ? (Actuator)((GroovuinoMLBinding)this.getBinding()).getVariable(actuator) : (Actuator)actuator)
+				action.setValue(signal instanceof String ? (SIGNAL)((GroovuinoMLBinding)this.getBinding()).getVariable(signal) : (SIGNAL)signal)
+				actions.add(action)
+				[and: closure]
+			}]
+		}
+
+		[means: closure]
+	}*/
 
 	def runApp(Integer steps){
 		if(steps instanceof Integer) {
