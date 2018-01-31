@@ -46,8 +46,8 @@ abstract class SensorBasescript extends Script {
 				if( type.equalsIgnoreCase("markov")){
 					[states: { states ->
 						if (states instanceof ArrayList) {
-							int nbStates = states.size();
 							[transi: { map ->
+<<<<<<< HEAD
 								if (map instanceof ArrayList) {
 									if(map.size() == nbStates) {
 										for(int i = 0; i < map.size(); i++) {
@@ -67,6 +67,10 @@ abstract class SensorBasescript extends Script {
 										throw  new Exception("Pas assez de transitions markov ne serait pas fier de vous!")
 									}
 								}
+=======
+								ErrorDetection.checkMarkovImplementation(states, map)
+								((SensorBinding) this.getBinding()).getSensorModel().createLaw(name, type, states, map)
+>>>>>>> 6311dd3b5f4685bf7c6e2a8b626b5b5c3616e0f7
 							}]
 						}
 					}]
