@@ -55,8 +55,8 @@ public class MarkovLaw implements DataLaw {
         if(value.getValue() == ""){
             value.setValue(states.getValue(0));
         }
-        int size = states.getValue().length;
-        for(int i = 0; i < states.getValue().length; i++){
+        int size = states.getValue().size();
+        for(int i = 0; i < states.getValue().size(); i++){
             if(value.getValue() == states.getValue(i)){
                 if(proba > 0.1 && proba <= 0.3){
                     value.setValue(states.getValue((i+1)%size));

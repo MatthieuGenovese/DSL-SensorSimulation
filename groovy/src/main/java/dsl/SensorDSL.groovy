@@ -3,6 +3,8 @@ package dsl
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.SecureASTCustomizer
 
+import java.lang.reflect.Array
+
 /**
  * Created by Matthieu on 29/01/2018.
  */
@@ -40,11 +42,11 @@ class SensorDSL {
             tokensWhitelist= []
             //types allowed to be used  (including primitive types)
             constantTypesClassesWhiteList= [
-				int, Integer, Number, Integer.TYPE, String, Object
+                    int, Integer, Number, Integer.TYPE, String, Object, Array
 			]
             //classes who are allowed to be receivers of method calls
             receiversClassesWhiteList= [
-				int, Number, Integer, String, Object
+				int, Number, Integer, String, Object, Integer[]
 			]
         }
 

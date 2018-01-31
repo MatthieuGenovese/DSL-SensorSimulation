@@ -101,12 +101,12 @@ public class SensorModel {
 		buildings.add(b);
 	}
 
-	public void createLaw(String name, String type, String states){
+	public void createLaw(String name, String type, ArrayList<String> states, ArrayList<ArrayList<Double>> map){
 //			if(states.isEmpty()){
 //				states = "beau, nuageux, orageux";
 //			}
-			String[] statesArray = states.split(",");
-			States state = new States(statesArray);
+			States state = new States(states);
+			System.out.println(map);
 			MarkovLaw law = new MarkovLaw(name, state);
 			laws.add(law);
 	}
