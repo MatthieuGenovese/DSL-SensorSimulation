@@ -1,4 +1,4 @@
-law "name" type "markov" states (["soleil","nuage","pluie"]) transi ([["t",0,0],[0,0,0],[0,0,0]])
+law "name" type "markov" states (["soleil","nuage","pluie"]) transi ([[0,0,0],[0,0,0]])
 law "name2" type "random"
 
 sensor "bubu" law "name" create 10 building 1

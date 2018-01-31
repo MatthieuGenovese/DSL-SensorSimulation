@@ -32,7 +32,7 @@ class SensorDSL {
             methodDefinitionAllowed = true
             //empty white list => forbid imports
             importsWhitelist = [
-            'java.lang.*'
+            'java.lang.*',
 			]
             staticImportsWhitelist = []
             staticStarImportsWhitelist= []
@@ -42,11 +42,11 @@ class SensorDSL {
             tokensWhitelist= []
             //types allowed to be used  (including primitive types)
             constantTypesClassesWhiteList= [
-                    int, Integer, Number, Integer.TYPE, String, Object, Array
+                    int, Integer, Number, Integer.TYPE, String, Object, Double.TYPE, Double
 			]
             //classes who are allowed to be receivers of method calls
             receiversClassesWhiteList= [
-				int, Number, Integer, String, Object, Integer[]
+				int, Number, Integer, String, Object, Double
 			]
         }
 
