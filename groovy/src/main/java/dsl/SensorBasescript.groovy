@@ -8,10 +8,9 @@ abstract class SensorBasescript extends Script {
 
 	def mode(String s){
 		[path: { path ->
-			if(path instanceof String){
-				((SensorBinding)this.getBinding()).setVariable("mode", s)
-				((SensorBinding) this.getBinding()).getSensorModel().generateSensors(s, path)
-			}
+            ErrorDetection.filePathExpected(path)
+            ((SensorBinding)this.getBinding()).setVariable("mode", s)
+            ((SensorBinding) this.getBinding()).getSensorModel().generateSensors(s, path)
 		}]
 	}
 	def sensor(String name) {
@@ -20,18 +19,15 @@ abstract class SensorBasescript extends Script {
 				[building: { b ->
 					[frequency: { f ->
 						[echantillonage: { e ->
-							if (b instanceof Integer) {
-								if (!((SensorBinding) this.getBinding()).getSensorModel().containsBuilding(b)) {
-									((SensorBinding) this.getBinding()).getSensorModel().createBuilding(b)
-								}
-								Building building = ((SensorBinding) this.getBinding()).getSensorModel().getBuilding(b)
-								DataLaw law = ((SensorBinding) this.getBinding()).getSensorModel().getLaw(datalaw)
-								if (nombre instanceof Integer) {
-									for (int i = 0; i < nombre; i++) {
-										((SensorBinding) this.getBinding()).getSensorModel().createSensor(name, building, law, f, e)
-									}
-								}
-							}
+                            ErrorDetection.integerExpected([b,nombre])
+                            if (!((SensorBinding) this.getBinding()).getSensorModel().containsBuilding(b)) {
+                                ((SensorBinding) this.getBinding()).getSensorModel().createBuilding(b)
+                            }
+                            Building building = ((SensorBinding) this.getBinding()).getSensorModel().getBuilding(b)
+                            DataLaw law = ((SensorBinding) this.getBinding()).getSensorModel().getLaw(datalaw)
+                            for (int i = 0; i < nombre; i++) {
+                                ((SensorBinding) this.getBinding()).getSensorModel().createSensor(name, building, law, f, e)
+                            }
 						}]
 					}]
 				}]
@@ -42,23 +38,19 @@ abstract class SensorBasescript extends Script {
 
 	def law(String name) {
 		[type: { type ->
-			if(type instanceof String){
-				if( type.equalsIgnoreCase("markov")){
-					[states: { states ->
-						if (states instanceof ArrayList) {
-							[transi: { map ->
-								if (map instanceof ArrayList) {
-									ErrorDetection.checkMarkovImplementation(states, map)
-									((SensorBinding) this.getBinding()).getSensorModel().createLaw(name, type, states, map)
-								}
-							}]
-						}
-					}]
-				}
-				else{
-					((SensorBinding) this.getBinding()).getSensorModel().createLaw(name, type)
-				}
-			}
+            if( type.equalsIgnoreCase("markov")){
+                [states: { states ->
+                    [transi: { map ->
+                        ErrorDetection.integerExpected(type)
+                        ErrorDetection.arraylistExpected([states,map])
+                        ErrorDetection.checkMarkovImplementation(states, map)
+                        ((SensorBinding) this.getBinding()).getSensorModel().createLaw(name, type, states, map)
+                    }]
+                }]
+            }
+            else{
+                ((SensorBinding) this.getBinding()).getSensorModel().createLaw(name, type)
+            }
 		}]
 	}
 
