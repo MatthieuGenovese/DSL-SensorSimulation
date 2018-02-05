@@ -38,7 +38,6 @@ abstract class SensorBasescript extends Script {
 	}
     def function(Closure cl){
         def function = new Func()
-		function.name(nom)
 		def code = cl.rehydrate(function, this,this)
 		code.resolveStrategy = Closure.DELEGATE_ONLY
         code()
@@ -60,15 +59,10 @@ abstract class SensorBasescript extends Script {
 		}
 	}
 
-	def then(String s){
-		def acts = s
-	}
-
 	class Predicates{
 		def predicates = new ArrayList<String>()
 		def acts = new ArrayList<String>()
 		void when(String pred){
-				then();
 				predicates.add(pred)
 				//acts.add(act)
 		}
