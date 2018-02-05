@@ -1,6 +1,8 @@
 package dsl
 
 import laws.DataLaw
+import laws.Function
+import laws.MarkovLaw
 import structural.Building
 
 abstract class SensorBasescript extends Script {
@@ -19,7 +21,7 @@ abstract class SensorBasescript extends Script {
 				[building: { b ->
 					[frequency: { f ->
 						[echantillonage: { e ->
-                            ErrorDetection.integerExpected([b,nombre])
+                            ErrorDetection.integerExpected([b,nombre,f,e])
                             if (!((SensorBinding) this.getBinding()).getSensorModel().containsBuilding(b)) {
                                 ((SensorBinding) this.getBinding()).getSensorModel().createBuilding(b)
                             }
@@ -34,14 +36,61 @@ abstract class SensorBasescript extends Script {
 			}]
 		}]
 	}
-	// export name
+    def function(Closure cl){
+        def function = new Func()
+		function.name(nom)
+		def code = cl.rehydrate(function, this,this)
+		code.resolveStrategy = Closure.DELEGATE_ONLY
+        code()
+		System.out.print(function)
+    }
+
+	class Func {
+		def nom = ""
+		def predicate = new Predicates()
+		void name(String n) { nom = n}
+		void body(Closure body) {
+			def code = body.rehydrate(predicate, this, this)
+			code.resolveStrategy = Closure.DELEGATE_ONLY
+			code()
+		}
+
+		String toString(){
+			return "nom " + nom + predicate.toString()
+		}
+	}
+
+	def then(String s){
+		def acts = s
+	}
+
+	class Predicates{
+		def predicates = new ArrayList<String>()
+		def acts = new ArrayList<String>()
+		void when(String pred){
+				then();
+				predicates.add(pred)
+				//acts.add(act)
+		}
+		void then(String act){
+			acts.add(act)
+		}
+		String toString(){
+			String pred = "";
+			String act = "";
+			for(int i = 0; i < predicates.size(); i++){
+				pred+= predicates.get(i) + ", ";
+				act+= acts.get(i) + ", ";
+			}
+			return " predicats : [ " + pred + " ]" + " action : [ " + act + " ]\n"
+		}
+	}
 
 	def law(String name) {
 		[type: { type ->
             if( type.equalsIgnoreCase("markov")){
                 [states: { states ->
                     [transi: { map ->
-                        ErrorDetection.integerExpected(type)
                         ErrorDetection.arraylistExpected([states,map])
                         ErrorDetection.checkMarkovImplementation(states, map)
                         ((SensorBinding) this.getBinding()).getSensorModel().createLaw(name, type, states, map)
@@ -73,9 +122,7 @@ abstract class SensorBasescript extends Script {
 	}*/
 
 	def runApp(Integer steps){
-		if(steps instanceof Integer) {
-			((SensorBinding) this.getBinding()).getSensorModel().runApp(steps)
-		}
+        ((SensorBinding) this.getBinding()).getSensorModel().runApp(steps)
 	}
 
 	/*def export(String name) {

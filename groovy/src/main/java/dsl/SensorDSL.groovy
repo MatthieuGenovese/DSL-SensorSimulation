@@ -2,6 +2,7 @@ package dsl
 
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.SecureASTCustomizer
+import static org.codehaus.groovy.syntax.Types.*
 
 import java.lang.reflect.Array
 
@@ -27,7 +28,7 @@ class SensorDSL {
         def secure = new SecureASTCustomizer()
         secure.with {
             //disallow closure creation
-            closuresAllowed = false
+            closuresAllowed = true
             //disallow method definitions
             methodDefinitionAllowed = true
             //empty white list => forbid imports
@@ -39,7 +40,12 @@ class SensorDSL {
             //language tokens disallowed
 //			tokensBlacklist= []
             //language tokens allowed
-            tokensWhitelist= []
+            tokensWhitelist= [COMPARE_EQUAL,
+                              COMPARE_NOT_EQUAL,
+                              COMPARE_LESS_THAN,
+                              COMPARE_LESS_THAN_EQUAL,
+                              COMPARE_GREATER_THAN,
+                              COMPARE_GREATER_THAN_EQUAL]
             //types allowed to be used  (including primitive types)
             constantTypesClassesWhiteList= [
                     int, Integer, Number, Integer.TYPE, String, Object, Array, Double, BigDecimal

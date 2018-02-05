@@ -3,7 +3,18 @@ law "name" type "markov" states (["soleil","nuage","pluie"]) transi ([[0.1,0.2,0
 
 law "name2" type "random"
 
+function {
+    name "yolofunc"
+    body {
+        when "x < 10"
+        then "oui"
+        when "x > 10"
+        then "tototototo"
+    }
+}
+
+
 sensor "bubu" law "name" create 10 building 1 frequency 3 echantillonage 10
 sensor "bibi" law "name" create 5 building 2 frequency 5 echantillonage 6
 
-runApp 30
+runApp 0
