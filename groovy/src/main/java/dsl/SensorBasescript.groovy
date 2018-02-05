@@ -47,11 +47,29 @@ abstract class SensorBasescript extends Script {
 	class Func {
 		def nom = ""
 		def predicate = new Predicates()
+		def eq = ""
+		def formule = false
+		def intervale = false
 		void name(String n) { nom = n}
+		void equation(String equation){
+			if(!intervale) {
+				eq = equation
+				formule = true
+			}
+			else{
+				ErrorDetection.throwFunctionErr("Impossible de definir une fonction continue quand des intervales sont deja definis !")
+			}
+		}
 		void body(Closure body) {
-			def code = body.rehydrate(predicate, this, this)
-			code.resolveStrategy = Closure.DELEGATE_ONLY
-			code()
+			if(!formule) {
+				intervale = true
+				def code = body.rehydrate(predicate, this, this)
+				code.resolveStrategy = Closure.DELEGATE_ONLY
+				code()
+			}
+			else{
+				ErrorDetection.throwFunctionErr("Impossible de definir des intervales quand une fonction continue est deja definie !")
+			}
 		}
 
 		String toString(){
@@ -63,8 +81,7 @@ abstract class SensorBasescript extends Script {
 		def predicates = new ArrayList<String>()
 		def acts = new ArrayList<String>()
 		void when(String pred){
-				predicates.add(pred)
-				//acts.add(act)
+			predicates.add(pred)
 		}
 		void then(String act){
 			acts.add(act)
@@ -96,6 +113,23 @@ abstract class SensorBasescript extends Script {
             }
 		}]
 	}
+
+
+	//todo : MARCHE PAS ENCORE BLBLBLBLBL
+	/*def law(String name) {
+		//def markov = {
+		[markov: { states ->
+				[transi: { map ->
+					ErrorDetection.arraylistExpected([states, map])
+					ErrorDetection.checkMarkovImplementation(states, map)
+					((SensorBinding) this.getBinding()).getSensorModel().createLaw(name, "markov", states, map)
+				}]
+		}]
+		[random: { interval ->
+				ErrorDetection.arraylistExpected(interval, 2)
+				((SensorBinding) this.getBinding()).getSensorModel().createLaw(name, interval)
+		}]
+	}*/
 
 	/*def state(String name) {
 		List<Action> actions = new ArrayList<Action>()

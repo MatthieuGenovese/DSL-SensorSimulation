@@ -1,7 +1,7 @@
 
 law "name" type "markov" states (["soleil","nuage","pluie"]) transi ([[0.1,0.2,0.7],[0.3,0.5,0.2],[0.4,0.5,0.1]])
 
-law "name2" type "random"
+
 
 function {
     name "yolofunc"
@@ -11,6 +11,11 @@ function {
         when "x > 10"
         then "tototototo"
     }
+}
+
+function {
+    name "yolofunc2"
+    equation "f(x) = x*x"
 }
 
 

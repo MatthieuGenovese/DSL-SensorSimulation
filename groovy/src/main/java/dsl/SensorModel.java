@@ -116,8 +116,10 @@ public class SensorModel {
 		laws.add(law);
 	}
 
-	public void createLaw(String name, String type){
+	public void createLaw(String name, ArrayList<Integer> integers){
 		RandomLaw law = new RandomLaw(name);
+		law.setMin(integers.get(0));
+		law.setMax(integers.get(1));
 		laws.add(law);
 	}
 

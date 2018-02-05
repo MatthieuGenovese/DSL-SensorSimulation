@@ -45,15 +45,17 @@ class SensorDSL {
                               COMPARE_LESS_THAN,
                               COMPARE_LESS_THAN_EQUAL,
                               COMPARE_GREATER_THAN,
-                              COMPARE_GREATER_THAN_EQUAL]
+                              COMPARE_GREATER_THAN_EQUAL,
+                              LEFT_SQUARE_BRACKET,
+                              RIGHT_SQUARE_BRACKET].asImmutable()
             //types allowed to be used  (including primitive types)
             constantTypesClassesWhiteList= [
                     int, Integer, Number, Integer.TYPE, String, Object, Array, Double, BigDecimal
-			]
+			].asImmutable()
             //classes who are allowed to be receivers of method calls
             receiversClassesWhiteList= [
 				int, Number, Integer, String, Object, Integer[], Double, BigDecimal
-			]
+			].asImmutable()
         }
 
         def configuration = new CompilerConfiguration()

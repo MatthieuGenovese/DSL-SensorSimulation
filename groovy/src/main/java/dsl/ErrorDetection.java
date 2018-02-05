@@ -35,10 +35,28 @@ public class ErrorDetection {
         }
     }
 
+    public static void throwFunctionErr(String err) throws Exception{
+        throw  new Exception(err);
+    }
+
     public static void arraylistExpected(ArrayList<Object> olist) throws Exception{
         for(Object o : olist) {
             if (!(o instanceof ArrayList)) {
                 throw new Exception("Le paramètre " + o.toString() + "n'est pas une liste !");
+            }
+        }
+    }
+
+    public static void arraylistExpected(ArrayList<Object> olist, int length) throws Exception{
+        for(Object o : olist) {
+            if (!(o instanceof ArrayList)) {
+                throw new Exception("Le paramètre " + o.toString() + "n'est pas une liste !");
+            }
+            if(((ArrayList) o).size() < length){
+                throw new Exception("Le paramètre " + o.toString() + " n'a pas assez d'element : requiert " + length + " éléments !" );
+            }
+            if(((ArrayList) o).size() > length){
+                throw new Exception("Le paramètre " + o.toString() + " a  trop d'element : requiert " + length + " éléments !" );
             }
         }
     }
