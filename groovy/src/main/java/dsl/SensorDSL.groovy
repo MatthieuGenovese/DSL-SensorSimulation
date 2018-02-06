@@ -66,8 +66,8 @@ class SensorDSL {
 
     void eval(File scriptFile) {
         Script script = shell.parse(scriptFile)
-
         binding.setScript(script)
+        binding.setFileName(scriptFile.name)
         script.setBinding(binding)
 
         script.run()
