@@ -55,6 +55,11 @@ public class ErrorDetection {
         }
     }
 
+    public void throwIncorrectWord(Exception e){
+        erreurs += e.getMessage()+ " ";
+        findAndAddLine(e);
+    }
+
     public void integerExpected(ArrayList<Object> olist){
         for(Object o : olist) {
             if (!(o instanceof Integer)) {

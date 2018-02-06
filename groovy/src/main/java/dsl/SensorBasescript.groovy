@@ -184,7 +184,13 @@ abstract class SensorBasescript extends Script {
 		if(count == 0) {
 			count++
 			this.erreurHandler = new ErrorDetection(((SensorBinding) this.getBinding()).getFileName())
-			scriptBody()
+			try {
+				scriptBody()
+			}
+			catch (Exception e){
+				this.erreurHandler.throwIncorrectWord(e)
+				System.out.println(this.erreurHandler.getErreurs())
+			}
 		} else {
 			println "Run method is disabled"
 		}
