@@ -8,11 +8,31 @@ import java.util.Map;
 public class SensorBinding extends Binding {
 	// can be useful to return the script in case of syntax trick
 	private Script script;
-	
+	private String fileName;
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
 	private SensorModel model;
+
+	public boolean isErreurs() {
+		return erreurs;
+	}
+
+	public void setErreurs(boolean erreurs) {
+		this.erreurs = erreurs;
+	}
+
+	private boolean erreurs;
 	
 	public SensorBinding() {
 		super();
+		erreurs = false;
 	}
 	
 	@SuppressWarnings("rawtypes")
