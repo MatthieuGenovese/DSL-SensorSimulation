@@ -1,6 +1,8 @@
 package structural;
 
 import dataextraction.CSVExtractor;
+import dataextraction.Extractor;
+import dataextraction.JSONExtractor;
 import laws.ExtractionLaw;
 
 /**
@@ -8,16 +10,21 @@ import laws.ExtractionLaw;
  */
 public class ExtractionSensor extends Sensor {
     private CSVExtractor csvExtractor;
+    private JSONExtractor jsonExtractor;
+    private Extractor extractor;
 
 
     public ExtractionSensor(CSVExtractor csvExtractor){
-        this.csvExtractor = csvExtractor;
+        this.extractor = csvExtractor;
+    }
+    public ExtractionSensor(JSONExtractor jsonExtractor){
+        this.extractor = jsonExtractor;
     }
 
     @Override
     public void tick(){
         ExtractionLaw law = (ExtractionLaw) getSensorDataLaw();
-        law.setCurrentLine(csvExtractor.extractNextValue(this,law.getCurrentLine()));
+            law.setCurrentLine(extractor.extractNextValue(this,law.getCurrentLine()));
         setSensorDataLaw(law);
     }
 }

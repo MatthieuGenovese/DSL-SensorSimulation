@@ -62,8 +62,8 @@ public class SensorModel {
 				list = extractorCsv.extractSensors();
 				break;
 			case "json":
-				JSONExtractor extractorJson = new JSONExtractor();
-				list = extractorJson.extractSensors(path);
+				JSONExtractor extractorJson = new JSONExtractor(path);
+				list = extractorJson.extractSensors();
 		}
 		this.sensors.addAll(list);
 		this.buildings.add(sensors.get(0).getBuilding());

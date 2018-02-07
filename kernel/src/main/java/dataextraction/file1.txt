@@ -1,0 +1,31 @@
+{
+    "sensors": [
+        {
+          "name": 0000 ,
+            "values":[
+                {"time":0 ,"value":1},
+                {"time":1 ,"value":11},
+                {"time":2 ,"value":111}
+                {"time":3 ,"value":1111}
+            ]
+        },
+        {
+             "name": 0001,
+             "values":[
+                 {"time":0 ,"value":2},
+                 {"time":1 ,"value":22},
+                 {"time":2 ,"value":222}
+                 {"time":3 ,"value":2222}
+             ]
+        },
+        {
+              "name": 0002,
+              "values":[
+                  { "time":0 ,"value":3},
+                  {"time":1 ,"value":33},
+                  {"time":2 ,"value":333}
+                  {"time":3 ,"value":3333}
+              ]
+         }
+    ]
+}

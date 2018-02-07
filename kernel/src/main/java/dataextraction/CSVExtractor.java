@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  * Created by Matthieu on 30/01/2018.
  */
-public class CSVExtractor {
+public class CSVExtractor implements Extractor{
     String csvFile;
     BufferedReader br;
     String line;
@@ -30,7 +30,8 @@ public class CSVExtractor {
 
 
     public int extractNextValue(Sensor s , int ligne){
-        int newLine = 999;
+        System.out.println(ligne);
+        int newLine = Integer.MAX_VALUE;
         int indexLine = 0;
         try {
             Building b = new Building(1);
@@ -46,6 +47,7 @@ public class CSVExtractor {
                         break;
                     }
                 }
+
                 indexLine++;
             }
         } catch (FileNotFoundException e) {
@@ -75,7 +77,7 @@ public class CSVExtractor {
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
                 if(!b.containsSensor(data[0])){
-                    System.out.println("s:" + data[0] + " t:" + data[1] + " v:"+ data[2]);
+                    //System.out.println("s:" + data[0] + " t:" + data[1] + " v:"+ data[2]);
                     Sensor newSensor = new ExtractionSensor(this);
                     newSensor.setBuilding(b);
                     newSensor.setId( Integer.valueOf(data[0]));
