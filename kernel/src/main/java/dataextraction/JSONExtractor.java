@@ -24,13 +24,16 @@ import java.util.ArrayList;
  */
 public class JSONExtractor implements Extractor {
     String pathJsonFile;
+    int timeMin;
+    int timeMax;
 
-    public JSONExtractor(String pathJsonFile) {
+    public JSONExtractor(String pathJsonFile,int min,int max) {
         this.pathJsonFile = pathJsonFile;
+        timeMin = min;
+        timeMax = max;
     }
 
     public ArrayList<Sensor> extractSensors(){
-        System.out.println("ouiiiii");
         ArrayList<Sensor> sensorsList = new ArrayList<>();
         JSONParser parser = new JSONParser();
         try {
@@ -50,19 +53,32 @@ public class JSONExtractor implements Extractor {
                 JSONArray valuesSensor = (JSONArray) jsonSensor.get("values");
 
                 newSensor.setId((int) nameSensor);
-
                 ExtractionLaw extractionLaw = new ExtractionLaw("extract");
-                extractionLaw.setCurrentLine(0);
-                newSensor.setSensorDataLaw(extractionLaw);
-                    JSONObject objValue = (JSONObject) valuesSensor.get(0);
-                    long value = (long) objValue.get("value");
-                    long time = (long) objValue.get("time");
-                    //System.out.println("sensor id: "+nameSensor+ " sensor time: "+time+" sensor value: "+value);
-                    newSensor.setTime(time);
-                    newSensor.setValue(new ExtractionValue(  String.valueOf(value) ));
 
-                sensorsList.add(newSensor);
-                b.addSensor(newSensor);
+                int cpt = 0;
+
+
+
+                Iterator<JSONObject> iteratorVal = valuesSensor.iterator();
+                while (iteratorVal.hasNext()) {
+                    JSONObject values =  iteratorVal.next();
+                    long timeSensor =  (long) values.get("time");
+                    System.out.println(timeSensor);
+                    if(timeSensor >= timeMin){
+                        extractionLaw.setCurrentLine(cpt);
+                        newSensor.setSensorDataLaw(extractionLaw);
+                        JSONObject objValue = (JSONObject) valuesSensor.get(cpt);
+                        long value = (long) objValue.get("value");
+                        long time = (long) objValue.get("time");
+                        //System.out.println("sensor id: "+nameSensor+ " sensor time: "+time+" sensor value: "+value);
+                        newSensor.setTime(time);
+                        newSensor.setValue(new ExtractionValue(  String.valueOf(value) ));
+                        sensorsList.add(newSensor);
+                        b.addSensor(newSensor);
+                        break;
+                    }
+                    cpt++;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -91,15 +107,16 @@ public class JSONExtractor implements Extractor {
                 if(nameSensor == s.getId()) {
 
                     JSONArray valuesSensor = (JSONArray) jsonSensor.get("values");
-                    System.out.println(newligne);
 
                     if(newligne < valuesSensor.size()) {
                         JSONObject objValue = (JSONObject) valuesSensor.get(newligne);
                         long value = (long) objValue.get("value");
                         long time = (long) objValue.get("time");
-                        s.setValue(new ExtractionValue(String.valueOf(value)));
-                        s.setTime(time);
-                        //System.out.println("sensor id: "+nameSensor+ " sensor time: "+time+" sensor value: "+value+ " ligne : "+ligne);
+                        if(time <= timeMax){
+                            s.setValue(new ExtractionValue(String.valueOf(value)));
+                            s.setTime(time);
+                        }
+
                     }
                 }
 

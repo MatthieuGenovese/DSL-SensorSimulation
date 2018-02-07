@@ -12,15 +12,21 @@ abstract class SensorBasescript extends Script {
 
 	def mode(String s){
 		[path: { path ->
-			this.erreurHandler.filePathExpected(path)
+			[min: { min ->
+				[max: { max ->
+			//this.erreurHandler.filePathExpected(path)
 			try {
 				((SensorBinding) this.getBinding()).setVariable("mode", s)
-				((SensorBinding) this.getBinding()).getSensorModel().generateSensors(s, path)
+				((SensorBinding) this.getBinding()).getSensorModel().createExtractor(min,max,s,path);
+				((SensorBinding) this.getBinding()).getSensorModel().generateSensors();
 			}
 			catch(Exception e){
 				this.erreurHandler.findAndAddLine(e)
+				e.printStackTrace()
 				((SensorBinding) this.getBinding()).setErreurs(true)
 			}
+				}]
+			}]
 		}]
 	}
 	def sensor(String name) {
@@ -137,6 +143,7 @@ abstract class SensorBasescript extends Script {
 			catch (Exception e){
 				this.erreurHandler.throwIncorrectWord(e)
 				System.out.println(this.erreurHandler.getErreurs())
+				e.printStackTrace();
 			}
 		} else {
 			println "Run method is disabled"

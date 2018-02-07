@@ -20,17 +20,20 @@ public class CSVExtractor implements Extractor{
     BufferedReader br;
     String line;
     String cvsSplitBy;
+    int timeMin;
+    int timeMax;
 
 
-    public CSVExtractor(String csvFile) throws FileNotFoundException {
+    public CSVExtractor(String csvFile,int min,int max) throws FileNotFoundException {
         this.csvFile = csvFile;
         line = "";
         cvsSplitBy = ",";
+        timeMin = min;
+        timeMax = max;
     }
 
 
     public int extractNextValue(Sensor s , int ligne){
-        System.out.println(ligne);
         int newLine = Integer.MAX_VALUE;
         int indexLine = 0;
         try {
@@ -40,7 +43,7 @@ public class CSVExtractor implements Extractor{
                 String[] data = line.split(cvsSplitBy);
 
                 if (indexLine > ligne) {
-                    if( String.valueOf(s.getId()).equalsIgnoreCase(data[0])){
+                    if( String.valueOf(s.getId()).equalsIgnoreCase(data[0]) && Integer.valueOf(data[1])<= timeMax ){
                         s.setValue(new ExtractionValue(data[2]));
                         s.setTime(Long.valueOf(data[1]));
                         newLine = indexLine;
@@ -76,18 +79,18 @@ public class CSVExtractor implements Extractor{
             br = new BufferedReader(new FileReader(csvFile));
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
-                if(!b.containsSensor(data[0])){
-                    //System.out.println("s:" + data[0] + " t:" + data[1] + " v:"+ data[2]);
-                    Sensor newSensor = new ExtractionSensor(this);
-                    newSensor.setBuilding(b);
-                    newSensor.setId( Integer.valueOf(data[0]));
-                    ExtractionLaw extractionLaw = new ExtractionLaw("extract");
-                    extractionLaw.setCurrentLine(cpt);
-                    newSensor.setSensorDataLaw(extractionLaw);
-                    newSensor.setTime(Long.valueOf(data[1]));
-                    newSensor.setValue(new ExtractionValue(data[2]));
-                    sensorsList.add(newSensor);
-                    b.addSensor(newSensor);
+                if(!b.containsSensor(data[0]) && Integer.valueOf(data[1]) >= timeMin){
+                        //System.out.println("s:" + data[0] + " t:" + data[1] + " v:"+ data[2]);
+                        Sensor newSensor = new ExtractionSensor(this);
+                        newSensor.setBuilding(b);
+                        newSensor.setId( Integer.valueOf(data[0]));
+                        ExtractionLaw extractionLaw = new ExtractionLaw("extract");
+                        extractionLaw.setCurrentLine(cpt);
+                        newSensor.setSensorDataLaw(extractionLaw);
+                        newSensor.setTime(Long.valueOf(data[1]));
+                        newSensor.setValue(new ExtractionValue(data[2]));
+                        sensorsList.add(newSensor);
+                        b.addSensor(newSensor);
                 }
                 cpt++;
             }

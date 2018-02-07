@@ -1,6 +1,7 @@
 package dsl;
 
 import dataextraction.CSVExtractor;
+import dataextraction.Extractor;
 import dataextraction.JSONExtractor;
 import groovy.lang.Binding;
 import launcher.App;
@@ -20,6 +21,7 @@ public class SensorModel {
 	private ArrayList<Building> buildings;
 	private ArrayList<Sensor> sensors;
 	private ArrayList<DataLaw> laws;
+	private Extractor extractor;
 	
 	private Binding binding;
 	
@@ -56,19 +58,22 @@ public class SensorModel {
 		return null;
 	}
 
-	public void generateSensors(String mode, String path) throws FileNotFoundException {
+	public void generateSensors() throws FileNotFoundException {
 		ArrayList<Sensor> list = new ArrayList<>();
-		switch(mode){
-			case "csv":
-				CSVExtractor extractorCsv = new CSVExtractor(path);
-				list = extractorCsv.extractSensors();
-				break;
-			case "json":
-				JSONExtractor extractorJson = new JSONExtractor(path);
-				list = extractorJson.extractSensors();
-		}
+		list = extractor.extractSensors();
 		this.sensors.addAll(list);
 		this.buildings.add(sensors.get(0).getBuilding());
+	}
+
+	public void createExtractor(int min, int max,String mode,String path) throws FileNotFoundException{
+		switch(mode){
+			case "csv":
+				extractor = new CSVExtractor(path,min,max);
+				break;
+			case "json":
+				extractor = new JSONExtractor(path,min,max);
+				break;
+		}
 	}
 
 	public void createSensor(String name, Building b, DataLaw law, Integer f, Integer e) {
