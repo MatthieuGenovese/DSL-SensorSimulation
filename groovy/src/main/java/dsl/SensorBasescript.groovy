@@ -1,7 +1,7 @@
 package dsl
 
 import laws.DataLaw
-//import laws.Function
+import laws.Function
 import laws.MarkovLaw
 import structural.Building
 
@@ -51,65 +51,12 @@ abstract class SensorBasescript extends Script {
 		}]
 	}
     def function(Closure cl){
-        def function = new Func()
+        def function = new Function()
 		def code = cl.rehydrate(function, this,this)
 		code.resolveStrategy = Closure.DELEGATE_ONLY
         code()
 		System.out.print(function)
     }
-
-	class Func {
-		def nom = ""
-		def predicate = new Predicates()
-		def eq = ""
-		def formule = false
-		def intervale = false
-		void name(String n) { nom = n}
-		void equation(String equation){
-			if(!intervale) {
-				eq = equation
-				formule = true
-			}
-			else{
-				//erreurHandler.throwFunctionErr("Impossible de definir une fonction continue quand des intervales sont deja definis !")
-			}
-		}
-		void body(Closure body) {
-			if(!formule) {
-				intervale = true
-				def code = body.rehydrate(predicate, this, this)
-				code.resolveStrategy = Closure.DELEGATE_ONLY
-				code()
-			}
-			else{
-				//erreurHandler.throwFunctionErr("Impossible de definir des intervales quand une fonction continue est deja definie !")
-			}
-		}
-
-		String toString(){
-			return "nom " + nom + predicate.toString()
-		}
-	}
-
-	class Predicates{
-		def predicates = new ArrayList<String>()
-		def acts = new ArrayList<String>()
-		void when(String pred){
-			predicates.add(pred)
-		}
-		void then(String act){
-			acts.add(act)
-		}
-		String toString(){
-			String pred = "";
-			String act = "";
-			for(int i = 0; i < predicates.size(); i++){
-				pred+= predicates.get(i) + ", ";
-				act+= acts.get(i) + ", ";
-			}
-			return " predicats : [ " + pred + " ]" + " action : [ " + act + " ]\n"
-		}
-	}
 
 	def law(String name) {
 		[type: { type ->

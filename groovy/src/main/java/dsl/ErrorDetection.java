@@ -46,7 +46,6 @@ public class ErrorDetection {
         else{
             erreurs += "Un des 2 paramètres de markov n'est pas une liste !";
         }
-
     }
 
     public void integerExpected(Object o){
