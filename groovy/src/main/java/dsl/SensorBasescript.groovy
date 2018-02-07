@@ -1,7 +1,7 @@
 package dsl
 
 import laws.DataLaw
-import laws.Function
+//import laws.Function
 import laws.MarkovLaw
 import structural.Building
 
