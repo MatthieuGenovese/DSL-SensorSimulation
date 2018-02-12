@@ -10,5 +10,5 @@ public interface DataLaw {
     public DataLaw getLaw();
     public int getFrequency();
     public void setFrequency(int frequency);
-    public Value generateNextValue();
+    public Value generateNextValue(long time);
 }

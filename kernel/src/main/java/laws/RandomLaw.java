@@ -50,7 +50,7 @@ public class RandomLaw implements DataLaw {
         this.max = max;
     }
 
-    public Nombre generateNextValue(){
+    public Nombre generateNextValue(long time){
         value.setValue(min + (int)(Math.random() * ((max - 1) + 1)));
         return value;
     }

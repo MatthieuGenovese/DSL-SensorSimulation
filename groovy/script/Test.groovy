@@ -1,23 +1,14 @@
 
-law "name" type "markov" states (["soleil","nuage","pluie"]) transi ([[0.1,0.2,0.7],[0.3,0.5,0.2],[0.4,0.5,0.1]])
+law "name" type "markov" states (["soleil","nuage","pluie"]) transi ([[0.1,0.2,0.7],[0.3,0.5,0.2],[0.4,0.5,0.1]]) frequency 3
 
-
-
-function {
-    name "yolofunc"
-    interval ([0.0,">=",10.0])
-    interval ([10.0,"=",32.0])
-    interval ([15.0,"=",52.2])
+function("carre") {
+    x ->
+            if (x > 10 && x < 30) return "fdfdfdd"
+            if (x < 10) return "toto"
+            if (x < 300 && x > 30) return "tata"
 }
 
-function {
-    name "yolofunc2"
-    equation "f(x) = x*x"
-}
 
-sensor "bubu" law "csv" building 1
-
-sensor "bubu" law "name" create 10 building 1 frequency 3 echantillonage 10
-sensor "bibi" law "name" create 5 building 2 frequency 5 echantillonage 6
-
+sensor "toto" law "name" create 1 building 1 echantillonage 10
+sensor "baba" law "carre" create 3 building 2 echantillonage 1
 runApp 15

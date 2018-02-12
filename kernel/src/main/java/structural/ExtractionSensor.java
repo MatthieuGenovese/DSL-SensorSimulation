@@ -24,7 +24,6 @@ public class ExtractionSensor extends Sensor {
     @Override
     public void tick(){
         ExtractionLaw law = (ExtractionLaw) getSensorDataLaw();
-            law.setCurrentLine(extractor.extractNextValue(this,law.getCurrentLine()));
-        setSensorDataLaw(law);
+        ((ExtractionLaw) getSensorDataLaw()).setCurrentLine(extractor.extractNextValue(this,law.getCurrentLine()));
     }
 }

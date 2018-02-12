@@ -60,6 +60,9 @@ public class SensorBinding extends Binding {
 			System.out.println("Seb, c'est bien");
 			return script;
 		}
+		if("si".equals(name)){
+
+		}
 		return super.getVariable(name);
 	}
 	

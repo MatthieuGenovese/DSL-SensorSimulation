@@ -33,7 +33,7 @@ class SensorDSL {
             methodDefinitionAllowed = true
             //empty white list => forbid imports
             importsWhitelist = [
-            'java.lang.*',
+            'java.lang.*','java.util.List'
 			]
             staticImportsWhitelist = []
             staticStarImportsWhitelist= []
@@ -47,7 +47,10 @@ class SensorDSL {
                               COMPARE_GREATER_THAN,
                               COMPARE_GREATER_THAN_EQUAL,
                               LEFT_SQUARE_BRACKET,
-                              RIGHT_SQUARE_BRACKET].asImmutable()
+                              RIGHT_SQUARE_BRACKET,
+                              MULTIPLY,
+                                LOGICAL_AND,
+                              LOGICAL_OPERATOR].asImmutable()
             //types allowed to be used  (including primitive types)
             constantTypesClassesWhiteList= [
                     int, Integer, Number, Integer.TYPE, String, Object, Array, Double, BigDecimal

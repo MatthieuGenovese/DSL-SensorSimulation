@@ -40,9 +40,7 @@ public class ExtractionLaw implements  DataLaw {
     public DataLaw getLaw(){
         return this;
     }
-    public Value generateNextValue(){
-
-
+    public Value generateNextValue(long time){
         return value;
     }
 }

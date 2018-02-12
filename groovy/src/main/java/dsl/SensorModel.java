@@ -4,14 +4,11 @@ import dataextraction.CSVExtractor;
 import dataextraction.Extractor;
 import dataextraction.JSONExtractor;
 import groovy.lang.Binding;
+import groovy.lang.Closure;
 import launcher.App;
-import laws.DataLaw;
-import laws.MarkovLaw;
-import laws.RandomLaw;
+import laws.*;
 import structural.Building;
-import laws.Matrix;
 import structural.Sensor;
-import laws.States;
 
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
@@ -76,26 +73,12 @@ public class SensorModel {
 		}
 	}
 
-	public void createSensor(String name, Building b, DataLaw law, Integer f, Integer e) {
+	public void createSensor(String name, Building b, DataLaw law, Integer e) {
 		Sensor sensor = new Sensor();
-//		switch (type){
-//			case "temps":
-//				dataLaw = new MarkovLaw();
-//				sensor = new TempsSensor();
-//				break;
-//			case "nombre":
-//				dataLaw = new RandomLaw();
-//				sensor = new NombreSensor();
-//				break;
-//			default:
-//				sensor = new NombreSensor();
-//				dataLaw = new RandomLaw();
-//		}
 		sensor.setId(this.sensors.size());
 		sensor.setSensorDataLaw(law);
 		sensor.setBuilding(b);
 		sensor.setEchantillonage(e);
-		sensor.getSensorDataLaw().setFrequency(f);
 		this.sensors.add(sensor);
 		for(Building building : buildings){
 			if (b.equals(building)){
@@ -110,18 +93,21 @@ public class SensorModel {
 		buildings.add(b);
 	}
 
-	public void createLaw(String name, String type, ArrayList<String> states, ArrayList<ArrayList<BigDecimal>> map){
-//			if(states.isEmpty()){
-//				states = "beau, nuageux, orageux";
-//			}
+	public void createFunction(String name, Closure cl){
+		FunctionLaw function = new FunctionLaw(name,cl);
+		laws.add(function);
+	}
+
+	public void createMarkovLaw(String name, String type, ArrayList<String> states, ArrayList<ArrayList<BigDecimal>> map, int freq){
 		Matrix matrix = new Matrix(map);
 		States state = new States(states);
 		System.out.println(map);
 		MarkovLaw law = new MarkovLaw(name, state, matrix);
+		law.setFrequency(freq);
 		laws.add(law);
 	}
 
-	public void createLaw(String name, ArrayList<Integer> integers){
+	public void createMarkovLaw(String name, ArrayList<Integer> integers){
 		RandomLaw law = new RandomLaw(name);
 		law.setMin(integers.get(0));
 		law.setMax(integers.get(1));

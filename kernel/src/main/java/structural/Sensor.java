@@ -55,13 +55,14 @@ public class Sensor extends Observable{
     private Value value;
 
     public void tick(){
-        if(time % sensorDataLaw.getFrequency() == 0){
-            this.value = sensorDataLaw.generateNextValue();
-        }
+        //if(time % sensorDataLaw.getFrequency() == 0){
+        this.value = sensorDataLaw.generateNextValue(time);
+        //}
         if(time % echantillonage == 0){
             setChanged();
             notifyObservers();
         }
+
         this.time++;
     }
 

@@ -1,5 +1,7 @@
 package dsl;
 
+import groovy.lang.Closure;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 public class ErrorDetection {
 
     private String erreurs = "-----ERREURS DE COMPILATION-----\n\n";
+
     private String fileName;
 
     public ErrorDetection(String fileName){
@@ -21,6 +24,7 @@ public class ErrorDetection {
         for(int i = 0; i < e.getStackTrace().length; i++){
             if(e.getStackTrace()[i].getClassName().equalsIgnoreCase(fileName)){
                 erreurs += "(ligne " + e.getStackTrace()[i].getLineNumber() + ")\n";
+                e.printStackTrace();
                 break;
             }
         }
