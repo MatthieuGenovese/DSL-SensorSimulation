@@ -54,7 +54,7 @@ abstract class SensorBasescript extends Script {
 	}]
 	}
 
-    def function(String name, Closure cl){
+    def functionLaw(String name, Closure cl){
 		try {
 			((SensorBinding) this.getBinding()).getSensorModel().createFunction(name, cl)
 		}
@@ -64,26 +64,38 @@ abstract class SensorBasescript extends Script {
 		}
     }
 
-	def law(String name) {
-		[type: { type ->
-			if (type.equalsIgnoreCase("markov")) {
-				[states: { states ->
-					[transi: { map ->
-						[frequency: { f ->
-							this.erreurHandler.checkMarkovImplementation(states, map)
-							try {
-								((SensorBinding) this.getBinding()).getSensorModel().createMarkovLaw(name, type, states, map, f)
-							}
-							catch (Exception e) {
-								this.erreurHandler.findAndAddLine(e)
-								((SensorBinding) this.getBinding()).setErreurs(true)
-							}
-						}]
+	def markovLaw(String name) {
+			[states: { states ->
+				[transi: { map ->
+					[frequency: { f ->
+						this.erreurHandler.checkMarkovImplementation(states, map)
+						this.erreurHandler.integerExpected(f)
+						try {
+							((SensorBinding) this.getBinding()).getSensorModel().createMarkovLaw(name, states, map, f)
+						}
+						catch (Exception e) {
+							this.erreurHandler.findAndAddLine(e)
+							((SensorBinding) this.getBinding()).setErreurs(true)
+						}
 					}]
 				}]
-			} else {
-				((SensorBinding) this.getBinding()).getSensorModel().createMarkovLaw(name, type)
-			}
+			}]
+	}
+
+	def randomLaw(String name){
+		[interval: { interval ->
+			[frequency: { f ->
+				System.out.print(interval)
+				this.erreurHandler.arraylistExpected(interval, 2)
+				this.erreurHandler.integerExpected(f)
+				try {
+					((SensorBinding) this.getBinding()).getSensorModel().createRandomLaw(name, interval, f)
+				}
+				catch (Exception e) {
+					this.erreurHandler.findAndAddLine(e)
+					((SensorBinding) this.getBinding()).setErreurs(true)
+				}
+			}]
 		}]
 	}
 

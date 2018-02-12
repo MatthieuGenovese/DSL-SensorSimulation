@@ -91,12 +91,12 @@ public class ErrorDetection {
     public void arraylistExpected(ArrayList<Object> olist, int length){
         for(Object o : olist) {
             if (!(o instanceof ArrayList)) {
-                erreurs += "Le paramètre " + o.toString() + "n'est pas une liste ! ";
+                erreurs += "Le paramètre " + o.toString() + " n'est pas une liste ! ";
             }
-            if(((ArrayList) o).size() < length){
+            if(((ArrayList) olist).size() < length){
                 erreurs += "Le paramètre " + o.toString() + " n'a pas assez d'element : requiert " + length + " éléments ! ";
             }
-            if(((ArrayList) o).size() > length){
+            if(((ArrayList) olist).size() > length){
                 erreurs += "Le paramètre " + o.toString() + " a  trop d'element : requiert " + length + " éléments ! ";
             }
         }

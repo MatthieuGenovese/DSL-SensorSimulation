@@ -98,7 +98,7 @@ public class SensorModel {
 		laws.add(function);
 	}
 
-	public void createMarkovLaw(String name, String type, ArrayList<String> states, ArrayList<ArrayList<BigDecimal>> map, int freq){
+	public void createMarkovLaw(String name, ArrayList<String> states, ArrayList<ArrayList<BigDecimal>> map, int freq){
 		Matrix matrix = new Matrix(map);
 		States state = new States(states);
 		System.out.println(map);
@@ -107,10 +107,11 @@ public class SensorModel {
 		laws.add(law);
 	}
 
-	public void createMarkovLaw(String name, ArrayList<Integer> integers){
+	public void createRandomLaw(String name, ArrayList<Integer> integers, int frequency){
 		RandomLaw law = new RandomLaw(name);
 		law.setMin(integers.get(0));
 		law.setMax(integers.get(1));
+		law.setFrequency(frequency);
 		laws.add(law);
 	}
 
