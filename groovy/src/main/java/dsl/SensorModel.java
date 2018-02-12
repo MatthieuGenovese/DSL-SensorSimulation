@@ -37,6 +37,15 @@ public class SensorModel {
 		return false;
 	}
 
+	public Sensor getSensor(String name){
+		for(Sensor s : sensors){
+			if(s.getName() == name){
+				return s;
+			}
+		}
+		return null;
+	}
+
 	public DataLaw getLaw(String name){
 		for(DataLaw dataLaw : laws){
 			if(dataLaw.getName() == name){
@@ -74,7 +83,7 @@ public class SensorModel {
 	}
 
 	public void createSensor(String name, Building b, DataLaw law, Integer e) {
-		Sensor sensor = new Sensor();
+		Sensor sensor = new Sensor(name);
 		sensor.setId(this.sensors.size());
 		sensor.setSensorDataLaw(law);
 		sensor.setBuilding(b);
@@ -86,6 +95,13 @@ public class SensorModel {
 				break;
 			}
 		}
+	}
+
+	public void createCompositeLaw(String name, Sensor sensor){
+		System.out.println("SENSORRRR");
+		System.out.println(sensor);
+		CompositeLaw law = new CompositeLaw(name, sensor);
+		laws.add(law);
 	}
 
 	public void createBuilding(Integer id){

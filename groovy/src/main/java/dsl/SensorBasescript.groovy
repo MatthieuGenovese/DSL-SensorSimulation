@@ -1,8 +1,8 @@
 package dsl
 
 import laws.DataLaw
-import laws.FunctionLaw
 import structural.Building
+import structural.Sensor
 
 abstract class SensorBasescript extends Script {
 
@@ -54,6 +54,7 @@ abstract class SensorBasescript extends Script {
 	}]
 	}
 
+
     def functionLaw(String name, Closure cl){
 		try {
 			((SensorBinding) this.getBinding()).getSensorModel().createFunction(name, cl)
@@ -98,7 +99,12 @@ abstract class SensorBasescript extends Script {
 			}]
 		}]
 	}
-
+	def compositeLaw(String name){
+		[sensor : { sensor ->
+			Sensor s = ((SensorBinding) this.getBinding()).getSensorModel().getSensor(sensor)
+			((SensorBinding) this.getBinding()).getSensorModel().createCompositeLaw(name, s)
+		}]
+	}
 
 
 

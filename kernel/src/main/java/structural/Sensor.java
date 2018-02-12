@@ -41,11 +41,26 @@ public class Sensor extends Observable{
         this.value = value;
     }
 
+    private String name;
     private int id;
 
     public Sensor(){
         this.echantillonage = 1;
         this.time = 0;
+    }
+
+    public Sensor(String name){
+        this.name = name;
+        this.echantillonage = 1;
+        this.time = 0;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int echantillonage;
