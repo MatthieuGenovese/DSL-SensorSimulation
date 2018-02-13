@@ -1,7 +1,6 @@
 package structural;
 
 import laws.DataLaw;
-import values.Value;
 
 import java.util.Observable;
 
@@ -33,11 +32,11 @@ public class Sensor extends Observable{
         this.time = time;
     }
 
-    public Value getValue() {
+    public Object getValue() {
         return value;
     }
 
-    public void setValue(Value value) {
+    public void setValue(Object value) {
         this.value = value;
     }
 
@@ -67,7 +66,7 @@ public class Sensor extends Observable{
     private Building building;
     private DataLaw sensorDataLaw;
     private long time;
-    private Value value;
+    private Object value;
 
     public void tick(){
         //if(time % sensorDataLaw.getFrequency() == 0){

@@ -1,20 +1,18 @@
 package laws;
 
-import values.Nombre;
 
 /**
  * Created by Matthieu on 29/01/2018.
  */
 public class RandomLaw implements DataLaw {
     private String name;
-    private Nombre value;
+    private Object value;
     private int frequency;
     private int min;
     private int max;
 
     public RandomLaw(String name){
         this.name = name;
-        this.value = new Nombre();
     }
 
     public int getFrequency(){
@@ -50,8 +48,8 @@ public class RandomLaw implements DataLaw {
         this.max = max;
     }
 
-    public Nombre generateNextValue(long time){
-        value.setValue(min + (int)(Math.random() * ((max - 1) + 1)));
+    public Object generateNextValue(long time){
+        value = min + (int)(Math.random() * ((max - 1) + 1));
         return value;
     }
 }

@@ -13,6 +13,8 @@ functionLaw("carre") {
 sensor "toto" law "name" create 1 building 1 echantillonage 1
 sensor "baba" law "carre" create 1 building 1 echantillonage 1
 sensor "titi" law "name2" create 1 building 1 echantillonage 1
+
+
 compositeLaw "name3" sensor "toto"
 
 sensor "tototo" law "name3" create 1 building 1 echantillonage 1

@@ -34,8 +34,7 @@ public class SensorBinding extends Binding {
 		super();
 		erreurs = false;
 	}
-	
-	@SuppressWarnings("rawtypes")
+
 	public SensorBinding(Map variables) {
 		super(variables);
 	}

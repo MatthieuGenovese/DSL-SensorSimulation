@@ -1,8 +1,6 @@
 package laws;
 
 import structural.Sensor;
-import values.Nombre;
-import values.Value;
 
 /**
  * Created by Michael on 12/02/2018.
@@ -10,9 +8,11 @@ import values.Value;
 public class CompositeLaw implements DataLaw {
     private String name;
     private Sensor sensor;
+    private Object value;
 
     public CompositeLaw(String name, Sensor sensor) {
         this.name = name;
+        this.value = null;
         this.sensor = sensor;
     }
 
@@ -49,15 +49,14 @@ public class CompositeLaw implements DataLaw {
     }
 
     @Override
-    public Value generateNextValue(long time) {
-        Value sum = new Nombre();
-        for(int i = 0; i<sensor.getBuilding().getSensorList().size()-1; i++){ //TODO retirer le size()-1
-            Value val = sensor.getBuilding().getSensorList().get(i).getValue(); //TODO Toutes les values du building sont identiques !
-            if(val.getValue() instanceof Number){
-                sum.setValue((Integer)sum.getValue() + (Integer)val.getValue());
+    public Object generateNextValue(long time) {
+        for(Sensor s : sensor.getBuilding().getSensorList()){
+            Object val = s.getValue();
+            if(val instanceof Number){
+                value = (Integer)val;
             }
         }
-        return sum;
+        return value;
     }
 
 

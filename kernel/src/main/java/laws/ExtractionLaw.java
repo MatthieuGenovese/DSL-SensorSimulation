@@ -1,12 +1,11 @@
 package laws;
 
-import values.Value;
 
 /**
  * Created by Matthieu on 30/01/2018.
  */
 public class ExtractionLaw implements  DataLaw {
-    private Value value;
+    private Object value;
     private String name;
     private int currentLine;
     private int frequency;
@@ -40,7 +39,7 @@ public class ExtractionLaw implements  DataLaw {
     public DataLaw getLaw(){
         return this;
     }
-    public Value generateNextValue(long time){
+    public Object generateNextValue(long time){
         return value;
     }
 }

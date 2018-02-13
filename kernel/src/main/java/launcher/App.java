@@ -50,8 +50,8 @@ public class App implements Observer {
             for (Building b : buildings) {
                 System.out.println("\tBuilding : " +b.getId());
                 for (Sensor s : b.getSensorList()) {
-                    System.out.println("\t\t" + s);
                     s.tick();
+                    System.out.println("\t\t" + s);
                     //influxDBManager.writeSensor(s);
                 }
             }

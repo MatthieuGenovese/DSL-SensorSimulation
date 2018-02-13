@@ -4,8 +4,6 @@ import laws.ExtractionLaw;
 import structural.Building;
 import structural.ExtractionSensor;
 import structural.Sensor;
-import values.ExtractionValue;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -34,23 +32,22 @@ public class CSVExtractor implements Extractor{
 
 
     public int extractNextValue(Sensor s , int ligne){
-        int newLine = Integer.MAX_VALUE;
+        //int newLine = Integer.MAX_VALUE;
         int indexLine = 0;
         try {
             Building b = new Building(1);
             br = new BufferedReader(new FileReader(csvFile));
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
-
-                if (indexLine > ligne) {
-                    if( String.valueOf(s.getId()).equalsIgnoreCase(data[0]) && Integer.valueOf(data[1])<= timeMax ){
-                        s.setValue(new ExtractionValue(data[2]));
+                if (indexLine > ligne || ligne == 0) {
+                    if(String.valueOf(s.getId()).equalsIgnoreCase(data[0]) && Integer.valueOf(data[1])<= timeMax && Integer.valueOf(data[1]) >= timeMin ){
+                        s.setValue(data[2]);
+                        System.out.println("ligne : " + ((ExtractionLaw) s.getSensorDataLaw()).getCurrentLine());
                         s.setTime(Long.valueOf(data[1]));
-                        newLine = indexLine;
-                        break;
+                        //newLine = indexLine;
+                        return indexLine;
                     }
                 }
-
                 indexLine++;
             }
         } catch (FileNotFoundException e) {
@@ -66,33 +63,31 @@ public class CSVExtractor implements Extractor{
                 }
             }
         }
-        return newLine;
+        return indexLine;
     }
 
 
 
     public ArrayList<Sensor> extractSensors(){
         ArrayList<Sensor> sensorsList = new ArrayList<>();
-        int cpt =0;
         try {
             Building b = new Building(1);
             br = new BufferedReader(new FileReader(csvFile));
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
-                if(!b.containsSensor(data[0]) && Integer.valueOf(data[1]) >= timeMin){
+                if(!b.containsSensor(data[0])){
                         //System.out.println("s:" + data[0] + " t:" + data[1] + " v:"+ data[2]);
                         Sensor newSensor = new ExtractionSensor(this);
                         newSensor.setBuilding(b);
-                        newSensor.setId( Integer.valueOf(data[0]));
+                        newSensor.setId(Integer.valueOf(data[0]));
                         ExtractionLaw extractionLaw = new ExtractionLaw("extract");
-                        extractionLaw.setCurrentLine(cpt);
+                        extractionLaw.setCurrentLine(0);
                         newSensor.setSensorDataLaw(extractionLaw);
-                        newSensor.setTime(Long.valueOf(data[1]));
-                        newSensor.setValue(new ExtractionValue(data[2]));
+                        //newSensor.setTime(Long.valueOf(data[1]));
+                        //newSensor.setValue(new ExtractionValue(data[2]));
                         sensorsList.add(newSensor);
                         b.addSensor(newSensor);
                 }
-                cpt++;
             }
 
         } catch (FileNotFoundException e) {
