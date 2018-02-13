@@ -98,15 +98,16 @@ abstract class SensorBasescript extends Script {
 
 	def compositeLaw(String name){
 		[sensor : { sensor ->
-			this.erreurHandler.sensorExist(((SensorBinding) this.getBinding()).getSensorModel().getSensors(), sensor)
-			Sensor s = ((SensorBinding) this.getBinding()).getSensorModel().getSensor(sensor)
-			if(s == null){
-				((SensorBinding) this.getBinding()).setErreurs(true)
-				return
-			}
-			this.erreurHandler.compositeLawImplementation(s)
-			((SensorBinding) this.getBinding()).getSensorModel().createCompositeLaw(name, s)
-
+			[function: { func ->
+				this.erreurHandler.sensorExist(((SensorBinding) this.getBinding()).getSensorModel().getSensors(), sensor)
+				Sensor s = ((SensorBinding) this.getBinding()).getSensorModel().getSensor(sensor)
+				if (s == null) {
+					((SensorBinding) this.getBinding()).setErreurs(true)
+					return
+				}
+				this.erreurHandler.compositeLawImplementation(s)
+				((SensorBinding) this.getBinding()).getSensorModel().createCompositeLaw(name, s, func)
+			}]
 		}]
 	}
 

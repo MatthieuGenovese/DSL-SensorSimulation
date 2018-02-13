@@ -2,20 +2,19 @@ package laws;
 
 import structural.Sensor;
 
-import java.util.Observable;
-import java.util.Observer;
-
 /**
  * Created by Michael on 12/02/2018.
  */
 public class CompositeLaw implements DataLaw{
     private String name;
     private Sensor sensor;
+    private String function;
     private int nbSensors;
     private Object value;
 
-    public CompositeLaw(String name, Sensor sensor) {
+    public CompositeLaw(String name, Sensor sensor, String function) {
         this.name = name;
+        this.function = function;
         this.value = 0;
         nbSensors = 0;
         this.sensor = sensor;
@@ -31,6 +30,14 @@ public class CompositeLaw implements DataLaw{
 
     public void setSensor(Sensor sensor) {
         this.sensor = sensor;
+    }
+
+    public String getFunction() {
+        return function;
+    }
+
+    public void setFunction(String function) {
+        this.function = function;
     }
 
     @Override
@@ -55,14 +62,23 @@ public class CompositeLaw implements DataLaw{
 
     @Override
     public Object generateNextValue(long time) {
+        this.value = 0;
         int tmp = (Integer) value;
+        int nbElements = 0;
         for(Sensor s : sensor.getBuilding().getSensorList()){
             Object val = s.getValue();
             if(val instanceof Number && s.getName().equalsIgnoreCase(sensor.getName())){
                 tmp += (Integer)val;
+                nbElements++;
             }
         }
-        value = tmp;
+
+        if(this.getFunction() == "average"){
+            value = Double.valueOf(tmp) / Double.valueOf(nbElements);
+        }
+        else{
+            value = tmp;
+        }
         return value;
     }
 

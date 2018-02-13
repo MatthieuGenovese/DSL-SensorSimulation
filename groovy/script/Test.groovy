@@ -15,9 +15,9 @@ functionLaw("carre") {
 //sensor "baba" law "carre" create 1 area 1 echantillonage 1
 sensor "titi" law "name2" create 10 area 1 echantillonage 1
 
-//compositeLaw "name3" sensor "titi"
+compositeLaw "name3" sensor "titi" function "average"
 
 
-//sensor "tototo" law "name3" create 1 area 1 echantillonage 1
+sensor "tototo" law "name3" create 1 area 1 echantillonage 1
 
-runApp 1500000
+runApp 15

@@ -108,8 +108,8 @@ public class SensorModel {
 
 	}
 
-	public void createCompositeLaw(String name, Sensor sensor){
-		CompositeLaw law = new CompositeLaw(name, sensor);
+	public void createCompositeLaw(String name, Sensor sensor, String function){
+		CompositeLaw law = new CompositeLaw(name, sensor, function);
 		laws.add(law);
 	}
 
