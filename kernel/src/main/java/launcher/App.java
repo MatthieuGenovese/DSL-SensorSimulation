@@ -46,9 +46,13 @@ public class App implements Observer {
 
     public void run(){
         for(int i = 0; i < step; i++)  {
+            System.out.println("Step : " + String.valueOf(i+1));
             for (Building b : buildings) {
+                System.out.println("\tBuilding : " +b.getId());
                 for (Sensor s : b.getSensorList()) {
                     s.tick();
+                    System.out.println("\t\t" + s);
+                    //influxDBManager.writeSensor(s);
                 }
             }
         }

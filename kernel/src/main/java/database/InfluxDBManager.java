@@ -19,12 +19,16 @@ public class InfluxDBManager {
         if(!db.databaseExists("DSL-SimulationSensor")){
             db.createDatabase("DSL-SimulationSensor");
         }
-        db.setLogLevel(InfluxDB.LogLevel.BASIC);
+        else{
+            db.deleteDatabase("DSL-SimulationSensor");
+            db.createDatabase("DSL-SimulationSensor");
+        }
+        db.setLogLevel(InfluxDB.LogLevel.NONE);
         db.setDatabase("DSL-SimulationSensor");
     }
 
     public void writeSensor(Sensor s ){
-        Point point = Point.measurement("sensor" + s.getId())
+        Point point = Point.measurement(s.getName() + s.getId())
                 .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                 .addField("type", s.getClass().getName())
                 .addField("value", s.getValue().toString())
