@@ -33,7 +33,7 @@ public class CSVExtractor implements Extractor{
 
     public int extractNextValue(Sensor s , int ligne){
         //int newLine = Integer.MAX_VALUE;
-        int indexLine = 0;
+        int indexLine = 1;
         try {
             Building b = new Building(1);
             br = new BufferedReader(new FileReader(csvFile));

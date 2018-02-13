@@ -18,14 +18,19 @@ public class SensorModel {
 	private ArrayList<Building> buildings;
 	private ArrayList<Sensor> sensors;
 	private ArrayList<DataLaw> laws;
+	private ArrayList<Sensor> sensorsComposite;
 	private Extractor extractor;
-	
 	private Binding binding;
 	
 	public SensorModel(Binding binding) {
+		sensorsComposite = new ArrayList<>();
 		this.buildings = new ArrayList<Building>();
 		this.sensors = new ArrayList<Sensor>();
 		this.laws = new ArrayList<DataLaw>();
+	}
+
+	public ArrayList<Sensor> getSensors() {
+		return sensors;
 	}
 
 	public boolean containsBuilding(Integer id){
@@ -39,7 +44,7 @@ public class SensorModel {
 
 	public Sensor getSensor(String name){
 		for(Sensor s : sensors){
-			if(s.getName() == name){
+			if(s.getName().equalsIgnoreCase(name)){
 				return s;
 			}
 		}
@@ -88,18 +93,22 @@ public class SensorModel {
 		sensor.setSensorDataLaw(law);
 		sensor.setBuilding(b);
 		sensor.setEchantillonage(e);
-		this.sensors.add(sensor);
-		for(Building building : buildings){
-			if (b.equals(building)){
-				b.addSensor(sensor);
-				break;
+		if(sensor.getSensorDataLaw() instanceof CompositeLaw){
+			this.sensorsComposite.add(sensor);
+		}
+		else {
+			this.sensors.add(sensor);
+			for(Building building : buildings){
+				if (b.equals(building)){
+					b.addSensor(sensor);
+					break;
+				}
 			}
 		}
+
 	}
 
 	public void createCompositeLaw(String name, Sensor sensor){
-		System.out.println("SENSORRRR");
-		System.out.println(sensor);
 		CompositeLaw law = new CompositeLaw(name, sensor);
 		laws.add(law);
 	}
@@ -117,7 +126,6 @@ public class SensorModel {
 	public void createMarkovLaw(String name, ArrayList<String> states, ArrayList<ArrayList<BigDecimal>> map, int freq){
 		Matrix matrix = new Matrix(map);
 		States state = new States(states);
-		System.out.println(map);
 		MarkovLaw law = new MarkovLaw(name, state, matrix);
 		law.setFrequency(freq);
 		laws.add(law);
@@ -132,10 +140,18 @@ public class SensorModel {
 	}
 
 	public void runApp(Integer step){
+		sensors.addAll(sensorsComposite);
+		for(Sensor s : sensorsComposite){
+			for(Building b : buildings){
+				if(s.getBuilding().equals(b)){
+					b.addSensor(s);
+				}
+			}
+		}
 		App app = new App();
 		app.setBuildings(buildings);
 		app.setStep(step);
-		app.setup();
+		//app.setup();
 		app.run();
 	}
 }

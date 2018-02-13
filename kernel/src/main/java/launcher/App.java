@@ -36,13 +36,13 @@ public class App implements Observer {
         this.buildings = buildings;
     }
 
-    public void setup(){
+    /*public void setup(){
         for (Building b : buildings) {
             for (Sensor s : b.getSensorList()) {
                 s.addObserver(this);
             }
         }
-    }
+    }*/
 
     public void run(){
         for(int i = 0; i < step; i++)  {
@@ -61,6 +61,7 @@ public class App implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if(o instanceof Sensor){
+            //influxDBManager.writeSensor(s);
             //System.out.println("temps :  " + ((Sensor) o).getTime() + "echantillonage : " + ((Sensor) o).getEchantillonage() + ((Sensor) o).getValue().toString());
         }
     }

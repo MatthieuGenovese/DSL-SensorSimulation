@@ -1,6 +1,10 @@
 package dsl;
 
 import groovy.lang.Closure;
+import laws.DataLaw;
+import laws.FunctionLaw;
+import laws.MarkovLaw;
+import structural.Sensor;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -88,18 +92,34 @@ public class ErrorDetection {
         }
     }
 
-    public void arraylistExpected(ArrayList<Object> olist, int length){
-        for(Object o : olist) {
-            if (!(o instanceof ArrayList)) {
-                erreurs += "Le paramètre " + o.toString() + " n'est pas une liste ! ";
-            }
-            if(((ArrayList) olist).size() < length){
-                erreurs += "Le paramètre " + o.toString() + " n'a pas assez d'element : requiert " + length + " éléments ! ";
-            }
-            if(((ArrayList) olist).size() > length){
-                erreurs += "Le paramètre " + o.toString() + " a  trop d'element : requiert " + length + " éléments ! ";
+    public void compositeLawImplementation(Sensor s) throws Exception {
+        DataLaw law = s.getSensorDataLaw();
+        if(law instanceof MarkovLaw){
+            erreurs += "Les sensors composites sont incompatibles avec les MarkovLaws !\n";
+            throw new Exception();
+        }
+    }
+
+    public void arraylistExpected(Object olist, int length){
+        if (!(olist instanceof ArrayList)) {
+            erreurs += "Le paramètre " + olist.toString() + " n'est pas une liste ! ";
+            return;
+        }
+        if(((ArrayList) olist).size() < length){
+            erreurs += "Le paramètre " + olist.toString() + " n'a pas assez d'element : requiert " + length + " éléments ! ";
+        }
+        if(((ArrayList) olist).size() > length){
+            erreurs += "Le paramètre " + olist.toString() + " a  trop d'element : requiert " + length + " éléments ! ";
+        }
+    }
+
+    public void sensorExist(ArrayList<Sensor> list, String name){
+        for(Sensor s : list){
+            if(s.getName().equalsIgnoreCase(name)){
+                return;
             }
         }
+        erreurs += "Le sensor " + name +" n'existe pas ! ";
     }
 
     public  void filePathExpected(Object path){
