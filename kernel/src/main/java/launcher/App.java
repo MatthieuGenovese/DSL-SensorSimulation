@@ -17,7 +17,7 @@ public class App implements Observer {
     private InfluxDBManager influxDBManager;
 
     public App(){
-        //influxDBManager = new InfluxDBManager();
+        influxDBManager = new InfluxDBManager();
     }
 
     public int getStep() {
@@ -36,23 +36,19 @@ public class App implements Observer {
         this.buildings = buildings;
     }
 
-    /*public void setup(){
+    public void setup(){
         for (Building b : buildings) {
             for (Sensor s : b.getSensorList()) {
                 s.addObserver(this);
             }
         }
-    }*/
+    }
 
     public void run(){
         for(int i = 0; i < step; i++)  {
-            System.out.println("Step : " + String.valueOf(i+1));
             for (Building b : buildings) {
-                System.out.println("\tBuilding : " +b.getId());
                 for (Sensor s : b.getSensorList()) {
                     s.tick();
-                    System.out.println("\t\t" + s);
-                    //influxDBManager.writeSensor(s);
                 }
             }
         }
@@ -61,8 +57,7 @@ public class App implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if(o instanceof Sensor){
-            //influxDBManager.writeSensor(s);
-            //System.out.println("temps :  " + ((Sensor) o).getTime() + "echantillonage : " + ((Sensor) o).getEchantillonage() + ((Sensor) o).getValue().toString());
+            influxDBManager.writeSensor((Sensor) o);
         }
     }
 }

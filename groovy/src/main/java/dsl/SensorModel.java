@@ -151,7 +151,7 @@ public class SensorModel {
 		App app = new App();
 		app.setBuildings(buildings);
 		app.setStep(step);
-		//app.setup();
+		app.setup();
 		app.run();
 	}
 }

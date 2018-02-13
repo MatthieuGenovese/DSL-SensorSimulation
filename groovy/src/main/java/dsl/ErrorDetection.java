@@ -28,7 +28,6 @@ public class ErrorDetection {
         for(int i = 0; i < e.getStackTrace().length; i++){
             if(e.getStackTrace()[i].getClassName().equalsIgnoreCase(fileName)){
                 erreurs += "(ligne " + e.getStackTrace()[i].getLineNumber() + ")\n";
-                e.printStackTrace();
                 break;
             }
         }
@@ -113,13 +112,14 @@ public class ErrorDetection {
         }
     }
 
-    public void sensorExist(ArrayList<Sensor> list, String name){
+    public void sensorExist(ArrayList<Sensor> list, String name) throws Exception{
         for(Sensor s : list){
             if(s.getName().equalsIgnoreCase(name)){
                 return;
             }
         }
         erreurs += "Le sensor " + name +" n'existe pas ! ";
+        throw new Exception();
     }
 
     public  void filePathExpected(Object path){

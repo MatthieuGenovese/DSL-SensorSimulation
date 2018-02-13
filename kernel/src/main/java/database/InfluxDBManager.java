@@ -23,9 +23,9 @@ public class InfluxDBManager {
         db.setDatabase("DSL-SimulationSensor");
     }
 
-    public void writeSensor(Sensor s){
+    public void writeSensor(Sensor s ){
         Point point = Point.measurement("sensor" + s.getId())
-                .time(s.getTime(), TimeUnit.MILLISECONDS)
+                .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                 .addField("type", s.getClass().getName())
                 .addField("value", s.getValue().toString())
                 .build();

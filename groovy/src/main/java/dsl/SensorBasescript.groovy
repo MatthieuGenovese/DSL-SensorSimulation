@@ -20,7 +20,6 @@ abstract class SensorBasescript extends Script {
 			}
 			catch(Exception e){
 				this.erreurHandler.findAndAddLine(e)
-				e.printStackTrace()
 				((SensorBinding) this.getBinding()).setErreurs(true)
 			}
 				}]
@@ -30,7 +29,7 @@ abstract class SensorBasescript extends Script {
 	def sensor(String name) {
 		[law: { datalaw ->
 			[create: { nombre ->
-				[building: { b ->
+				[area: { b ->
 					[echantillonage: { e ->
 						this.erreurHandler.integerExpected([b,nombre,e])
 						try {
