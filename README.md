@@ -1,3 +1,5 @@
+Installer grafana et influxDB ou bien utiliser le docker-compose  
+
 3 commandes à setup :  
   Commande maven :  
     Working directory : DSLSensorSimultion/groovy  
