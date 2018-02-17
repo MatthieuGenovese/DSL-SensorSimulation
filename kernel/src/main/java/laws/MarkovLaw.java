@@ -1,9 +1,7 @@
 package laws;
 
 import java.math.BigDecimal;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Matthieu on 29/01/2018.
@@ -76,7 +74,6 @@ public class MarkovLaw implements DataLaw {
 
 
     public Object generateNextValue(long time){
-        if(this.time + frequency <= time) {
             this.time = time;
             double proba = Math.random();
             if (value == null) {
@@ -97,7 +94,6 @@ public class MarkovLaw implements DataLaw {
                     break;
                 }
             }
-        }
         return value;
     }
 }

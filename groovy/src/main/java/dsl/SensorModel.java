@@ -14,7 +14,6 @@ import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class SensorModel {
 	private ArrayList<Building> buildings;
@@ -107,11 +106,6 @@ public class SensorModel {
 			}
 		}
 
-	}
-
-	public void createCompositeLaw(String name, Sensor sensor, String function){
-		CompositeLaw law = new CompositeLaw(name, sensor, function);
-		laws.add(law);
 	}
 
 	public void createBuilding(Integer id){

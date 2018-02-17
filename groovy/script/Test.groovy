@@ -7,12 +7,10 @@ randomLaw "randomLaw" interval ([1,10]) frequency 1 by min
             if (x < 300 && x > 30) return 72
             if(x > 300) return 99
 }*/
-sensor "markov" law "markovLaw" create 1 area 1 echantillonage 1 by s
+sensor "markov" law "markovLaw" create 10 area 1 echantillonage 1 by s
 //sensor "fonctionel" law "fonctionLaw" create 10 area 1 echantillonage 10
 sensor "random2" law "randomLaw" create 10 area 1 echantillonage 1 by s
 
-compositeLaw "compositeSensor" sensor "random2" function "average"
-
-sensor "composite" law "compositeSensor" create 1 area 1 echantillonage 1 by min
-
+compositeSensor "compositeSensor" sensor "random2" function "average" create 1 area 1 echantillonage 1 by s
+compositeSensor "compositeSensor2" sensor "markov" function "sum" create 1 area 1 echantillonage 1 by s
 runApp "17/02/2018 12:10:00 PM" to "17/02/2018 12:12:00 PM"

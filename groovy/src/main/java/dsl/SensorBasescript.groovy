@@ -1,5 +1,6 @@
 package dsl
 
+import laws.CompositeLaw
 import laws.DataLaw
 import structural.Building
 import structural.Sensor
@@ -104,17 +105,35 @@ abstract class SensorBasescript extends Script {
 		}]
 	}
 
-	def compositeLaw(String name){
+	def compositeSensor(String name){
 		[sensor : { sensor ->
 			[function: { func ->
-				this.erreurHandler.sensorExist(((SensorBinding) this.getBinding()).getSensorModel().getSensors(), sensor)
-				Sensor s = ((SensorBinding) this.getBinding()).getSensorModel().getSensor(sensor)
-				if (s == null) {
-					((SensorBinding) this.getBinding()).setErreurs(true)
-					return
-				}
-				this.erreurHandler.compositeLawImplementation(s)
-				((SensorBinding) this.getBinding()).getSensorModel().createCompositeLaw(name, s, func)
+				[create: { nombre ->
+					[area: { b ->
+						[echantillonage: { e ->
+							[by: { unit ->
+								this.erreurHandler.integerExpected([b, nombre, e])
+								try {
+									if (!((SensorBinding) this.getBinding()).getSensorModel().containsBuilding(b)) {
+										((SensorBinding) this.getBinding()).getSensorModel().createBuilding(b)
+									}
+									Building building = ((SensorBinding) this.getBinding()).getSensorModel().getBuilding(b)
+									Sensor s = ((SensorBinding) this.getBinding()).getSensorModel().getSensor(sensor)
+									CompositeLaw compositeLaw = new CompositeLaw(name, s, func);
+//									DataLaw law = ((SensorBinding) this.getBinding()).getSensorModel().getLaw(datalaw)
+									for (int i = 0; i < nombre; i++) {
+										((SensorBinding) this.getBinding()).getSensorModel().createSensor(name, building, compositeLaw, e, unit)
+									}
+								}
+								catch (Exception ex) {
+									ex.printStackTrace()
+									this.erreurHandler.findAndAddLine(ex)
+									((SensorBinding) this.getBinding()).setErreurs(true)
+								}
+							}]
+						}]
+					}]
+				}]
 			}]
 		}]
 	}
