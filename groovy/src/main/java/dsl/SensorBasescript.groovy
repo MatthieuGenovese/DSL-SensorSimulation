@@ -4,6 +4,8 @@ import laws.DataLaw
 import structural.Building
 import structural.Sensor
 
+import java.text.SimpleDateFormat
+
 abstract class SensorBasescript extends Script {
 
 	public ErrorDetection erreurHandler
@@ -31,21 +33,23 @@ abstract class SensorBasescript extends Script {
 			[create: { nombre ->
 				[area: { b ->
 					[echantillonage: { e ->
-						this.erreurHandler.integerExpected([b,nombre,e])
-						try {
-							if (!((SensorBinding) this.getBinding()).getSensorModel().containsBuilding(b)) {
-								((SensorBinding) this.getBinding()).getSensorModel().createBuilding(b)
+						[by: { unit ->
+							this.erreurHandler.integerExpected([b, nombre, e])
+							try {
+								if (!((SensorBinding) this.getBinding()).getSensorModel().containsBuilding(b)) {
+									((SensorBinding) this.getBinding()).getSensorModel().createBuilding(b)
+								}
+								Building building = ((SensorBinding) this.getBinding()).getSensorModel().getBuilding(b)
+								DataLaw law = ((SensorBinding) this.getBinding()).getSensorModel().getLaw(datalaw)
+								for (int i = 0; i < nombre; i++) {
+									((SensorBinding) this.getBinding()).getSensorModel().createSensor(name, building, law, e, unit)
+								}
 							}
-							Building building = ((SensorBinding) this.getBinding()).getSensorModel().getBuilding(b)
-							DataLaw law = ((SensorBinding) this.getBinding()).getSensorModel().getLaw(datalaw)
-							for (int i = 0; i < nombre; i++) {
-								((SensorBinding) this.getBinding()).getSensorModel().createSensor(name, building, law, e)
+							catch (Exception ex) {
+								this.erreurHandler.findAndAddLine(ex)
+								((SensorBinding) this.getBinding()).setErreurs(true)
 							}
-						}
-						catch(Exception ex){
-							this.erreurHandler.findAndAddLine(ex)
-							((SensorBinding) this.getBinding()).setErreurs(true)
-						}
+						}]
 					}]
 				}]
 			}]
@@ -66,15 +70,17 @@ abstract class SensorBasescript extends Script {
 			[states: { states ->
 				[transi: { map ->
 					[frequency: { f ->
-						this.erreurHandler.checkMarkovImplementation(states, map)
-						this.erreurHandler.integerExpected(f)
-						try {
-							((SensorBinding) this.getBinding()).getSensorModel().createMarkovLaw(name, states, map, f)
-						}
-						catch (Exception e) {
-							this.erreurHandler.findAndAddLine(e)
-							((SensorBinding) this.getBinding()).setErreurs(true)
-						}
+						[by: { unit ->
+							this.erreurHandler.checkMarkovImplementation(states, map)
+							this.erreurHandler.integerExpected(f)
+							try {
+								((SensorBinding) this.getBinding()).getSensorModel().createMarkovLaw(name, states, map, f, unit)
+							}
+							catch (Exception e) {
+								this.erreurHandler.findAndAddLine(e)
+								((SensorBinding) this.getBinding()).setErreurs(true)
+							}
+						}]
 					}]
 				}]
 			}]
@@ -83,15 +89,17 @@ abstract class SensorBasescript extends Script {
 	def randomLaw(String name){
 		[interval: { interval ->
 			[frequency: { f ->
-				this.erreurHandler.arraylistExpected(interval, 2)
-				this.erreurHandler.integerExpected(f)
-				try {
-					((SensorBinding) this.getBinding()).getSensorModel().createRandomLaw(name, interval, f)
-				}
-				catch (Exception e) {
-					this.erreurHandler.findAndAddLine(e)
-					((SensorBinding) this.getBinding()).setErreurs(true)
-				}
+				[by: { unit ->
+					this.erreurHandler.arraylistExpected(interval, 2)
+					this.erreurHandler.integerExpected(f)
+					try {
+						((SensorBinding) this.getBinding()).getSensorModel().createRandomLaw(name, interval, f, unit)
+					}
+					catch (Exception e) {
+						this.erreurHandler.findAndAddLine(e)
+						((SensorBinding) this.getBinding()).setErreurs(true)
+					}
+				}]
 			}]
 		}]
 	}
@@ -111,16 +119,29 @@ abstract class SensorBasescript extends Script {
 		}]
 	}
 
+	def testlol(String name){
+		[frequency: {f ->
+			[by: { unit ->
+				System.out.println(f + " " +   unit)
+			}]
+
+		}]
+	}
 
 
-	def runApp(Integer steps){
-		this.erreurHandler.integerExpected(steps)
-		if(((SensorBinding) this.getBinding()).isErreurs()){
-			System.out.println(this.erreurHandler.getErreurs())
-		}
-		else {
-			((SensorBinding) this.getBinding()).getSensorModel().runApp(steps)
-		}
+
+	def runApp(String start){
+		[to: { stop ->
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss a");
+			Date startDate = formatter.parse(start);
+			Date stopDate = formatter.parse(stop);
+
+			if (((SensorBinding) this.getBinding()).isErreurs()) {
+				System.out.println(this.erreurHandler.getErreurs())
+			} else {
+				((SensorBinding) this.getBinding()).getSensorModel().runApp(startDate, stopDate)
+			}
+		}]
 	}
 
 	// disable run method while running
@@ -136,7 +157,7 @@ abstract class SensorBasescript extends Script {
 			catch (Exception e){
 				this.erreurHandler.throwIncorrectWord(e)
 				System.out.println(this.erreurHandler.getErreurs())
-				//e.printStackTrace();
+				e.printStackTrace();
 			}
 		} else {
 			println "Run method is disabled"

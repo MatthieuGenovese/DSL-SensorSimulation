@@ -42,6 +42,29 @@ public class Sensor extends Observable{
 
     private String name;
     private int id;
+    private boolean finish = false;
+
+    public boolean isFinish() {
+        return finish;
+    }
+
+    public void setFinish(boolean finish) {
+        this.finish = finish;
+    }
+
+    private long stopTime;
+
+    public void setStartTime(long startTime) {
+        this.time = startTime;
+    }
+
+    public long getStopTime() {
+        return stopTime;
+    }
+
+    public void setStopTime(long stopTime) {
+        this.stopTime = stopTime;
+    }
 
     public Sensor(){
         this.echantillonage = 1;
@@ -52,6 +75,27 @@ public class Sensor extends Observable{
         this.name = name;
         this.echantillonage = 1;
         this.time = 0;
+    }
+
+    public Sensor(String name, Integer echant, String unit){
+        this.name = name;
+        switch(unit){
+            case "ms":
+                this.echantillonage = echant;
+                break;
+            case "d":
+                this.echantillonage = echant * 1000 * 60 * 60 * 24;
+                break;
+            case "min":
+                this.echantillonage = echant * 1000 * 60;
+                break;
+            case "s":
+                this.echantillonage = echant * 1000;
+                break;
+            case "h":
+                this.echantillonage = echant * 1000 * 60 * 60;
+                break;
+        }
     }
 
     public String getName() {
@@ -69,15 +113,16 @@ public class Sensor extends Observable{
     private Object value;
 
     public void tick(){
-        //if(time % sensorDataLaw.getFrequency() == 0){
-        this.value = sensorDataLaw.generateNextValue(time);
-        //}
-        if(time % echantillonage == 0){
-            setChanged();
-            notifyObservers();
+        if(time >= stopTime){
+            if(!finish) {
+                finish = true;
+            }
+            return;
         }
-
-        this.time++;
+        this.value = sensorDataLaw.generateNextValue(time);
+        this.time += echantillonage;
+        setChanged();
+        notifyObservers();
     }
 
     public int getId() {

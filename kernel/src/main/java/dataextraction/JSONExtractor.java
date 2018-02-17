@@ -45,8 +45,8 @@ public class JSONExtractor implements Extractor {
                 newSensor.setBuilding(b);
                 JSONObject jsonSensor =  iteratorSensor.next();
                 long nameSensor = (long) jsonSensor.get("name");
-                JSONArray valuesSensor = (JSONArray) jsonSensor.get("values");
                 newSensor.setId((int) nameSensor);
+                newSensor.setName("jsonSensor");
                 ExtractionLaw extractionLaw = new ExtractionLaw("extract");
                 newSensor.setSensorDataLaw(extractionLaw);
                 sensorsList.add(newSensor);

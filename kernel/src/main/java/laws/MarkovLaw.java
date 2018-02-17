@@ -1,7 +1,9 @@
 package laws;
 
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Matthieu on 29/01/2018.
@@ -12,12 +14,30 @@ public class MarkovLaw implements DataLaw {
     private Matrix matrix;
     private States states;
     private int frequency;
+    private long time;
 
-    public MarkovLaw(String name, States states, Matrix matrix){
+    public MarkovLaw(String name, States states, Matrix matrix, int frequency, String unit){
         this.name = name;
         this.states = states;
         this.value = null;
         this.matrix = matrix;
+        switch(unit){
+            case "ms":
+                this.frequency = frequency;
+                break;
+            case "d":
+                this.frequency = frequency * 1000 * 60 * 60 * 24;
+                break;
+            case "min":
+                this.frequency = frequency * 1000 * 60;
+                break;
+            case "s":
+                this.frequency = frequency * 1000;
+                break;
+            case "h":
+                this.frequency = frequency * 1000 * 60 * 60;
+                break;
+        }
     }
 
     @Override
@@ -55,7 +75,10 @@ public class MarkovLaw implements DataLaw {
 
 
     public Object generateNextValue(long time){
-        if(time % getFrequency() == 0) {
+        if(this.time == 0){
+            this.time = time+frequency;
+        }
+        if(this.time + frequency >= time) {
             double proba = Math.random();
             if (value == null) {
                 value = states.getValue(0);
@@ -76,6 +99,7 @@ public class MarkovLaw implements DataLaw {
                 }
             }
         }
+        this.time = time;
         return value;
     }
 }

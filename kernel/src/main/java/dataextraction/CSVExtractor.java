@@ -44,7 +44,6 @@ public class CSVExtractor implements Extractor{
                         s.setValue(data[2]);
                         System.out.println("ligne : " + ((ExtractionLaw) s.getSensorDataLaw()).getCurrentLine());
                         s.setTime(Long.valueOf(data[1]));
-                        //newLine = indexLine;
                         return indexLine;
                     }
                 }
@@ -80,6 +79,7 @@ public class CSVExtractor implements Extractor{
                         Sensor newSensor = new ExtractionSensor(this);
                         newSensor.setBuilding(b);
                         newSensor.setId(Integer.valueOf(data[0]));
+                        newSensor.setName("csvSensor");
                         ExtractionLaw extractionLaw = new ExtractionLaw("extract");
                         extractionLaw.setCurrentLine(0);
                         newSensor.setSensorDataLaw(extractionLaw);

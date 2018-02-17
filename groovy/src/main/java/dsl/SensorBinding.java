@@ -4,6 +4,7 @@ import groovy.lang.Binding;
 import groovy.lang.Script;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class SensorBinding extends Binding {
 	// can be useful to return the script in case of syntax trick
@@ -53,15 +54,22 @@ public class SensorBinding extends Binding {
 	}
 	
 	public Object getVariable(String name) {
-		// Easter egg (to show you this trick: seb is now a keyword!)
-		if ("seb".equals(name)) {
-			// could do something else like: ((launcher.App) this.getVariable("app")).action();
-			System.out.println("Seb, c'est bien");
-			return script;
+		if("s".equals(name)){
+			return "s";
 		}
-		if("si".equals(name)){
+		if("min".equals(name)){
+			return "min";
+		}
+		if("h".equals(name)){
+			return "h";
+		}
+		if("d".equals(name)){
+			return "d";
+		}
+		if("ms".equals(name)){
+			return "ms";
+		}
 
-		}
 		return super.getVariable(name);
 	}
 	

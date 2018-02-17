@@ -43,7 +43,6 @@ public class ErrorDetection {
                         Double proba = 0.0;
                         if (((ArrayList)((ArrayList) transi).get(i)).size() != ((ArrayList) transi).size()) {
                             erreurs += "Erreur sur la loi de markov ! ";
-                            throw new Exception();
                         }
                         for(int j = 0; j < ((ArrayList)((ArrayList) transi).get(i)).size(); j++){
                             bigDecimalExpected(((ArrayList)((ArrayList) transi).get(i)).get(j));
@@ -51,7 +50,6 @@ public class ErrorDetection {
                         }
                         if(!((proba + 0.0001 > 1 && proba <= 1) || (proba - 0.0001 < 1 && proba >= 1))){
                             erreurs += "la somme des probabilités de " +((ArrayList) transi).get(i) + " ne fait pas 1 !";
-                            throw new Exception();
                         }
                     }
                 }
@@ -73,10 +71,9 @@ public class ErrorDetection {
         }
     }
 
-    public void bigDecimalExpected(Object o) throws Exception{
+    public void bigDecimalExpected(Object o){
         if (!(o instanceof BigDecimal)){
             erreurs += "Le paramètre " + o.toString() + " est invalide! ";
-            throw new Exception();
         }
     }
 

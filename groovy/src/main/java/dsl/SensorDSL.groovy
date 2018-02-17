@@ -41,6 +41,7 @@ class SensorDSL {
 //			tokensBlacklist= []
             //language tokens allowed
             tokensWhitelist= [COMPARE_EQUAL,
+                              DIVIDE,
                               COMPARE_NOT_EQUAL,
                               COMPARE_LESS_THAN,
                               COMPARE_LESS_THAN_EQUAL,

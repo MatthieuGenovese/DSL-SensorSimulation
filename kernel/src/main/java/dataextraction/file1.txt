@@ -21,7 +21,7 @@
         {
               "name": 0002,
               "values":[
-                  { "time":0 ,"value":3},
+                  {"time":0 ,"value":3},
                   {"time":1 ,"value":33},
                   {"time":2 ,"value":333}
                   {"time":9 ,"value":3333}

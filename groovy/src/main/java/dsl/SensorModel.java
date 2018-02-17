@@ -13,6 +13,8 @@ import structural.Sensor;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class SensorModel {
 	private ArrayList<Building> buildings;
@@ -87,12 +89,11 @@ public class SensorModel {
 		}
 	}
 
-	public void createSensor(String name, Building b, DataLaw law, Integer e) {
-		Sensor sensor = new Sensor(name);
+	public void createSensor(String name, Building b, DataLaw law, Integer e, String unit) {
+		Sensor sensor = new Sensor(name, e, unit);
 		sensor.setId(this.sensors.size());
 		sensor.setSensorDataLaw(law);
 		sensor.setBuilding(b);
-		sensor.setEchantillonage(e);
 		if(sensor.getSensorDataLaw() instanceof CompositeLaw){
 			this.sensorsComposite.add(sensor);
 		}
@@ -123,23 +124,21 @@ public class SensorModel {
 		laws.add(function);
 	}
 
-	public void createMarkovLaw(String name, ArrayList<String> states, ArrayList<ArrayList<BigDecimal>> map, int freq){
+	public void createMarkovLaw(String name, ArrayList<Object> states, ArrayList<ArrayList<BigDecimal>> map, int freq, String unit){
 		Matrix matrix = new Matrix(map);
 		States state = new States(states);
-		MarkovLaw law = new MarkovLaw(name, state, matrix);
-		law.setFrequency(freq);
+		MarkovLaw law = new MarkovLaw(name, state, matrix, freq, unit);
 		laws.add(law);
 	}
 
-	public void createRandomLaw(String name, ArrayList<Integer> integers, int frequency){
-		RandomLaw law = new RandomLaw(name);
+	public void createRandomLaw(String name, ArrayList<Integer> integers, int frequency, String unit){
+		RandomLaw law = new RandomLaw(name, frequency, unit);
 		law.setMin(integers.get(0));
 		law.setMax(integers.get(1));
-		law.setFrequency(frequency);
 		laws.add(law);
 	}
 
-	public void runApp(Integer step){
+	public void runApp(Date start, Date stop){
 		sensors.addAll(sensorsComposite);
 		for(Sensor s : sensorsComposite){
 			for(Building b : buildings){
@@ -148,9 +147,8 @@ public class SensorModel {
 				}
 			}
 		}
-		App app = new App();
+		App app = new App(start, stop);
 		app.setBuildings(buildings);
-		app.setStep(step);
 		app.setup();
 		app.run();
 	}

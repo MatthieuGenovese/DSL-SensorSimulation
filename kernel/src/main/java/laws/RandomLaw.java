@@ -11,8 +11,25 @@ public class RandomLaw implements DataLaw {
     private int min;
     private int max;
 
-    public RandomLaw(String name){
+    public RandomLaw(String name, int frequency, String unit){
         this.name = name;
+        switch(unit){
+            case "ms":
+                this.frequency = frequency;
+                break;
+            case "d":
+                this.frequency = frequency * 1000 * 60 * 60 * 24;
+                break;
+            case "min":
+                this.frequency = frequency * 1000 * 60;
+                break;
+            case "s":
+                this.frequency = frequency * 1000;
+                break;
+            case "h":
+                this.frequency = frequency * 1000 * 60 * 60;
+                break;
+        }
     }
 
     public int getFrequency(){
