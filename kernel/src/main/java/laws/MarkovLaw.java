@@ -21,6 +21,7 @@ public class MarkovLaw implements DataLaw {
         this.states = states;
         this.value = null;
         this.matrix = matrix;
+        this.time=0;
         switch(unit){
             case "ms":
                 this.frequency = frequency;
@@ -75,10 +76,8 @@ public class MarkovLaw implements DataLaw {
 
 
     public Object generateNextValue(long time){
-        if(this.time == 0){
-            this.time = time+frequency;
-        }
-        if(this.time + frequency >= time) {
+        if(this.time + frequency <= time) {
+            this.time = time;
             double proba = Math.random();
             if (value == null) {
                 value = states.getValue(0);
@@ -99,7 +98,6 @@ public class MarkovLaw implements DataLaw {
                 }
             }
         }
-        this.time = time;
         return value;
     }
 }

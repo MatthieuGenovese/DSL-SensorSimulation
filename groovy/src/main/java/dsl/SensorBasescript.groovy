@@ -119,16 +119,6 @@ abstract class SensorBasescript extends Script {
 		}]
 	}
 
-	def testlol(String name){
-		[frequency: {f ->
-			[by: { unit ->
-				System.out.println(f + " " +   unit)
-			}]
-
-		}]
-	}
-
-
 
 	def runApp(String start){
 		[to: { stop ->
