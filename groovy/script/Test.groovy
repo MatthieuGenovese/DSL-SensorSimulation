@@ -1,5 +1,5 @@
-markovLaw "markovLaw" states ([10,-158,180]) transi ([[0.1,0.2,0.7],[0.3,0.5,0.2],[0.4,0.5,0.1]]) frequency 1 by s
-randomLaw "randomLaw" interval ([1,10]) frequency 1 by s
+markovLaw "markovLaw" states ([10,-158,180]) transi ([[0.1,0.2,0.7],[0.3,0.5,0.2],[0.4,0.5,0.1]]) frequency 1 by min
+randomLaw "randomLaw" interval ([1,10]) frequency 1 by min
 /*functionLaw "fonctionLaw", {
     x ->
             if (x > 10 && x < 30) return 1

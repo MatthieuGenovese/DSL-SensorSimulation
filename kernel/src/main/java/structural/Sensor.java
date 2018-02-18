@@ -125,9 +125,10 @@ public class Sensor extends Observable{
         }
         if(sensorDataLaw.generateNextValue(previousTime, time)){
             previousTime = time;
+
+            this.value = sensorDataLaw.getValue();
         }
 
-        this.value = sensorDataLaw.getValue();
         this.time += echantillonage;
         setChanged();
         notifyObservers();
