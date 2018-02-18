@@ -39,7 +39,11 @@ public class ExtractionLaw implements  DataLaw {
     public DataLaw getLaw(){
         return this;
     }
-    public Object generateNextValue(long time){
+
+    public Object getValue(){
         return value;
+    }
+    public boolean generateNextValue(long previousTime, long time){
+        return true;
     }
 }

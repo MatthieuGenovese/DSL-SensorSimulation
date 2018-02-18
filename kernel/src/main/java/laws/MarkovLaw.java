@@ -12,14 +12,12 @@ public class MarkovLaw implements DataLaw {
     private Matrix matrix;
     private States states;
     private int frequency;
-    private long time;
 
     public MarkovLaw(String name, States states, Matrix matrix, int frequency, String unit){
         this.name = name;
         this.states = states;
         this.value = null;
         this.matrix = matrix;
-        this.time=0;
         switch(unit){
             case "ms":
                 this.frequency = frequency;
@@ -72,28 +70,33 @@ public class MarkovLaw implements DataLaw {
         this.frequency = frequency;
     }
 
+    public Object getValue(){
+        return value;
+    }
 
-    public Object generateNextValue(long time){
-            this.time = time;
-            double proba = Math.random();
-            if (value == null) {
-                value = states.getValue(0);
-            }
-            int size = states.getValue().size();
-            for (int i = 0; i < states.getValue().size(); i++) {
-                if (value == states.getValue(i)) {
-                    ArrayList<BigDecimal> row = matrix.getRow(i);
-                    for (int j = 0; j < row.size(); j++) {
-                        if (proba < matrix.getElement(i, j).doubleValue()) {
-                            value = states.getValue(j);
-                            return value;
-                        } else {
-                            proba = proba - matrix.getElement(i, j).doubleValue();
+
+    public boolean generateNextValue(long previousTime, long time){
+            if(previousTime + frequency <= time) {
+                double proba = Math.random();
+                if (value == null) {
+                    value = states.getValue(0);
+                }
+                int size = states.getValue().size();
+                for (int i = 0; i < states.getValue().size(); i++) {
+                    if (value == states.getValue(i)) {
+                        ArrayList<BigDecimal> row = matrix.getRow(i);
+                        for (int j = 0; j < row.size(); j++) {
+                            if (proba < matrix.getElement(i, j).doubleValue()) {
+                                value = states.getValue(j);
+                                return true;
+                            } else {
+                                proba = proba - matrix.getElement(i, j).doubleValue();
+                            }
                         }
+                        break;
                     }
-                    break;
                 }
             }
-        return value;
+        return false;
     }
 }

@@ -13,6 +13,7 @@ public class RandomLaw implements DataLaw {
 
     public RandomLaw(String name, int frequency, String unit){
         this.name = name;
+        this.value = 0;
         switch(unit){
             case "ms":
                 this.frequency = frequency;
@@ -65,8 +66,15 @@ public class RandomLaw implements DataLaw {
         this.max = max;
     }
 
-    public Object generateNextValue(long time){
-        value = min + (int)(Math.random() * ((max - 1) + 1));
+    public Object getValue(){
         return value;
+    }
+
+    public boolean generateNextValue(long previousTime, long time){
+       if(previousTime + frequency <= time) {
+            value = min + (int) (Math.random() * ((max - 1) + 1));
+            return true;
+        }
+        return false;
     }
 }

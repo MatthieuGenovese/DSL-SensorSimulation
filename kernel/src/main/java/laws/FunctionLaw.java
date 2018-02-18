@@ -43,13 +43,17 @@ public class FunctionLaw implements DataLaw{
 
     }
 
+    public Object getValue(){
+        return value;
+    }
+
     @Override
-    public Object generateNextValue(long time) {
+    public boolean generateNextValue(long previousTime, long time) {
         if(cl.call(time) == null){
-            return value;
+            return true;
         }
         value = cl.call(time);
-        return value;
+        return true;
     }
 
 }

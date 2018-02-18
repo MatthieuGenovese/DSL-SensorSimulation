@@ -8,8 +8,77 @@ import java.util.Observable;
  * Created by Matthieu on 29/01/2018.
  */
 public class Sensor extends Observable{
+    private String name;
+    private int id;
+    private boolean finish = false;
+
+    private long stopTime;
+
+    public int echantillonage;
+    private Building building;
+    private DataLaw sensorDataLaw;
+    private long previousTime;
+    private long time;
+    private Object value;
+
+
     public Building getBuilding() {
         return building;
+    }
+
+    public boolean isFinish() {
+        return finish;
+    }
+
+    public void setFinish(boolean finish) {
+        this.finish = finish;
+    }
+
+
+    public void setStartTime(long startTime) {
+        this.time = startTime;
+    }
+
+    public long getStopTime() {
+        return stopTime;
+    }
+
+    public void setStopTime(long stopTime) {
+        this.stopTime = stopTime;
+    }
+
+    public Sensor(){
+        this.echantillonage = 1;
+        this.time = 0;
+        this.previousTime = 0;
+    }
+
+    public Sensor(String name){
+        this.name = name;
+        this.echantillonage = 1;
+        this.time = 0;
+        this.previousTime = 0;
+    }
+
+    public Sensor(String name, Integer echant, String unit){
+        this.name = name;
+        switch(unit){
+            case "ms":
+                this.echantillonage = echant;
+                break;
+            case "d":
+                this.echantillonage = echant * 1000 * 60 * 60 * 24;
+                break;
+            case "min":
+                this.echantillonage = echant * 1000 * 60;
+                break;
+            case "s":
+                this.echantillonage = echant * 1000;
+                break;
+            case "h":
+                this.echantillonage = echant * 1000 * 60 * 60;
+                break;
+        }
     }
 
     public void setBuilding(Building building) {
@@ -40,64 +109,6 @@ public class Sensor extends Observable{
         this.value = value;
     }
 
-    private String name;
-    private int id;
-    private boolean finish = false;
-
-    public boolean isFinish() {
-        return finish;
-    }
-
-    public void setFinish(boolean finish) {
-        this.finish = finish;
-    }
-
-    private long stopTime;
-
-    public void setStartTime(long startTime) {
-        this.time = startTime;
-    }
-
-    public long getStopTime() {
-        return stopTime;
-    }
-
-    public void setStopTime(long stopTime) {
-        this.stopTime = stopTime;
-    }
-
-    public Sensor(){
-        this.echantillonage = 1;
-        this.time = 0;
-    }
-
-    public Sensor(String name){
-        this.name = name;
-        this.echantillonage = 1;
-        this.time = 0;
-    }
-
-    public Sensor(String name, Integer echant, String unit){
-        this.name = name;
-        switch(unit){
-            case "ms":
-                this.echantillonage = echant;
-                break;
-            case "d":
-                this.echantillonage = echant * 1000 * 60 * 60 * 24;
-                break;
-            case "min":
-                this.echantillonage = echant * 1000 * 60;
-                break;
-            case "s":
-                this.echantillonage = echant * 1000;
-                break;
-            case "h":
-                this.echantillonage = echant * 1000 * 60 * 60;
-                break;
-        }
-    }
-
     public String getName() {
         return name;
     }
@@ -105,13 +116,6 @@ public class Sensor extends Observable{
     public void setName(String name) {
         this.name = name;
     }
-
-    public int echantillonage;
-    private Building building;
-    private DataLaw sensorDataLaw;
-    private long time;
-    private Object value;
-
     public void tick(){
         if(time >= stopTime){
             if(!finish) {
@@ -119,7 +123,11 @@ public class Sensor extends Observable{
             }
             return;
         }
-        this.value = sensorDataLaw.generateNextValue(time);
+        if(sensorDataLaw.generateNextValue(previousTime, time)){
+            previousTime = time;
+        }
+
+        this.value = sensorDataLaw.getValue();
         this.time += echantillonage;
         setChanged();
         notifyObservers();

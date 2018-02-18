@@ -60,8 +60,12 @@ public class CompositeLaw implements DataLaw{
 
     }
 
+    public Object getValue(){
+        return value;
+    }
+
     @Override
-    public Object generateNextValue(long time) {
+    public boolean generateNextValue(long previousTime, long time) {
         this.value = 0;
         int tmp = (Integer) value;
         int nbElements = 0;
@@ -79,7 +83,7 @@ public class CompositeLaw implements DataLaw{
         else{
             value = tmp;
         }
-        return value;
+        return true;
     }
 
 }
