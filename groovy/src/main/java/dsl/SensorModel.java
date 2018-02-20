@@ -8,6 +8,7 @@ import groovy.lang.Closure;
 import launcher.App;
 import laws.*;
 import structural.Building;
+import structural.ExtractionSensor;
 import structural.Sensor;
 
 import java.io.FileNotFoundException;
@@ -70,7 +71,7 @@ public class SensorModel {
 		return null;
 	}
 
-	public void generateSensors() throws FileNotFoundException {
+	/*public void generateSensors() throws FileNotFoundException {
 		ArrayList<Sensor> list = new ArrayList<>();
 		list = extractor.extractSensors();
 		this.sensors.addAll(list);
@@ -80,12 +81,17 @@ public class SensorModel {
 	public void createExtractor(int min, int max,String mode,String path) throws FileNotFoundException{
 		switch(mode){
 			case "csv":
-				extractor = new CSVExtractor(path,min,max);
+				extractor = new CSVExtractor(path);
 				break;
 			case "json":
-				extractor = new JSONExtractor(path,min,max);
+				extractor = new JSONExtractor(path);
 				break;
 		}
+	}*/
+
+	public void createExtractionLaw(String name, String mode, String path, String sensor) throws FileNotFoundException {
+		ExtractionLaw law = new ExtractionLaw(name, mode, path, sensor);
+		laws.add(law);
 	}
 
 	public void createSensor(String name, Building b, DataLaw law, Integer e, String unit) {
@@ -106,6 +112,20 @@ public class SensorModel {
 			}
 		}
 
+	}
+
+	public void createExtractionSensor(String name, Building b, DataLaw law) {
+		Sensor s = new ExtractionSensor(name);
+		s.setId(this.sensors.size());
+		s.setSensorDataLaw(law);
+		s.setBuilding(b);
+		this.sensors.add(s);
+		for(Building building : buildings){
+			if (b.equals(building)){
+				b.addSensor(s);
+				break;
+			}
+		}
 	}
 
 	public void createBuilding(Integer id){

@@ -1,6 +1,7 @@
 package structural;
 
 import laws.DataLaw;
+import laws.ExtractionLaw;
 
 import java.util.Observable;
 
@@ -8,18 +9,16 @@ import java.util.Observable;
  * Created by Matthieu on 29/01/2018.
  */
 public class Sensor extends Observable{
-    private String name;
-    private int id;
-    private boolean finish = false;
-
-    private long stopTime;
-
-    public int echantillonage;
-    private Building building;
-    private DataLaw sensorDataLaw;
-    private long previousTime;
-    private long time;
-    private Object value;
+    protected  String name;
+    protected  int id;
+    protected  boolean finish = false;
+    protected  long stopTime;
+    protected int echantillonage;
+    protected  Building building;
+    protected  DataLaw sensorDataLaw;
+    protected  long previousTime;
+    protected  long time;
+    protected  Object value;
 
 
     public Building getBuilding() {
@@ -48,14 +47,14 @@ public class Sensor extends Observable{
     }
 
     public Sensor(){
-        this.echantillonage = 1;
+        this.echantillonage = 0;
         this.time = 0;
         this.previousTime = 0;
     }
 
     public Sensor(String name){
         this.name = name;
-        this.echantillonage = 1;
+        this.echantillonage = 0;
         this.time = 0;
         this.previousTime = 0;
     }
@@ -125,7 +124,6 @@ public class Sensor extends Observable{
         }
         if(sensorDataLaw.generateNextValue(previousTime, time)){
             previousTime = time;
-
             this.value = sensorDataLaw.getValue();
         }
 

@@ -1,14 +1,11 @@
 package dataextraction;
 
-import laws.ExtractionLaw;
 import structural.Building;
-import structural.ExtractionSensor;
-import structural.Sensor;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by Matthieu on 30/01/2018.
@@ -17,34 +14,49 @@ public class CSVExtractor implements Extractor{
     String csvFile;
     BufferedReader br;
     String line;
+    int currentLine;
+    int currentTime;
     String cvsSplitBy;
+    boolean finish;
     int timeMin;
     int timeMax;
 
 
-    public CSVExtractor(String csvFile,int min,int max) throws FileNotFoundException {
+    public CSVExtractor(String csvFile) throws FileNotFoundException {
         this.csvFile = csvFile;
+        currentLine = 0;
+        currentTime = 0;
+        finish = false;
         line = "";
         cvsSplitBy = ",";
-        timeMin = min;
-        timeMax = max;
+    }
+
+    public int getCurrentTime(){
+        return currentTime;
     }
 
 
-    public int extractNextValue(Sensor s , int ligne){
-        //int newLine = Integer.MAX_VALUE;
+    @Override
+    public boolean isFinish() {
+        return finish;
+    }
+
+    public void setFinish(boolean finish) {
+        this.finish = finish;
+    }
+
+    public Object extractNextValue(String s){
         int indexLine = 1;
         try {
             Building b = new Building(1);
             br = new BufferedReader(new FileReader(csvFile));
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
-                if (indexLine > ligne || ligne == 0) {
-                    if(String.valueOf(s.getId()).equalsIgnoreCase(data[0]) && Integer.valueOf(data[1])<= timeMax && Integer.valueOf(data[1]) >= timeMin ){
-                        s.setValue(data[2]);
-                        System.out.println("ligne : " + ((ExtractionLaw) s.getSensorDataLaw()).getCurrentLine());
-                        s.setTime(Long.valueOf(data[1]));
-                        return indexLine;
+                if (indexLine > currentLine || currentLine == 0) {
+                    if(s.equalsIgnoreCase(data[0])){
+                        currentTime = Integer.valueOf(data[1]);
+                        currentLine = indexLine;
+                        return data[2];
                     }
                 }
                 indexLine++;
@@ -62,12 +74,14 @@ public class CSVExtractor implements Extractor{
                 }
             }
         }
-        return indexLine;
+        currentLine = indexLine;
+        finish = true;
+        return "";
     }
 
 
 
-    public ArrayList<Sensor> extractSensors(){
+    /*public ArrayList<Sensor> extractSensors(){
         ArrayList<Sensor> sensorsList = new ArrayList<>();
         try {
             Building b = new Building(1);
@@ -104,5 +118,5 @@ public class CSVExtractor implements Extractor{
             }
         }
         return sensorsList;
-    }
+    }*/
 }

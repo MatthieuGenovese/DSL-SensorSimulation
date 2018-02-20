@@ -1,31 +1,25 @@
 package structural;
 
-import dataextraction.CSVExtractor;
-import dataextraction.Extractor;
-import dataextraction.JSONExtractor;
 import laws.ExtractionLaw;
 
 /**
- * Created by Matthieu on 30/01/2018.
+ * Created by Matthieu on 20/02/2018.
  */
-public class ExtractionSensor extends Sensor {
-    private CSVExtractor csvExtractor;
-    private JSONExtractor jsonExtractor;
-    private Extractor extractor;
+public class ExtractionSensor extends Sensor{
 
-
-    public ExtractionSensor(CSVExtractor csvExtractor){
-        this.extractor = csvExtractor;
+    public ExtractionSensor(String name){
+        super(name);
     }
-    public ExtractionSensor(JSONExtractor jsonExtractor){
-        this.extractor = jsonExtractor;
-    }
-
     @Override
     public void tick(){
-        ExtractionLaw law = (ExtractionLaw) getSensorDataLaw();
-        ((ExtractionLaw) getSensorDataLaw()).setCurrentLine(extractor.extractNextValue(this,law.getCurrentLine()));
-        setChanged();
-        notifyObservers();
+        if(((ExtractionLaw) sensorDataLaw).isFinish()){
+            finish = true;
+        }
+        else {
+            echantillonage = ((ExtractionLaw) sensorDataLaw).getCurrentTime();
+            sensorDataLaw.generateNextValue(previousTime, time);
+            time += echantillonage;
+            value = sensorDataLaw.getValue();
+        }
     }
 }

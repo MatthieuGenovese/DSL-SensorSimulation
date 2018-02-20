@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 public interface Extractor {
 
-    public int extractNextValue(Sensor s , int ligne);
-    public ArrayList<Sensor> extractSensors();
+    public Object extractNextValue(String s);
+    public int getCurrentTime();
+    public boolean isFinish();
 
 }

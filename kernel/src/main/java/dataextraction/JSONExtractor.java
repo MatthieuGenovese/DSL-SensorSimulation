@@ -1,37 +1,30 @@
 package dataextraction;
 
-import laws.ExtractionLaw;
-import org.json.simple.parser.ParseException;
-import structural.Building;
-import structural.ExtractionSensor;
-import structural.Sensor;
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Iterator;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import java.util.ArrayList;
-
 /**
  * Created by Matthieu on 30/01/2018.
  */
 public class JSONExtractor implements Extractor {
     String pathJsonFile;
-    int timeMin;
-    int timeMax;
+    private int currentTime;
+    private boolean finish;
 
-    public JSONExtractor(String pathJsonFile,int min,int max) {
-        this.pathJsonFile = pathJsonFile;
-        timeMin = min;
-        timeMax = max;
+    @Override
+    public boolean isFinish() {
+        return finish;
     }
 
-    public ArrayList<Sensor> extractSensors(){
+    public void setFinish(boolean finish) {
+        this.finish = finish;
+    }
+
+    public JSONExtractor(String pathJsonFile) {
+        this.pathJsonFile = pathJsonFile;
+        currentTime = 0;
+        finish = false;
+
+    }
+
+    /*public ArrayList<Sensor> extractSensors(){
         ArrayList<Sensor> sensorsList = new ArrayList<>();
         JSONParser parser = new JSONParser();
         try {
@@ -56,12 +49,15 @@ public class JSONExtractor implements Extractor {
             e.printStackTrace();
         }
         return sensorsList;
+    }*/
+    public Object extractNextValue(String s){
+        return null;
     }
 
-
-
-
-    public int extractNextValue(Sensor s , int ligne){
+    public int getCurrentTime() {
+        return currentTime;
+    }
+ /*   public int extractNextValue(Sensor s , int ligne){
         JSONParser parser = new JSONParser();
         try {
             Object obj = parser.parse(new FileReader(pathJsonFile));
@@ -93,6 +89,6 @@ public class JSONExtractor implements Extractor {
         }
 
         return ligne+1;
-    }
+    }*/
 
 }

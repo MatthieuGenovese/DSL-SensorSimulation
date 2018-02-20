@@ -29,6 +29,7 @@ abstract class SensorBasescript extends Script {
 			}]
 		}]
 	}
+
 	def sensor(String name) {
 		[law: { datalaw ->
 			[create: { nombre ->
@@ -52,6 +53,49 @@ abstract class SensorBasescript extends Script {
 							}
 						}]
 					}]
+				}]
+			}]
+		}]
+	}
+
+	def extractionSensor(String name){
+		[mode: { m ->
+			[path: { p ->
+				[sensor: { s ->
+					[create: { nombre ->
+						[area: { b ->
+							this.erreurHandler.integerExpected([b, nombre])
+							this.erreurHandler.filePathExpected(p)
+							try {
+								((SensorBinding) this.getBinding()).getSensorModel().createExtractionLaw(name, m, p, s)
+								if (!((SensorBinding) this.getBinding()).getSensorModel().containsBuilding(b)) {
+									((SensorBinding) this.getBinding()).getSensorModel().createBuilding(b)
+								}
+								Building building = ((SensorBinding) this.getBinding()).getSensorModel().getBuilding(b)
+								DataLaw law = ((SensorBinding) this.getBinding()).getSensorModel().getLaw(name)
+								for (int i = 0; i < nombre; i++) {
+									((SensorBinding) this.getBinding()).getSensorModel().createExtractionSensor(name, building, law)
+								}
+							}
+							catch (Exception ex) {
+								this.erreurHandler.findAndAddLine(ex)
+								((SensorBinding) this.getBinding()).setErreurs(true)
+							}
+						}]
+					}]
+				}]
+			}]
+		}]
+
+	}
+
+	def extractionLaw(String name){
+		[mode: { m ->
+			[path: { p ->
+				[sensor:  { s->
+					this.erreurHandler.filePathExpected(p)
+					((SensorBinding) this.getBinding()).getSensorModel().createExtractionLaw(name, m, p, s)
+
 				}]
 			}]
 		}]
