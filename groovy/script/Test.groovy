@@ -12,8 +12,10 @@ functionLaw "fonctionLaw", {
 //sensor "random2" law "randomLaw" create 3 area 1 echantillonage 1 by s
 
 
-extractionSensor "toto2" mode "json" path "E:\\DSLSensorSimultion\\kernel\\src\\main\\java\\dataextraction\\file1.txt" sensor "toto" create 1 area 1
+extractionSensor "toto2" mode "csv" path "D:\\Projet\\DSL-SensorSimulation\\kernel\\src\\main\\java\\dataextraction\\data.csv" sensor "toto" create 1 area 1
 toto2.addNoise([0,10])
+toto2.addMinOffset(0)
+toto2.addMaxOffset(2)
 
 //compositeSensor "compositeSensor" sensor "random2" function "average" create 1 area 1 echantillonage 1 by s
 //compositeSensor "compositeSensor2" sensor "markov" function "sum" create 1 area 1 echantillonage 1 by s

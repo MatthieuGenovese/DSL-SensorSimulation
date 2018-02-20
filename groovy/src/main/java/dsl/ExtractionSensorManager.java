@@ -26,4 +26,20 @@ public class ExtractionSensorManager {
             }
         }
     }
+
+    public void addMinOffset(Long minDate){
+        for(Sensor s : sensors){
+            if(s.getName().equalsIgnoreCase(sensorName)){
+                ((ExtractionSensor) s).setMinOffset(minDate);
+            }
+        }
+    }
+
+    public void addMaxOffset(Long maxDate){
+        for(Sensor s : sensors){
+            if(s.getName().equalsIgnoreCase(sensorName)){
+                ((ExtractionSensor) s).setMaxOffset(maxDate);
+            }
+        }
+    }
 }

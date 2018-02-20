@@ -1,7 +1,5 @@
 package dataextraction;
 
-import structural.Building;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -53,7 +51,7 @@ public class CSVExtractor implements Extractor {
                 String[] data = line.split(cvsSplitBy);
                 if (indexLine > currentLine || currentLine == 0) {
                     if (s.equalsIgnoreCase(data[0])) {
-                        currentTime = Integer.valueOf(data[1]);
+                        currentTime = Long.valueOf(data[1]);
                         currentLine = indexLine;
                         return data[2];
                     }
