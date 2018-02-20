@@ -81,6 +81,9 @@ abstract class SensorBasescript extends Script {
 								this.erreurHandler.findAndAddLine(ex)
 								((SensorBinding) this.getBinding()).setErreurs(true)
 							}
+							[noise: { n ->
+								System.out.println("gdkjfdkgjd")
+							}]
 						}]
 					}]
 				}]

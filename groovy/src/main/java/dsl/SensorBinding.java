@@ -69,6 +69,10 @@ public class SensorBinding extends Binding {
 		if("ms".equals(name)){
 			return "ms";
 		}
+		if(model.getSensor(name) != null){
+			ExtractionSensorManager manager = new ExtractionSensorManager(name, model.getSensors());
+			return manager;
+		}
 
 		return super.getVariable(name);
 	}
