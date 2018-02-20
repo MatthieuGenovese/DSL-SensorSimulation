@@ -16,11 +16,11 @@ public class ExtractionLaw implements  DataLaw {
     private Extractor extractor;
     private String name;
     private int currentLine;
-    private int currentTime;
+    private long currentTime;
     private int frequency;
     private boolean finish;
 
-    public int getCurrentTime() {
+    public long getCurrentTime() {
         return currentTime;
     }
 
@@ -38,7 +38,7 @@ public class ExtractionLaw implements  DataLaw {
                 extractor = new CSVExtractor(path);
                 break;
             case "json":
-                //extractor = new JSONExtractor(path);
+                extractor = new JSONExtractor(path);
         }
         sensorName = sensor;
         currentLine = 0;
@@ -82,15 +82,12 @@ public class ExtractionLaw implements  DataLaw {
     }
 
     public boolean generateNextValue(long previousTime, long time){
+        value = extractor.extractNextValue(sensorName);
+        currentTime = extractor.getCurrentTime();
         if(extractor.isFinish()){
-            finish = true;
-            return true;
+            return  false;
         }
-        else {
-            value = extractor.extractNextValue(sensorName);
-            currentTime = extractor.getCurrentTime();
-            return true;
-        }
+        return true;
 
     }
 }

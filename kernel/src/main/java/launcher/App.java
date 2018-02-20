@@ -62,11 +62,13 @@ public class App implements Observer {
             for (Building b : buildings) {
                 System.out.println("\tBuilding : " +b.getId());
                 for (Sensor s : b.getSensorList()) {
-                    s.tick();
                     if(s.isFinish()){
                         nbSensorFinished++;
                     }
-                    System.out.println("\t\t" + s);
+                    else {
+                        s.tick();
+                        System.out.println("\t\t" + s);
+                    }
                 }
             }
         }
