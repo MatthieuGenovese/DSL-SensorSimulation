@@ -71,26 +71,9 @@ public class SensorModel {
 		return null;
 	}
 
-	/*public void generateSensors() throws FileNotFoundException {
-		ArrayList<Sensor> list = new ArrayList<>();
-		list = extractor.extractSensors();
-		this.sensors.addAll(list);
-		this.buildings.add(sensors.get(0).getBuilding());
-	}
 
-	public void createExtractor(int min, int max,String mode,String path) throws FileNotFoundException{
-		switch(mode){
-			case "csv":
-				extractor = new CSVExtractor(path);
-				break;
-			case "json":
-				extractor = new JSONExtractor(path);
-				break;
-		}
-	}*/
-
-	public void createExtractionLaw(String name, String mode, String path, String sensor) throws FileNotFoundException {
-		ExtractionLaw law = new ExtractionLaw(name, mode, path, sensor);
+	public void createExtractionLaw(String name, String mode, String path, String sensor, String timeunit) throws FileNotFoundException {
+		ExtractionLaw law = new ExtractionLaw(name, mode, path, sensor, timeunit);
 		laws.add(law);
 	}
 
@@ -103,6 +86,9 @@ public class SensorModel {
 			this.sensorsComposite.add(sensor);
 		}
 		else {
+			if (sensor.getSensorDataLaw() instanceof FunctionLaw){
+				((FunctionLaw) law).setNbSensors(((FunctionLaw) law).getNbSensors()+1);
+			}
 			this.sensors.add(sensor);
 			for(Building building : buildings){
 				if (b.equals(building)){

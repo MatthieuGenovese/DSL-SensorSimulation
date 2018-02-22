@@ -19,7 +19,6 @@ public class ExtractionSensorManager {
     }
 
     public void addNoise(ArrayList<Integer> noise){
-        System.out.println("toto");
         for(Sensor s : sensors){
             if(s.getName().equalsIgnoreCase(sensorName)){
                 ((ExtractionSensor) s).setNoise(noise);

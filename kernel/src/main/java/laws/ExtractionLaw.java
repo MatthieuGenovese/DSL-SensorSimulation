@@ -28,7 +28,7 @@ public class ExtractionLaw implements  DataLaw {
         this.currentTime = currentTime;
     }
 
-    public ExtractionLaw(String name, String mode, String path, String sensor) throws FileNotFoundException {
+    public ExtractionLaw(String name, String mode, String path, String sensor, String timeunit) throws FileNotFoundException {
         this.name = name;
         finish = false;
         currentTime = 0;
@@ -39,6 +39,23 @@ public class ExtractionLaw implements  DataLaw {
                 break;
             case "json":
                 extractor = new JSONExtractor(path);
+        }
+        switch (timeunit){
+            case "ms":
+                this.frequency = 1;
+                break;
+            case "d":
+                this.frequency = 1000 * 60 * 60 * 24;
+                break;
+            case "min":
+                this.frequency = 1000 * 60;
+                break;
+            case "s":
+                this.frequency = 1000;
+                break;
+            case "h":
+                this.frequency = 1000 * 60 * 60;
+                break;
         }
         sensorName = sensor;
         currentLine = 0;
@@ -83,7 +100,7 @@ public class ExtractionLaw implements  DataLaw {
 
     public boolean generateNextValue(long previousTime, long time){
         value = extractor.extractNextValue(sensorName);
-        currentTime = extractor.getCurrentTime();
+        currentTime = extractor.getCurrentTime()*frequency;
         if(extractor.isFinish()){
             return  false;
         }

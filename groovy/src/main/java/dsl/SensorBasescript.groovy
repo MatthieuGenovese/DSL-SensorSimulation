@@ -64,25 +64,24 @@ abstract class SensorBasescript extends Script {
 				[sensor: { s ->
 					[create: { nombre ->
 						[area: { b ->
-							this.erreurHandler.integerExpected([b, nombre])
-							this.erreurHandler.filePathExpected(p)
-							try {
-								((SensorBinding) this.getBinding()).getSensorModel().createExtractionLaw(name, m, p, s)
-								if (!((SensorBinding) this.getBinding()).getSensorModel().containsBuilding(b)) {
-									((SensorBinding) this.getBinding()).getSensorModel().createBuilding(b)
+							[timeunit: { t ->
+								this.erreurHandler.integerExpected([b, nombre])
+								this.erreurHandler.filePathExpected(p)
+								try {
+									((SensorBinding) this.getBinding()).getSensorModel().createExtractionLaw(name, m, p, s, t)
+									if (!((SensorBinding) this.getBinding()).getSensorModel().containsBuilding(b)) {
+										((SensorBinding) this.getBinding()).getSensorModel().createBuilding(b)
+									}
+									Building building = ((SensorBinding) this.getBinding()).getSensorModel().getBuilding(b)
+									DataLaw law = ((SensorBinding) this.getBinding()).getSensorModel().getLaw(name)
+									for (int i = 0; i < nombre; i++) {
+										((SensorBinding) this.getBinding()).getSensorModel().createExtractionSensor(name, building, law)
+									}
 								}
-								Building building = ((SensorBinding) this.getBinding()).getSensorModel().getBuilding(b)
-								DataLaw law = ((SensorBinding) this.getBinding()).getSensorModel().getLaw(name)
-								for (int i = 0; i < nombre; i++) {
-									((SensorBinding) this.getBinding()).getSensorModel().createExtractionSensor(name, building, law)
+								catch (Exception ex) {
+									this.erreurHandler.findAndAddLine(ex)
+									((SensorBinding) this.getBinding()).setErreurs(true)
 								}
-							}
-							catch (Exception ex) {
-								this.erreurHandler.findAndAddLine(ex)
-								((SensorBinding) this.getBinding()).setErreurs(true)
-							}
-							[noise: { n ->
-								System.out.println("gdkjfdkgjd")
 							}]
 						}]
 					}]
@@ -90,18 +89,6 @@ abstract class SensorBasescript extends Script {
 			}]
 		}]
 
-	}
-
-	def extractionLaw(String name){
-		[mode: { m ->
-			[path: { p ->
-				[sensor:  { s->
-					this.erreurHandler.filePathExpected(p)
-					((SensorBinding) this.getBinding()).getSensorModel().createExtractionLaw(name, m, p, s)
-
-				}]
-			}]
-		}]
 	}
 
     def functionLaw(String name, Closure cl){
