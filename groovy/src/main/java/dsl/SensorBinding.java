@@ -4,6 +4,7 @@ import groovy.lang.Binding;
 import groovy.lang.Script;
 
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.concurrent.TimeUnit;
 
 public class SensorBinding extends Binding {
@@ -73,6 +74,9 @@ public class SensorBinding extends Binding {
 			ExtractionSensorManager manager = new ExtractionSensorManager(name, model.getSensors());
 			return manager;
 		}
+		//else{
+		//	return (String) name;
+		//}
 
 		return super.getVariable(name);
 	}

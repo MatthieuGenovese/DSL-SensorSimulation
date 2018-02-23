@@ -1,7 +1,7 @@
 {
     "sensors": [
         {
-          "name": "toto" ,
+          "name": "json1" ,
             "values":[
                 {"time":0 ,"value":1},
                 {"time":1000 ,"value":11},
@@ -11,7 +11,7 @@
             ]
         },
         {
-             "name": 0001,
+             "name": "json2",
              "values":[
                  {"time":0 ,"value":2},
                  {"time":1 ,"value":22},
@@ -20,7 +20,7 @@
              ]
         },
         {
-              "name": 0002,
+              "name": "json3",
               "values":[
                   {"time":0 ,"value":3},
                   {"time":1 ,"value":33},

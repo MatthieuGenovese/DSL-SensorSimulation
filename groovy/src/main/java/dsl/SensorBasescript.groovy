@@ -11,33 +11,15 @@ abstract class SensorBasescript extends Script {
 
 	public ErrorDetection erreurHandler
 
-	def mode(String s){
-		[path: { path ->
-			[min: { min ->
-				[max: { max ->
-			this.erreurHandler.filePathExpected(path)
-			try {
-				((SensorBinding) this.getBinding()).setVariable("mode", s)
-				((SensorBinding) this.getBinding()).getSensorModel().createExtractor(min,max,s,path);
-				((SensorBinding) this.getBinding()).getSensorModel().generateSensors();
-			}
-			catch(Exception e){
-				this.erreurHandler.findAndAddLine(e)
-				((SensorBinding) this.getBinding()).setErreurs(true)
-			}
-				}]
-			}]
-		}]
-	}
-
 	def sensor(String name) {
 		[law: { datalaw ->
 			[create: { nombre ->
 				[area: { b ->
 					[echantillonage: { e ->
 						[by: { unit ->
-							this.erreurHandler.integerExpected([b, nombre, e])
-							try {
+							try{
+								this.erreurHandler.integerExpected([b, nombre, e])
+								this.erreurHandler.timeUnitExpected(unit)
 								if (!((SensorBinding) this.getBinding()).getSensorModel().containsBuilding(b)) {
 									((SensorBinding) this.getBinding()).getSensorModel().createBuilding(b)
 								}
@@ -65,9 +47,10 @@ abstract class SensorBasescript extends Script {
 					[create: { nombre ->
 						[area: { b ->
 							[timeunit: { t ->
-								this.erreurHandler.integerExpected([b, nombre])
-								this.erreurHandler.filePathExpected(p)
 								try {
+									if(this.erreurHandler.goodExtractionSensor([b,nombre],m,p,t,s)){
+										((SensorBinding) this.getBinding()).setErreurs(true)
+									}
 									((SensorBinding) this.getBinding()).getSensorModel().createExtractionLaw(name, m, p, s, t)
 									if (!((SensorBinding) this.getBinding()).getSensorModel().containsBuilding(b)) {
 										((SensorBinding) this.getBinding()).getSensorModel().createBuilding(b)
@@ -106,13 +89,13 @@ abstract class SensorBasescript extends Script {
 				[transi: { map ->
 					[frequency: { f ->
 						[by: { unit ->
-							this.erreurHandler.checkMarkovImplementation(states, map)
-							this.erreurHandler.integerExpected(f)
 							try {
+								if(this.erreurHandler.checkMarkovImplementation(states, map, f, unit)){
+									((SensorBinding) this.getBinding()).setErreurs(true)
+								}
 								((SensorBinding) this.getBinding()).getSensorModel().createMarkovLaw(name, states, map, f, unit)
 							}
 							catch (Exception e) {
-								this.erreurHandler.findAndAddLine(e)
 								((SensorBinding) this.getBinding()).setErreurs(true)
 							}
 						}]
@@ -125,13 +108,13 @@ abstract class SensorBasescript extends Script {
 		[interval: { interval ->
 			[frequency: { f ->
 				[by: { unit ->
-					this.erreurHandler.arraylistExpected(interval, 2)
-					this.erreurHandler.integerExpected(f)
 					try {
+						if(this.erreurHandler.checkRandomImplementation(interval, 2, f, unit)){
+							((SensorBinding) this.getBinding()).setErreurs(true)
+						}
 						((SensorBinding) this.getBinding()).getSensorModel().createRandomLaw(name, interval, f, unit)
 					}
 					catch (Exception e) {
-						this.erreurHandler.findAndAddLine(e)
 						((SensorBinding) this.getBinding()).setErreurs(true)
 					}
 				}]
@@ -146,21 +129,21 @@ abstract class SensorBasescript extends Script {
 					[area: { b ->
 						[echantillonage: { e ->
 							[by: { unit ->
-								this.erreurHandler.integerExpected([b, nombre, e])
 								try {
+									this.erreurHandler.integerExpected([b, nombre, e])
+									this.erreurHandler.timeUnitExpected(unit)
+									this.erreurHandler.sensorExist(((SensorBinding) this.getBinding()).getSensorModel().getSensors(), sensor)
 									if (!((SensorBinding) this.getBinding()).getSensorModel().containsBuilding(b)) {
 										((SensorBinding) this.getBinding()).getSensorModel().createBuilding(b)
 									}
 									Building building = ((SensorBinding) this.getBinding()).getSensorModel().getBuilding(b)
 									Sensor s = ((SensorBinding) this.getBinding()).getSensorModel().getSensor(sensor)
-									CompositeLaw compositeLaw = new CompositeLaw(name, s, func);
-//									DataLaw law = ((SensorBinding) this.getBinding()).getSensorModel().getLaw(datalaw)
+									CompositeLaw compositeLaw = new CompositeLaw(name, s, func)
 									for (int i = 0; i < nombre; i++) {
 										((SensorBinding) this.getBinding()).getSensorModel().createSensor(name, building, compositeLaw, e, unit)
 									}
 								}
 								catch (Exception ex) {
-									ex.printStackTrace()
 									this.erreurHandler.findAndAddLine(ex)
 									((SensorBinding) this.getBinding()).setErreurs(true)
 								}
@@ -176,14 +159,20 @@ abstract class SensorBasescript extends Script {
 	def runApp(String start){
 		[to: { stop ->
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss a");
-			Date startDate = formatter.parse(start);
-			Date stopDate = formatter.parse(stop);
-
-			if (((SensorBinding) this.getBinding()).isErreurs()) {
-				System.out.println(this.erreurHandler.getErreurs())
-			} else {
-				((SensorBinding) this.getBinding()).getSensorModel().runApp(startDate, stopDate)
+			try {
+				Date startDate = formatter.parse(start);
+				Date stopDate = formatter.parse(stop);
+				if (((SensorBinding) this.getBinding()).isErreurs()) {
+					System.out.println(this.erreurHandler.getErreurs())
+				} else {
+					((SensorBinding) this.getBinding()).getSensorModel().runApp(startDate, stopDate)
+				}
 			}
+			catch (Exception e){
+				this.erreurHandler.findAndAddLine(e)
+				((SensorBinding) this.getBinding()).setErreurs(true)
+			}
+
 		}]
 	}
 
