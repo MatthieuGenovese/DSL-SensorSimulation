@@ -2,15 +2,23 @@ package dsl;
 
 import groovy.lang.Binding;
 import groovy.lang.Script;
+import laws.CompositeLaw;
 
 import java.util.Map;
-import java.util.StringJoiner;
-import java.util.concurrent.TimeUnit;
 
 public class SensorBinding extends Binding {
 	// can be useful to return the script in case of syntax trick
 	private Script script;
 	private String fileName;
+	private ErrorDetection erreurHandler;
+
+	public ErrorDetection getErreurHandler() {
+		return erreurHandler;
+	}
+
+	public void setErreurHandler(ErrorDetection erreurHandler) {
+		this.erreurHandler = erreurHandler;
+	}
 
 	public String getFileName() {
 		return fileName;
@@ -70,8 +78,12 @@ public class SensorBinding extends Binding {
 		if("ms".equals(name)){
 			return "ms";
 		}
-		if(model.getSensor(name) != null){
-			ExtractionSensorManager manager = new ExtractionSensorManager(name, model.getSensors());
+		if(model.getSensor(name) != null && (!(model.getSensor(name).getSensorDataLaw() instanceof CompositeLaw))){
+			Manager manager = new Manager(name, model.getCompositesSensors(),model.getSensors(), erreurHandler);
+			return manager;
+		}
+		if(model.getCompositeSensor(name) != null){
+			Manager manager = new Manager(name, model.getCompositesSensors(),model.getSensors(), erreurHandler);
 			return manager;
 		}
 		//else{

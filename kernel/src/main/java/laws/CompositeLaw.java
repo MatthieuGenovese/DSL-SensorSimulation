@@ -2,12 +2,14 @@ package laws;
 
 import structural.Sensor;
 
+import java.util.ArrayList;
+
 /**
  * Created by Michael on 12/02/2018.
  */
 public class CompositeLaw implements DataLaw{
     private String name;
-    private Sensor sensor;
+    private ArrayList<Sensor> sensors;
     private String function;
     private int nbSensors;
     private Object value;
@@ -17,19 +19,24 @@ public class CompositeLaw implements DataLaw{
         this.function = function;
         this.value = 0;
         nbSensors = 0;
-        this.sensor = sensor;
+        sensors = new ArrayList<>();
+        for(Sensor s : sensor.getBuilding().getSensorList()){
+            if(s.getName().equalsIgnoreCase(sensor.getName())){
+                sensors.add(s);
+            }
+        }
+    }
+
+    public void addSensor(Sensor s){
+        sensors.add(s);
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public Sensor getSensor() {
-        return sensor;
-    }
-
-    public void setSensor(Sensor sensor) {
-        this.sensor = sensor;
+    public ArrayList<Sensor> getSensors() {
+        return sensors;
     }
 
     public String getFunction() {
@@ -69,9 +76,9 @@ public class CompositeLaw implements DataLaw{
         this.value = 0;
         int tmp = (Integer) value;
         int nbElements = 0;
-        for(Sensor s : sensor.getBuilding().getSensorList()){
+        for(Sensor s : sensors){
             Object val = s.getValue();
-            if(val instanceof Number && s.getName().equalsIgnoreCase(sensor.getName())){
+            if(val instanceof Number){
                 tmp += (Integer)val;
                 nbElements++;
             }

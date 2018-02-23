@@ -3,9 +3,8 @@ package dsl;
 import dataextraction.CSVExtractor;
 import dataextraction.JSONExtractor;
 import groovy.lang.Closure;
-import laws.DataLaw;
-import laws.FunctionLaw;
-import laws.MarkovLaw;
+import laws.*;
+import structural.ExtractionSensor;
 import structural.Sensor;
 
 import java.io.File;
@@ -40,6 +39,26 @@ public class ErrorDetection {
         }
     }
 
+    public boolean dataLawExist(Object datalaw){
+        if(datalaw == null){
+            erreurs += "la datalaw " + datalaw + " n'existe pas !";
+            System.out.println("yoyo");
+            Exception e = new Exception();
+            findAndAddLine(e);
+            return true;
+        }
+        return false;
+    }
+
+    public void goodSensorExpected(Object name, ArrayList<Sensor> sensors, Object list, Object unit, Object datalaw){
+        integerExpected((ArrayList)list);
+        timeUnitExpected(unit);
+        dataLawExist(datalaw);
+        if(sensorExistBool(sensors, (String) name)){
+            erreurs += "Le sensor " + name + " existe déja !";
+        }
+    }
+
     public boolean checkMarkovImplementation(Object states,Object transi, Object f, Object unit) throws Exception{
         boolean rep = false;
         integerExpected(f);
@@ -49,7 +68,6 @@ public class ErrorDetection {
         if(states instanceof ArrayList && transi instanceof ArrayList) {
             if (((ArrayList) states).size() == ((ArrayList)transi).size()) {
                 if(((ArrayList)transi).get(0) instanceof ArrayList) {
-
                     for (int i = 0; i < ((ArrayList) transi).size(); i++) {
                         Double proba = 0.0;
                         if (((ArrayList)((ArrayList) transi).get(i)).size() != ((ArrayList) transi).size()) {
@@ -88,6 +106,12 @@ public class ErrorDetection {
             return true;
         }
         return false;
+    }
+
+    public void extractionSensorExpected(Sensor s){
+        if(!(s instanceof ExtractionSensor)){
+            erreurs+= "l' ExtractionSensor " + s.getName() + " n'existe pas !";
+        }
     }
 
     public boolean checkRandomImplementation(Object interval, int size, Object f, Object unit){
@@ -188,11 +212,35 @@ public class ErrorDetection {
         return false;
     }
 
-    public void compositeLawImplementation(Sensor s) throws Exception {
+    public void addErreur(String err){
+        erreurs += err;
+    }
+
+    public void compositeLawImplementation(Sensor s){
         DataLaw law = s.getSensorDataLaw();
         if(law instanceof MarkovLaw){
-            erreurs += "Les sensors composites sont incompatibles avec les MarkovLaws !\n";
-            throw new Exception();
+            MarkovLaw markov = (MarkovLaw) law;
+            for(Object value : markov.getStates().getValue()){
+                if(!(value instanceof Number)){
+                    erreurs += "Les sensors composites sont incompatibles avec les lois qui ne retournent pas des nombres !";
+                    Exception e = new Exception();
+                    findAndAddLine(e);
+                    return;
+                }
+            }
+        }
+    }
+
+    public void goodCompositeSensor(Object name, Object list, Object unit, ArrayList<Sensor> sensors, Object sensor) throws Exception {
+        integerExpected((ArrayList) list);
+        timeUnitExpected(unit);
+        Sensor s = sensorExist(sensors, (String) sensor);
+        if(s != null){
+            compositeLawImplementation(s);
+        }
+
+        if(sensorExistBool(sensors, (String) name)){
+            erreurs += "Le sensor " + name + " existe déja !";
         }
     }
 
@@ -253,7 +301,7 @@ public class ErrorDetection {
         return false;
     }
 
-    public boolean goodExtractionSensor(Object list, Object m, Object p, Object t, Object s) throws FileNotFoundException {
+    public boolean goodExtractionSensor(Object name, ArrayList<Sensor> sensors, Object list, Object m, Object p, Object t, Object s) throws FileNotFoundException {
         boolean rep = false;
         integerExpected((ArrayList) list);
         if(modeExpected(m)) {
@@ -266,17 +314,31 @@ public class ErrorDetection {
         if(sensorExistInFile(s,p,m)){
             rep =  true;
         }
+        if(sensorExistBool(sensors, (String) name)){
+            erreurs += "Le sensor " + name + " existe déjà !";
+        }
         return rep;
     }
 
-    public void sensorExist(ArrayList<Sensor> list, String name) throws Exception{
+    public boolean sensorExistBool(ArrayList<Sensor> list, String name){
         for(Sensor s : list){
             if(s.getName().equalsIgnoreCase(name)){
-                return;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Sensor sensorExist(ArrayList<Sensor> list, String name){
+        for(Sensor s : list){
+            if(s.getName().equalsIgnoreCase(name)){
+                return s;
             }
         }
         erreurs += "Le sensor " + name +" n'existe pas ! ";
-        throw new Exception();
+        Exception e = new Exception();
+        findAndAddLine(e);
+        return null;
     }
 
     public  void filePathExpected(Object path){
@@ -301,7 +363,7 @@ public class ErrorDetection {
 
     public void arraylistExpected(Object o){
         if(!(o instanceof ArrayList)){
-            erreurs += "Le paramètre " + o.toString() + "n'est pas une liste ! ";
+            erreurs += "Le paramètre " + o.toString() + " n'est pas une liste ! ";
         }
     }
 }

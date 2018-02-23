@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * Created by Michael on 30/01/2018.
  */
 public class States {
+
     private ArrayList<Object> value;
 
     public States(ArrayList<Object> states) {

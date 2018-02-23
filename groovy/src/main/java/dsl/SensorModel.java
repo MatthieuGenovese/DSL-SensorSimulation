@@ -53,6 +53,19 @@ public class SensorModel {
 		return null;
 	}
 
+	public ArrayList<Sensor> getCompositesSensors(){
+		return sensorsComposite;
+	}
+
+	public Sensor getCompositeSensor(String name){
+		for(Sensor s : sensorsComposite){
+			if(s.getName().equalsIgnoreCase(name)){
+				return  s;
+			}
+		}
+		return null;
+	}
+
 	public DataLaw getLaw(String name){
 		for(DataLaw dataLaw : laws){
 			if(dataLaw.getName() == name){
