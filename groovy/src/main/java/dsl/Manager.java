@@ -71,10 +71,14 @@ public class Manager {
         }
         if(!compositeExist){
             errorDetection.addErreur("Le sensor composite " + sensorName + " n'existe pas !");
+            Exception e = new Exception();
+            errorDetection.findAndAddLine(e);
             return;
         }
         if(!s2Exist){
             errorDetection.addErreur("Le sensor " + name + " n'existe pas !");
+            Exception e = new Exception();
+            errorDetection.findAndAddLine(e);
         }
     }
 
