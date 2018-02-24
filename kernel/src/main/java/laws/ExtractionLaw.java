@@ -20,6 +20,10 @@ public class ExtractionLaw implements  DataLaw {
     private int frequency;
     private boolean finish;
 
+    public Extractor getExtractor(){
+        return extractor;
+    }
+
     public long getCurrentTime() {
         return currentTime;
     }

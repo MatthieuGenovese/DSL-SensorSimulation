@@ -46,7 +46,7 @@ public class ExtractionSensor extends Sensor{
         if(sensorDataLaw.generateNextValue(previousTime, time)){
             echantillonageLong = ((ExtractionLaw) sensorDataLaw).getCurrentTime();
             time += echantillonageLong;
-            if(this.getMinOffset() <= echantillonageLong && this.getMaxOffset() >= echantillonageLong) {
+            if(this.getMinOffset() <= ((ExtractionLaw) getSensorDataLaw()).getExtractor().getCurrentTime() && this.getMaxOffset() >= ((ExtractionLaw) getSensorDataLaw()).getExtractor().getCurrentTime()) {
                 if (!noise.isEmpty()) {
                     System.out.println("random : " + (noise.get(0) + (int) (Math.random() * ((noise.get(1) - 1) + 1))));
                     value = String.valueOf(Integer.valueOf((String) sensorDataLaw.getValue()) + noise.get(0) + (int) (Math.random() * ((noise.get(1) - 1) + 1)));
