@@ -20,4 +20,4 @@ toto2.addMaxOffset(2)
 compositeSensor "compositeSensor" sensor "random2" function "average" create 1 area 1 echantillonage 1 by s
 compositeSensor.addSensor("markov")
 //compositeSensor "compositeSensor2" sensor "markov" function "sum" create 1 area 1 echantillonage 1 by s
-runApp "17/02/2018 12:10:00 PM" to "17/02/2018 12:10:43 PM"
+runApp "17/02/2018 12:10:00 PM" to "17/02/2018 12:10:20 PM"

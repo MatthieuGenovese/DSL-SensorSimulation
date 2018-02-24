@@ -77,8 +77,8 @@ public class Manager {
         }
         if(!s2Exist){
             errorDetection.addErreur("Le sensor " + name + " n'existe pas !");
-            Exception e = new Exception();
-            errorDetection.findAndAddLine(e);
+            Exception g = new Exception();
+            errorDetection.findAndAddLine(g);
         }
     }
 

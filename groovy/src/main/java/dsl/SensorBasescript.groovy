@@ -29,7 +29,6 @@ abstract class SensorBasescript extends Script {
 								}
 							}
 							catch (Exception ex) {
-								this.erreurHandler.findAndAddLine(ex)
 							}
 						}]
 					}]
@@ -58,7 +57,6 @@ abstract class SensorBasescript extends Script {
 									}
 								}
 								catch (Exception ex) {
-									this.erreurHandler.findAndAddLine(ex)
 								}
 							}]
 						}]
@@ -129,8 +127,6 @@ abstract class SensorBasescript extends Script {
 									}
 								}
 								catch (Exception ex) {
-									ex.printStackTrace()
-									this.erreurHandler.findAndAddLine(ex)
 								}
 							}]
 						}]
@@ -145,17 +141,18 @@ abstract class SensorBasescript extends Script {
 		[to: { stop ->
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss a");
 			try {
+
+				this.erreurHandler.goodSimulationDates(start, stop)
 				Date startDate = formatter.parse(start);
 				Date stopDate = formatter.parse(stop);
 				if (!this.erreurHandler.getErreurs().equalsIgnoreCase("-----ERREURS DE COMPILATION-----\n\n")) {
 					System.out.println(this.erreurHandler.getErreurs())
 				} else {
 					((SensorBinding) this.getBinding()).getSensorModel().runApp(startDate, stopDate)
+					System.exit(0)
 				}
 			}
 			catch (Exception e){
-				this.erreurHandler.findAndAddLine(e)
-				((SensorBinding) this.getBinding()).setErreurs(true)
 			}
 
 		}]
@@ -175,7 +172,6 @@ abstract class SensorBasescript extends Script {
 			catch (Exception e){
 				this.erreurHandler.throwIncorrectWord(e)
 				System.out.println(this.erreurHandler.getErreurs())
-				e.printStackTrace();
 			}
 		} else {
 			println "Run method is disabled"

@@ -181,13 +181,21 @@ public class ErrorDetection {
         }
     }
 
-    public void dateExpected(Object obj){
+    public void goodSimulationDates(Object start, Object stop){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss a");
         try {
-            Date startDate = formatter.parse((String) obj);
+            Date startDate = formatter.parse((String) start);
+            Date stopDate = formatter.parse((String) stop);
+            if(startDate.getTime() >= stopDate.getTime()){
+                erreurs += "La date de début doit être supérieur à la date de fin !";
+                Exception e = new Exception();
+                findAndAddLine(e);
+            }
         }
         catch(Exception e){
             erreurs += "La string donnée n'est pas une date !";
+            Exception g = new Exception();
+            findAndAddLine(g);
         }
     }
 
