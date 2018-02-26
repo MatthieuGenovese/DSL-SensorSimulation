@@ -20,7 +20,7 @@ public class CompositeLaw implements DataLaw{
         this.value = 0;
         nbSensors = 0;
         sensors = new ArrayList<>();
-        for(Sensor s : sensor.getBuilding().getSensorList()){
+        for(Sensor s : sensor.getArea().getSensorList()){
             if(s.getName().equalsIgnoreCase(sensor.getName())){
                 sensors.add(s);
             }

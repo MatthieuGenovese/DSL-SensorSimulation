@@ -1,7 +1,6 @@
 package structural;
 
 import laws.DataLaw;
-import laws.ExtractionLaw;
 
 import java.util.Observable;
 
@@ -14,15 +13,15 @@ public class Sensor extends Observable{
     protected  boolean finish = false;
     protected  long stopTime;
     protected int echantillonage;
-    protected  Building building;
+    protected Area area;
     protected  DataLaw sensorDataLaw;
     protected  long previousTime;
     protected  long time;
     protected  Object value;
 
 
-    public Building getBuilding() {
-        return building;
+    public Area getArea() {
+        return area;
     }
 
     public boolean isFinish() {
@@ -80,8 +79,8 @@ public class Sensor extends Observable{
         }
     }
 
-    public void setBuilding(Building building) {
-        this.building = building;
+    public void setArea(Area area) {
+        this.area = area;
     }
 
     public DataLaw getSensorDataLaw() {

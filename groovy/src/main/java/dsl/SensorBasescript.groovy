@@ -2,7 +2,7 @@ package dsl
 
 import laws.CompositeLaw
 import laws.DataLaw
-import structural.Building
+import structural.Area
 import structural.Sensor
 
 import java.text.SimpleDateFormat
@@ -22,7 +22,7 @@ abstract class SensorBasescript extends Script {
 								if (!((SensorBinding) this.getBinding()).getSensorModel().containsBuilding(b)) {
 									((SensorBinding) this.getBinding()).getSensorModel().createBuilding(b)
 								}
-								Building building = ((SensorBinding) this.getBinding()).getSensorModel().getBuilding(b)
+								Area building = ((SensorBinding) this.getBinding()).getSensorModel().getBuilding(b)
 								DataLaw law = ((SensorBinding) this.getBinding()).getSensorModel().getLaw(datalaw)
 								for (int i = 0; i < nombre; i++) {
 									((SensorBinding) this.getBinding()).getSensorModel().createSensor(name, building, law, e, unit)
@@ -50,7 +50,7 @@ abstract class SensorBasescript extends Script {
 									if (!((SensorBinding) this.getBinding()).getSensorModel().containsBuilding(b)) {
 										((SensorBinding) this.getBinding()).getSensorModel().createBuilding(b)
 									}
-									Building building = ((SensorBinding) this.getBinding()).getSensorModel().getBuilding(b)
+									Area building = ((SensorBinding) this.getBinding()).getSensorModel().getBuilding(b)
 									DataLaw law = ((SensorBinding) this.getBinding()).getSensorModel().getLaw(name)
 									for (int i = 0; i < nombre; i++) {
 										((SensorBinding) this.getBinding()).getSensorModel().createExtractionSensor(name, building, law)
@@ -119,7 +119,7 @@ abstract class SensorBasescript extends Script {
 									if (!((SensorBinding) this.getBinding()).getSensorModel().containsBuilding(b)) {
 										((SensorBinding) this.getBinding()).getSensorModel().createBuilding(b)
 									}
-									Building building = ((SensorBinding) this.getBinding()).getSensorModel().getBuilding(b)
+									Area building = ((SensorBinding) this.getBinding()).getSensorModel().getBuilding(b)
 									Sensor s = ((SensorBinding) this.getBinding()).getSensorModel().getSensor(sensor)
 									CompositeLaw compositeLaw = new CompositeLaw(name, s, func)
 									for (int i = 0; i < nombre; i++) {

@@ -1,7 +1,7 @@
 package launcher;
 
 import database.InfluxDBManager;
-import structural.Building;
+import structural.Area;
 import structural.Sensor;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.Observer;
  * Created by Matthieu on 29/01/2018.
  */
 public class App implements Observer {
-    private ArrayList<Building> buildings;
+    private ArrayList<Area> areas;
     private int step = 0;
     private int nbSensor;
     private InfluxDBManager influxDBManager;
@@ -36,16 +36,16 @@ public class App implements Observer {
         this.step = step;
     }
 
-    public ArrayList<Building> getBuildings() {
-        return buildings;
+    public ArrayList<Area> getAreas() {
+        return areas;
     }
 
-    public void setBuildings(ArrayList<Building> buildings) {
-        this.buildings = buildings;
+    public void setAreas(ArrayList<Area> areas) {
+        this.areas = areas;
     }
 
     public void setup(){
-        for (Building b : buildings) {
+        for (Area b : areas) {
             for (Sensor s : b.getSensorList()) {
                 s.setStartTime(startTime);
                 s.setStopTime(stopTime);
@@ -57,21 +57,22 @@ public class App implements Observer {
 
     public void run(){
         int nbSensorFinished = 0;
+        System.out.println("Debut de la simulation");
+        System.out.println("Simulation en cours...");
         while(nbSensorFinished < nbSensor)  {
             nbSensorFinished = 0;
-            for (Building b : buildings) {
-                System.out.println("\tBuilding : " +b.getId());
+            for (Area b : areas) {
                 for (Sensor s : b.getSensorList()) {
                     if(s.isFinish()){
                         nbSensorFinished++;
                     }
                     else {
                         s.tick();
-                        System.out.println("\t\t" + s);
                     }
                 }
             }
         }
+        System.out.println("Simulation terminée !");
     }
 
     @Override

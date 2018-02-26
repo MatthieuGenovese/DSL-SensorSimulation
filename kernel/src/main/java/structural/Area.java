@@ -5,16 +5,16 @@ import java.util.ArrayList;
 /**
  * Created by Matthieu on 29/01/2018.
  */
-public class Building {
+public class Area {
     private int id;
     private ArrayList<Sensor> sensorList;
 
-    public Building(ArrayList<Sensor> sensorList){
+    public Area(ArrayList<Sensor> sensorList){
         this.sensorList = sensorList;
         this.id = 0;
     }
 
-    public Building(int id){
+    public Area(int id){
         this.sensorList = new ArrayList<>();
         this.id = id;
     }

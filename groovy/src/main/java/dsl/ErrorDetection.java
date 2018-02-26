@@ -42,7 +42,6 @@ public class ErrorDetection {
     public boolean dataLawExist(Object datalaw){
         if(datalaw == null){
             erreurs += "la datalaw " + datalaw + " n'existe pas !";
-            System.out.println("yoyo");
             Exception e = new Exception();
             findAndAddLine(e);
             return true;

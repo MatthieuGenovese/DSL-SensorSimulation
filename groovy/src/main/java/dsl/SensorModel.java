@@ -1,13 +1,11 @@
 package dsl;
 
-import dataextraction.CSVExtractor;
 import dataextraction.Extractor;
-import dataextraction.JSONExtractor;
 import groovy.lang.Binding;
 import groovy.lang.Closure;
 import launcher.App;
 import laws.*;
-import structural.Building;
+import structural.Area;
 import structural.ExtractionSensor;
 import structural.Sensor;
 
@@ -17,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class SensorModel {
-	private ArrayList<Building> buildings;
+	private ArrayList<Area> areas;
 	private ArrayList<Sensor> sensors;
 	private ArrayList<DataLaw> laws;
 	private ArrayList<Sensor> sensorsComposite;
@@ -26,7 +24,7 @@ public class SensorModel {
 	
 	public SensorModel(Binding binding) {
 		sensorsComposite = new ArrayList<>();
-		this.buildings = new ArrayList<Building>();
+		this.areas = new ArrayList<Area>();
 		this.sensors = new ArrayList<Sensor>();
 		this.laws = new ArrayList<DataLaw>();
 	}
@@ -36,7 +34,7 @@ public class SensorModel {
 	}
 
 	public boolean containsBuilding(Integer id){
-		for(Building b : buildings){
+		for(Area b : areas){
 			if(b.getId() == id){
 				return true;
 			}
@@ -75,10 +73,10 @@ public class SensorModel {
 		return null;
 	}
 
-	public Building getBuilding(int b){
-		for(Building building : buildings){
-			if(building.getId() == b){
-				return building;
+	public Area getBuilding(int b){
+		for(Area area : areas){
+			if(area.getId() == b){
+				return area;
 			}
 		}
 		return null;
@@ -90,11 +88,11 @@ public class SensorModel {
 		laws.add(law);
 	}
 
-	public void createSensor(String name, Building b, DataLaw law, Integer e, String unit) {
+	public void createSensor(String name, Area b, DataLaw law, Integer e, String unit) {
 		Sensor sensor = new Sensor(name, e, unit);
 		sensor.setId(this.sensors.size());
 		sensor.setSensorDataLaw(law);
-		sensor.setBuilding(b);
+		sensor.setArea(b);
 		if(sensor.getSensorDataLaw() instanceof CompositeLaw){
 			this.sensorsComposite.add(sensor);
 		}
@@ -103,8 +101,8 @@ public class SensorModel {
 				((FunctionLaw) law).setNbSensors(((FunctionLaw) law).getNbSensors()+1);
 			}
 			this.sensors.add(sensor);
-			for(Building building : buildings){
-				if (b.equals(building)){
+			for(Area area : areas){
+				if (b.equals(area)){
 					b.addSensor(sensor);
 					break;
 				}
@@ -113,14 +111,14 @@ public class SensorModel {
 
 	}
 
-	public void createExtractionSensor(String name, Building b, DataLaw law) {
+	public void createExtractionSensor(String name, Area b, DataLaw law) {
 		Sensor s = new ExtractionSensor(name);
 		s.setId(this.sensors.size());
 		s.setSensorDataLaw(law);
-		s.setBuilding(b);
+		s.setArea(b);
 		this.sensors.add(s);
-		for(Building building : buildings){
-			if (b.equals(building)){
+		for(Area area : areas){
+			if (b.equals(area)){
 				b.addSensor(s);
 				break;
 			}
@@ -128,8 +126,8 @@ public class SensorModel {
 	}
 
 	public void createBuilding(Integer id){
-		Building b = new Building(id);
-		buildings.add(b);
+		Area b = new Area(id);
+		areas.add(b);
 	}
 
 	public void createFunction(String name, Closure cl){
@@ -154,14 +152,14 @@ public class SensorModel {
 	public void runApp(Date start, Date stop){
 		sensors.addAll(sensorsComposite);
 		for(Sensor s : sensorsComposite){
-			for(Building b : buildings){
-				if(s.getBuilding().equals(b)){
+			for(Area b : areas){
+				if(s.getArea().equals(b)){
 					b.addSensor(s);
 				}
 			}
 		}
 		App app = new App(start, stop);
-		app.setBuildings(buildings);
+		app.setAreas(areas);
 		app.setup();
 		app.run();
 	}

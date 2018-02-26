@@ -32,6 +32,7 @@ public class ExtractionLaw implements  DataLaw {
         this.currentTime = currentTime;
     }
 
+
     public ExtractionLaw(String name, String mode, String path, String sensor, String timeunit) throws FileNotFoundException {
         this.name = name;
         finish = false;
