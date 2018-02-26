@@ -11,11 +11,9 @@ sensor "markov" law "markovLaw" create 10 area 1 echantillonage 1 by s
 sensor "fonctionel" law "fonctionLaw" create 1 area 1 echantillonage 1 by s
 
 sensor "random2" law "randomLaw" create 3 area 1 echantillonage 1 by s
-//extractionSensor "toto2" mode "csv" path "kernel/src/main/java/dataextraction/data.csv" sensor "toto" create 1 area 1 timeunit s
-//extractionSensor "toto3" mode "json" path "kernel/src/main/java/dataextraction/file1.txt" sensor "json2" create 1 area 2 timeunit min
+extractionSensor "toto2" mode "csv" path "kernel/src/main/java/dataextraction/data.csv" sensor "toto" create 1 area 1 timeunit s
+extractionSensor "toto3" mode "json" path "kernel/src/main/java/dataextraction/file1.txt" sensor "json2" create 1 area 2 timeunit min
 
-extractionSensor "toto2" mode "csv" path "..\\kernel\\src\\main\\java\\dataextraction\\data.csv" sensor "toto" create 1 area 1 timeunit s
-extractionSensor "toto3" mode "json" path "..\\kernel\\src\\main\\java\\dataextraction\\file1.txt" sensor "json2" create 1 area 2 timeunit min
 
 toto2.addNoise([0,10])
 toto2.addMinOffset(0)
