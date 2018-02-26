@@ -1,17 +1,14 @@
+# DSL-SensorSimulation
+
+## 1. Prérequis
 Installer grafana et influxDB ou bien utiliser le docker-compose  
+Avoir Maven d'installé
+Avoir Java 1.8 d'installé  
 
-3 commandes à setup :  
-  Commande maven :  
-    Working directory : DSLSensorSimultion/groovy  
-    commande : clean compile assembly:single  
+## 2. Exécution
 
-  Commande maven :  
-    Working directory : DSLSensorSimultion  
-    commande : clean install  
-
-  Commande JAR Application :  
-    Path to JAR : DSLSensorSimultion\groovy\target\groovy-1.0-SNAPSHOT-jar-with-dependencies.jar  
-    Program arguments : script\Test.groovy  
-    Working directory : E:\DSLSensorSimultion\groovy  
-      
-A executer dans cette ordre : install >> assembly >> JAR application  
+Pour build le projet : simplement lancer le script build.sh  
+Pour exécuter le programme avec un fichier "Test.groovy" en entrée en utilisant docker : 
+lancer le script run.sh avec en argumant le chemin du fichier (exemple : run.sh Test.groovy)  
+Pour exécuter le programme avec un fichier "Test.groovy" en entrée sans docker (il faut au préalable avoir installé puis lancé influxDB sur sa machine), lancer le script run-without-docker.sh avec en argumant le chemin du fichier  
+(exemple : run-without-docker.sh Test.groovy)
