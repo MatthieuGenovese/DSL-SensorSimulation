@@ -365,7 +365,7 @@ public class ErrorDetection {
     }
 
     public void setErreurs(String erreurs) {
-        this.erreurs = erreurs;
+        this.erreurs += erreurs;
     }
 
     public void arraylistExpected(Object o){

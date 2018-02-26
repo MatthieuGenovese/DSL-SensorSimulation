@@ -15,16 +15,18 @@ public class InfluxDBManager {
     private InfluxDB db;
 
     public InfluxDBManager(){
-        db = InfluxDBFactory.connect("http://localhost:8086", "root", "root");
-        if(!db.databaseExists("DSL-SimulationSensor")){
-            db.createDatabase("DSL-SimulationSensor");
+        try {
+            db = InfluxDBFactory.connect("http://localhost:8086", "root", "root");
+            if(!db.databaseExists("DSL-SimulationSensor")){
+                db.createDatabase("DSL-SimulationSensor");
+            }
+            db.setLogLevel(InfluxDB.LogLevel.NONE);
+            db.setDatabase("DSL-SimulationSensor");
         }
-        else{
-            db.deleteDatabase("DSL-SimulationSensor");
-            db.createDatabase("DSL-SimulationSensor");
+        catch (Exception e){
+            System.out.println("Aucune réponse de la base de donnée influxDB. Avez vous pensé à la lancer ? (ou à lancer le docker-compose)");
+            System.exit(1);
         }
-        db.setLogLevel(InfluxDB.LogLevel.NONE);
-        db.setDatabase("DSL-SimulationSensor");
     }
 
     public void writeSensor(Sensor s ){

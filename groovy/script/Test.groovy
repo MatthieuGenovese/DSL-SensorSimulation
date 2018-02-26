@@ -2,7 +2,7 @@ markovLaw "markovLaw" states ([10,-158,180]) transi ([[0.1,0.2,0.7],[0.3,0.5,0.2
 randomLaw "randomLaw" interval ([1,50]) frequency 1 by s
 functionLaw "fonctionLaw", {
     x ->
-            if (x > 1 && x < 3) return 1
+            if (x > 1 && x < 3) return true
             if (x < 10) return 13
             if (x < 30 && x > 30) return 72
             if (x > 40) return 99
