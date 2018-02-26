@@ -1,5 +1,3 @@
 #!/bin/sh
 
-cd groovy
-
-java target\groovy-1.0-SNAPSHOT-jar-with-dependencies.jar $1
+java -jar ./groovy/target/groovy-1.0-SNAPSHOT-jar-with-dependencies.jar $1
